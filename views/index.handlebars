@@ -51,60 +51,55 @@
 								</div>
 								<div class="text">
 									<p>My name is <span>{{user.firstName}} {{user.lastName}}</span>.
-										I Hailed from the mountain village of central Taiwan. I struggled my
-										way up to where I am now: a student of École hôtelière de Lausanne.
-										Having worked in jobs of various professions, from construction a
-										worker to a luxury hotel staff, I have seen people from all walks of
-										life. I am passionate about humanity, and all that contributes to
-										the happiness and well-being of them.
+										{{user.bio}}
 									</p>
 								</div>
 								<div class="about_short_contact_wrap">
 									<ul>
 										<li>
 											<img class="svg" src="img/svg/gift.svg" alt="" />
-											<span><label>Birthday:</label> 12.06.1999</span>
+											<span><label>Birthday:</label> {{user.birthDay}}</span>
 										</li>
 										<li>
 											<img class="svg" src="img/svg/calendar-4.svg" alt="" />
 											<span>
 												<label>Birth Name:</label>
-												羅兆珩 (Chao Heng Lo)
+												{{user.birthName}}
 											</span>
 										</li>
 										<li>
 											<img class="svg" src="img/svg/location-1.svg" alt="" />
-											<span><label>Location:</label> <a class="href_location" href="#">Lausanne,
-													Switzerland</a></span>
+											<span><label>Location:</label> <a class="href_location"
+													href="#">{{user.location}}</a></span>
 										</li>
 										<li>
 											<img class="svg" src="img/svg/game-controller-2.svg" alt="" />
 											<span>
 												<label>Interests:</label>
-												Coding, Traveling, Reading
+												{{user.interests}}
 											</span>
 										</li>
 										<li>
 											<img class="svg" src="img/svg/call-2.svg" alt="" />
-											<span><label>Phone:</label> <a href="tel:+41 799 00 62 41">+41
-													799 00 62 41</a></span>
+											<span><label>Phone:</label> <a
+													href="tel:{{user.phone}}">{{user.phone}}</a></span>
 										</li>
 										<li>
 											<img class="svg" src="img/svg/study-5.svg" alt="" />
 											<span>
 												<label>Study:</label>
 												<a class="href_location" href="#">
-													École hôtelière de Lausanne</a>
+													{{user.study}}</a>
 											</span>
 										</li>
 										<li>
 											<img class="svg" src="img/svg/message-3.svg" alt="" />
 											<span><label>Mail:</label> <a
-													href="mailto:chaoheng.lo@ehl.ch">chaoheng.lo&#64;ehl.ch</a></span>
+													href="mailto:{{user.email}}">{{user.email}}</a></span>
 										</li>
 										<li>
 											<img class="svg" src="img/svg/degree-1.svg" alt="" />
-											<span><label>Degree:</label> Bachelor in Progress</span>
+											<span><label>Degree:</label>{{user.degree}}</span>
 										</li>
 									</ul>
 								</div>
@@ -343,17 +338,17 @@
 								<li>
 									<img class="svg" src="img/svg/location-1.svg" alt="" />
 									<h3>Location</h3>
-									<p>Lausanne, Switzerland</p>
+									<p>{{user.location}}</p>
 								</li>
 								<li>
 									<img class="svg" src="img/svg/message-3.svg" alt="" />
 									<h3>Email</h3>
-									<p>chaoheng.lo@ehl.ch</p>
+									<p>{{user.email}}</p>
 								</li>
 								<li>
 									<img class="svg" src="img/svg/call-2.svg" alt="" />
 									<h3>Phone</h3>
-									<p>+41 799 00 62 41</p>
+									<p>{{user.phone}}</p>
 								</li>
 							</ul>
 						</div>
