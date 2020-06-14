@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { expDistro, upload, } = require('../config/misc');
 const { EnsureAuthenticated, } = require('../config/auth/ensureAuth');
-
+const { updateFunc, } = require('../config/auth/auth');
 //DB Connection
 const { Quote_DB, Experience_DB, User_DB, } = require('../config/dataBase/mongoConnection');
 
@@ -189,6 +189,27 @@ router.get('/edit/:id', EnsureAuthenticated, async (req, res) => {
 
 });
 
+//Edit personal info. page
+router.get('/about', EnsureAuthenticated, async (req, res) => {
+    //Get user
+    //Get experience
+    let user = await User_DB
+        .findOne({})
+        .lean()
+        .catch(err => console.log(err));
+
+    //Remove senstive fields from the user object
+    let safeUser = user;
+    delete safeUser.password;
+    delete safeUser._id;
+
+    //Render the page
+    res.render('about/about', {
+        layout: 'id_based',
+        user: safeUser,
+    });
+});
+
 //POST Routes (Protected)
 //Add quote
 router.post('/quote', EnsureAuthenticated, upload.single('file'), (req, res) => {
@@ -261,6 +282,40 @@ router.post('/add', EnsureAuthenticated, (req, res) => {
 
 
 //PUT Routes
+//Edit Personal Info.
+router.put('/about', EnsureAuthenticated, (req, res) => {
+    const { body, } = req;
+
+    //The new user object
+    let updateUser = {
+        firstName: body.firstName,
+        lastName: body.lastName,
+        password: null,
+        email: body.email,
+        birthDay: body.birthDay,
+        birthName: body.birthName,
+        location: body.location,
+        phone: body.phone,
+        interests: body.interests,
+        study: body.study,
+        degree: body.degree,
+        bio: body.bio,
+    };
+
+    //Call the update function
+    updateFunc(updateUser, body.password, body.passwordC, req.user.id)
+        .then(result => {
+            //If the error array is there
+            if (result) {
+                res.send(result);
+                return;
+            }
+            res.redirect('/');
+        })
+        .catch(err => { console.log(err); });
+
+});
+
 //Edit experience
 router.put('/edit/:id', EnsureAuthenticated, (req, res) => {
 

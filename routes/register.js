@@ -108,6 +108,14 @@ router.post('/login', (req, res, next) => {
 //         body.password,
 //         body.passwordC,
 //         body.email
+//         birthDay: body.birthDay,
+//         birthName: body.birthName,
+//         location: body.location,
+//         phone: body.phone,
+//         interests: body.interests,
+//         study: body.study,
+//         degree: body.degree,
+//         bio: body.bio,
 //     )
 //         .then(result => {
 //             //If the error array is there
