@@ -1,7 +1,7 @@
 //Dependencies
 const express = require('express');
 const router = express.Router();
-const { expDistro, upload, } = require('../config/misc');
+const { expDistro, upload, upload2, } = require('../config/misc');
 const { EnsureAuthenticated, } = require('../config/auth/ensureAuth');
 const { updateFunc, } = require('../config/auth/auth');
 //DB Connection
@@ -290,7 +290,14 @@ router.post('/add', EnsureAuthenticated, (req, res) => {
 
 //PUT Routes
 //Edit Personal Info.
-router.put('/bio', EnsureAuthenticated, (req, res) => {
+router.put('/bio', EnsureAuthenticated, upload.single('file'), (req, res) => {
+
+    //Check if there is a picture
+    if (!req.file) {
+        res.status(400).send('A picture is required');
+        return;
+    }
+
     const { body, } = req;
 
     //The new user object
@@ -307,6 +314,7 @@ router.put('/bio', EnsureAuthenticated, (req, res) => {
         study: body.study,
         degree: body.degree,
         bio: body.bio,
+        profileImg: req.file.path.replace('assets/', ''),
     };
 
     //Call the update function

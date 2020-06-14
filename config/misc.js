@@ -34,7 +34,17 @@ const diskStorage = multer.diskStorage({
     },
 });
 
+//Multer DiskStorage Config2
+const diskStorage2 = multer.diskStorage({
+    destination: 'assets/img/about',
+    filename: (req, file, call_back) => {
+        //Prepend date to the filename
+        call_back(null, Date.now() + '_' + file.originalname);
+    },
+});
+
 //Create Multer Instance
 const upload = multer({ storage: diskStorage, });
+const upload2 = multer({ storage: diskStorage2, });
 
-module.exports = { expDistro, upload, };
+module.exports = { expDistro, upload, upload2, };

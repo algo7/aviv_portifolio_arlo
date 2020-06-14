@@ -43,6 +43,10 @@ const userSchema = new Schema({
     degree: {
         type: String,
     },
+    profileImg: {
+        type: String,
+        default: 'img/about/3.jpg',
+    },
 
 }, {
     collection: 'Users',
