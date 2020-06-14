@@ -10,7 +10,7 @@
                 <div class="fields">
 
                     {{!-- Form --}}
-                    <form action="/about?_=put" method="post" class="contact_form" id="contact_form"
+                    <form action="/bio?_=put" method="post" class="contact_form" id="contact_form"
                         enctype="application/x-www-form-urlencoded">
                         <div class="returnmessage"
                             data-success="Your message has been received, We will contact you soon.">
@@ -78,18 +78,24 @@
                                     <label for="deg">Degree:</label>
                                     <input type="text" id="deg" name="degree" value="{{user.degree}}" required>
                                 </li>
+                                <li style="width:100%">
+                                    <label for="bio"><strong>Upload Proifle Picture:</strong></label>
+                                    <input type="file" name="file">
+                                </li>
 
                             </ul>
                         </div>
                         <div class="last">
-                            <label for="bio">bio:</label>
+                            <label for="bio"><strong>Bio:</strong></label>
                             <textarea id="bio" name="bio">{{user.bio}}</textarea>
                         </div>
+                        <div class="last">
 
-                        <div class="arlo_tm_button">
-                            <a id="send_message" href="javascript:{}"
-                                onclick="document.getElementById('contact_form').submit();">Done</a>
-                        </div>
+
+                            <div class="arlo_tm_button">
+                                <a id="send_message" href="javascript:{}"
+                                    onclick="document.getElementById('contact_form').submit();">Done</a>
+                            </div>
 
                     </form>
                 </div>

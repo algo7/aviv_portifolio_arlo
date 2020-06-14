@@ -190,9 +190,15 @@ router.get('/edit/:id', EnsureAuthenticated, async (req, res) => {
 });
 
 //Edit personal info. page
-router.get('/about', EnsureAuthenticated, async (req, res) => {
+router.get('/bio', EnsureAuthenticated, async (req, res) => {
+
+    //Login Status
+    let loginStatus = false;
+    if (req.user) {
+        loginStatus = true;
+    }
+
     //Get user
-    //Get experience
     let user = await User_DB
         .findOne({})
         .lean()
@@ -204,9 +210,10 @@ router.get('/about', EnsureAuthenticated, async (req, res) => {
     delete safeUser._id;
 
     //Render the page
-    res.render('about/about', {
+    res.render('bio/bio', {
         layout: 'id_based',
         user: safeUser,
+        auth: loginStatus,
     });
 });
 
@@ -283,7 +290,7 @@ router.post('/add', EnsureAuthenticated, (req, res) => {
 
 //PUT Routes
 //Edit Personal Info.
-router.put('/about', EnsureAuthenticated, (req, res) => {
+router.put('/bio', EnsureAuthenticated, (req, res) => {
     const { body, } = req;
 
     //The new user object
