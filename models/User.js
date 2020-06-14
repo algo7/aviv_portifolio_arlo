@@ -19,6 +19,9 @@ const userSchema = new Schema({
     email: {
         type: String,
     },
+    bio: {
+        type: String,
+    },
 
 }, {
     collection: 'Users',

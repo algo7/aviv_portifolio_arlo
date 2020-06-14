@@ -233,6 +233,14 @@ router.post('/add', EnsureAuthenticated, (req, res) => {
             return;
     }
 
+    //Set links for external website if there is any
+    let hrefClass = 'href_location';
+    let link = '#';
+    if (req.body.link) {
+        hrefClass = '';
+        link = req.body.link;
+    }
+
     //The new experience object
     let newExperience = {
         year: req.body.year,
@@ -240,6 +248,8 @@ router.post('/add', EnsureAuthenticated, (req, res) => {
         position: req.body.position,
         description: req.body.description,
         typeImageUrl: typeImageUrl,
+        link: link,
+        hrefClass: hrefClass,
     };
 
     new Experience_DB(newExperience)
@@ -270,6 +280,14 @@ router.put('/edit/:id', EnsureAuthenticated, (req, res) => {
             return;
     }
 
+    //Set links for external website if there is any
+    let hrefClass = 'href_location';
+    let link = '#';
+    if (req.body.link) {
+        hrefClass = '';
+        link = req.body.link;
+    }
+
     //Update the db
     Experience_DB
         .updateOne({ _id: req.params.id, }, {
@@ -278,8 +296,10 @@ router.put('/edit/:id', EnsureAuthenticated, (req, res) => {
             position: req.body.position,
             description: req.body.description,
             typeImageUrl: typeImageUrl,
+            link: link,
+            hrefClass: hrefClass,
         })
-        .then(res.redirect('/'))
+        .then(res.redirect('/edit'))
         .catch(err => console.log(err));
 });
 

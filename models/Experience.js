@@ -22,6 +22,14 @@ const experienceSchema = new Schema({
     typeImageUrl: {
         type: String,
     },
+    link: {
+        type: String,
+        default: '#',
+    },
+    hrefClass: {
+        type: String,
+        default: 'href_location',
+    },
     creationDate: {
         type: Date,
         default: Date.now(),
