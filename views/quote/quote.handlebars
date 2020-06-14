@@ -1,0 +1,57 @@
+<!-- CONTACT -->
+<div class="arlo_tm_section" id="contact">
+    <div class="arlo_tm_contact">
+        <div class="container">
+            <div class="arlo_title_holder">
+                <span>Edit</span>
+                <h3>Your Thoughts</hh3>
+            </div>
+            <div class="contact_inner">
+                <div class="fields">
+
+                    {{!-- Form --}}
+                    <form action="/quote" method="post" class="contact_form" id="contact_form"
+                        enctype="multipart/form-data">
+                        <div class="returnmessage"
+                            data-success="Your message has been received, We will contact you soon.">
+                        </div>
+                        <div class="empty_notice"><span>Please Fill Required Fields</span></div>
+                        <div class="first">
+                            <ul>
+                                <li>
+                                    <input id="name" type="text" name="author" placeholder="Author">
+                                </li>
+                                <li>
+                                    <input id="email" type="text" name="description" placeholder="Description">
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="last">
+                            <textarea id="message" name="text" placeholder="Text"></textarea>
+                        </div>
+
+                        <ul>
+                            <li>
+                                {{!-- <div class="upload-btn-wrapper">
+                                                    <button class="btnn">Upload a file</button>
+                                                    <input type="file" name="file" />
+                                                </div> --}}
+                                <input type="file" name="file">
+                            </li>
+                            <li>
+                                <div class="arlo_tm_button">
+                                    <a id="send_message" href="javascript:{}"
+                                        onclick="document.getElementById('contact_form').submit();">Done</a>
+                                </div>
+                            </li>
+                        </ul>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /CONTACT -->

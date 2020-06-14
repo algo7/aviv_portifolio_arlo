@@ -1,0 +1,61 @@
+<!-- CONTACT -->
+<div class="arlo_tm_section" id="contact">
+    <div class="arlo_tm_contact">
+        <div class="container">
+            <div class="arlo_title_holder">
+                <span>Register</span>
+                <h3>Your Account</hh3>
+            </div>
+            <div class="contact_inner">
+                <div class="fields">
+
+                    {{!-- Form --}}
+                    <form action="/reg" method="post" class="contact_form" id="contact_form">
+                        <div class="returnmessage"
+                            data-success="Your message has been received, We will contact you soon.">
+                        </div>
+                        <div class="empty_notice"><span>Please Fill Required Fields</span></div>
+                        <div class="first">
+
+                            <ul>
+
+                                <li>
+                                    <label for="fname">First Name:</label>
+                                    <input type="text" id="fname" name="firstName" required>
+                                </li>
+                                <li>
+                                    <label for="lname">Last Name:</label>
+                                    <input type="text" id="lname" name="lastName" required>
+                                </li>
+                                <li>
+                                    <label for="pass">Password:</label>
+                                    <input type="password" id="pass" name="password" required>
+                                </li>
+
+                                <li>
+                                    <label for="pass2">Password Confirmation:</label>
+                                    <input type="password" id="pass2" name="passwordC" required>
+                                </li>
+
+                                <li style="width:100%">
+
+                                    <label for="email">Email:</label>
+                                    <input type="email" id="email" name="email" required>
+
+                                </li>
+                            </ul>
+                        </div>
+
+
+                        <div class="arlo_tm_button">
+                            <a id="send_message" href="javascript:{}"
+                                onclick="document.getElementById('contact_form').submit();">Done</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /CONTACT -->

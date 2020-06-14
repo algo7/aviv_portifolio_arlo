@@ -1,0 +1,108 @@
+<!-- TIMELINE -->
+<div class="arlo_tm_section" id="experience">
+    <div class="arlo_tm_timeline">
+        <div class="container">
+            <div class="arlo_title_holder">
+                <span>Working Process</span>
+                <h3>Experience</h3>
+            </div>
+
+            <div class="timeline_inner">
+
+                <div class="left">
+                    <ul>
+                        {{#each experienceLeft}}
+                        <li>
+
+                            {{!-- Delete confirmation --}}
+                            <script>
+                                function delFunc() {
+                                    const result = confirm("You sure?");
+                                    if (result == true) {
+                                        document.getElementById('{{this._id}}').submit();
+                                        return;
+                                    }
+                                }
+                            </script>
+
+                            <div class="inner">
+                                <img class="svg" src="{{typeImageUrl}}" alt="" />
+                                <p class="year">
+                                    {{this.year}} @
+                                    <a class="href_location" href="#" style="color:white; padding-right:0.5em">
+                                        {{this.location}}
+                                    </a>
+
+                                    {{!-- Edit button --}}
+                                    <a href="/edit/{{this._id}}">Edit</a>
+
+                                    {{!-- Delete button --}}
+                                    <a href="#" onclick="delFunc();">Delete
+                                    </a>
+
+
+                                    {{!-- Delete form --}}
+                                <form id="{{this._id}}" style="display: none" method="POST"
+                                    action="/edit/{{this._id}}?_=delete">
+                                </form>
+
+                                </p>
+                                <h3 class="title">{{this.position}}</h3>
+                                <p class="text">
+                                    {{this.description}}
+                                </p>
+                            </div>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+
+                <div class="right">
+                    <ul>
+                        {{#each experienceRight}}
+                        <li>
+                            {{!-- Delete confirmation --}}
+                            <script>
+                                function delFunc() {
+                                    const result = confirm("You sure?");
+                                    if (result == true) {
+                                        document.getElementById('{{this._id}}').submit();
+                                        return;
+                                    }
+                                }
+                            </script>
+                            <div class="inner">
+                                <img class="svg" src="{{typeImageUrl}}" alt="" />
+                                <p class=" year">{{this.year}} @
+                                    <a class="href_location" href="#" style="color:white;padding-right:1em">
+                                        {{this.location}}
+                                    </a>
+
+                                    {{!-- Edit button --}}
+                                    <a href="/edit/{{this._id}}">Edit</a>
+
+                                    {{!-- Delete button --}}
+                                    <a href="#" onclick="delFunc();">Delete
+                                    </a>
+
+
+                                    {{!-- Delete form --}}
+                                <form id="{{this._id}}" style="display: none" method="POST"
+                                    action="/delete/{{this._id}}?_=delete">
+                                </form>
+
+                                </p>
+                                <h3 class=" title">{{this.position}}</h3>
+                                <p class="text">
+                                    {{this.description}}
+                                </p>
+                            </div>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /TIMELINE -->
