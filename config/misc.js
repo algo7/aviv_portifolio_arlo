@@ -1,5 +1,8 @@
 //Dependencies
 const multer = require('multer');
+const crypto = require('crypto');
+const hash = crypto.createHash('sha1');
+const miscLog = require('./system/log').get('miscLog');
 
 // Experience distribution function
 const expDistro = (experience) => {
@@ -29,17 +32,43 @@ const expDistro = (experience) => {
 const diskStorage = multer.diskStorage({
     destination: 'assets/img/quote',
     filename: (req, file, call_back) => {
-        //Prepend date to the filename
-        call_back(null, Date.now() + '_' + file.originalname);
+
+        //Hash the file name
+        hash.update(file.originalname);
+        const sha1sum = hash.digest('hex');
+        miscLog.info(`Quote picture uploaded ${sha1sum}`);
+
+        //Get the extention
+        let ext = '';
+        try {
+            ext = file.mimetype.split('/')[1];
+            //Prepend date to the file name hash
+            call_back(null, `${Date.now()}_${sha1sum}.${ext}`);
+        } catch (error) {
+            miscLog.error(`Quote file upload error: ${error}`);
+        }
     },
 });
 
 //Multer DiskStorage Config2
 const diskStorage2 = multer.diskStorage({
-    destination: 'assets/img/about',
+    destination: 'assets/img/profile',
     filename: (req, file, call_back) => {
-        //Prepend date to the filename
-        call_back(null, Date.now() + '_' + file.originalname);
+
+        //Hash the file name
+        hash.update(file.originalname);
+        const sha1sum = hash.digest('hex');
+        miscLog.info(`Profile picture uploaded ${sha1sum}`);
+
+        //Get the extention
+        let ext = '';
+        try {
+            ext = file.mimetype.split('/')[1];
+            //Prepend date to the file name hash
+            call_back(null, `${Date.now()}_${sha1sum}.${ext}`);
+        } catch (error) {
+            miscLog.error(`Profile upload error: ${error}`);
+        }
     },
 });
 

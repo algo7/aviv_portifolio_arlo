@@ -120,6 +120,27 @@ container.add('authLog', {
 
 });
 
+
+//Logging Category for Auth-related tasks
+container.add('miscLog', {
+    format: winston.format.combine(
+        winston.format.label({ label: 'MISC', }),
+        logFormat
+    ),
+    transports: [
+        new winston.transports
+            .Console({ level: 'silly', }),
+        new winston.transports
+            .File({ level: 'error', filename: `${logStore}/misc_error.log`, })
+    ],
+    exceptionHandlers: [
+        new winston.transports
+            .File({ filename: `${logStore}/misc_exception.log`, })
+    ],
+    exitOnError: false,
+
+});
+
 //Export the Module
 module.exports = (container);
 

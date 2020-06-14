@@ -290,7 +290,7 @@ router.post('/add', EnsureAuthenticated, (req, res) => {
 
 //PUT Routes
 //Edit Personal Info.
-router.put('/bio', EnsureAuthenticated, upload.single('file'), (req, res) => {
+router.put('/bio', EnsureAuthenticated, upload2.single('file'), (req, res) => {
 
     //Check if there is a picture
     if (!req.file) {
