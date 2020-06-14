@@ -17,7 +17,7 @@ const { client, RedisStore, session, } =
 const appLog = require('./config/system/log').get('appLog');
 
 //Global Constant
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3008;
 
 //Initialize the App
 const app = express();
