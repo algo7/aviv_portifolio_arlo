@@ -144,19 +144,19 @@ container.add('miscLog', {
 
 container.add('analysisLog', {
     format: winston.format.combine(
-        winston.format.label({ label: 'ANALYSIS', }),
+        winston.format.label({ label: 'ANALYTICS', }),
         logFormat
     ),
     transports: [
         new winston.transports
             .Console({ level: 'silly', }),
         new winston.transports
-            .File({ level: 'info', filename: `${logStore}/ip.log`, })
+            .File({ level: 'info', filename: `${logStore}/analytics.log`, })
     ],
     exceptionHandlers: [
         new winston.transports.Console({ level: 'silly', }),
         new winston.transports
-            .File({ filename: `${logStore}/ip_exception.log`, })
+            .File({ filename: `${logStore}/analytics_exception.log`, })
     ],
     exitOnError: false,
 
