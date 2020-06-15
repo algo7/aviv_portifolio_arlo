@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { expDistro, upload, upload2, } = require('../config/misc');
 const { EnsureAuthenticated, } = require('../config/auth/ensureAuth');
-const { updateFunc, } = require('../config/auth/auth');
+const { resetFunc, updateFunc, } = require('../config/auth/auth');
 //DB Connection
 const { Quote_DB, Experience_DB, User_DB, } = require('../config/dataBase/mongoConnection');
 
@@ -292,11 +292,6 @@ router.post('/add', EnsureAuthenticated, (req, res) => {
 //Edit Personal Info.
 router.put('/bio', EnsureAuthenticated, upload2.single('file'), (req, res) => {
 
-    //Check if there is a picture
-    if (!req.file) {
-        res.status(400).send('A picture is required');
-        return;
-    }
 
     const { body, } = req;
 
@@ -314,11 +309,36 @@ router.put('/bio', EnsureAuthenticated, upload2.single('file'), (req, res) => {
         study: body.study,
         degree: body.degree,
         bio: body.bio,
-        profileImg: req.file.path.replace('assets/', ''),
     };
 
+
+    //Check if there is a picture
+    if (req.file) {
+        updateUser.profileImg = req.file.path.replace('assets/', '');
+    }
+
+    //If the reset switch is on
+    if (body.resetPass === 'yes') {
+
+        //Call the reset function
+        resetFunc(updateUser, body.password, body.passwordC, req.user.id)
+            .then(result => {
+                //If the error array is there
+                if (result) {
+                    res.send(result);
+                    return;
+                }
+                res.redirect('/');
+            })
+            .catch(err => { console.log(err); });
+        return;
+    }
+
+    //Remove the password field
+    delete updateUser.password;
+
     //Call the update function
-    updateFunc(updateUser, body.password, body.passwordC, req.user.id)
+    updateFunc(updateUser, req.user.id)
         .then(result => {
             //If the error array is there
             if (result) {

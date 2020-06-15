@@ -20,6 +20,22 @@
 
                             <ul>
 
+                                <label class="selection" for="resetpass">Reset Password: </label>
+                                <select id="resetpass" name="resetPass" onchange="passSwitch();">
+                                    <option value="yes">Yes</option>
+                                    <option selected="selected" value="no">No</option>
+                                </select>
+
+                                <label class="selection" for="changePic" style="padding-left:2em;">Change
+                                    Picture:</label>
+                                <select id="changePic" name="changePic" onchange="uploadSwitch();">
+                                    <option value="yes">Yes</option>
+                                    <option selected="selected" value="no">No</option>
+                                </select>
+
+                                <br>
+                                <br>
+
                                 <li>
                                     <label for="fname">First Name:</label>
                                     <input type="text" id="fname" name="firstName" required value="{{user.firstName}}">
@@ -28,15 +44,17 @@
                                     <label for="lname">Last Name:</label>
                                     <input type="text" id="lname" name="lastName" value="{{user.lastName}}" required>
                                 </li>
-                                <li>
+
+                                <li id='passField' style='display:none'>
                                     <label for="pass">Password:</label>
                                     <input type="password" id="pass" name="password" required>
                                 </li>
 
-                                <li>
+                                <li id='passFieldConfirm' style='display:none'>
                                     <label for="pass2">Password Confirmation:</label>
                                     <input type="password" id="pass2" name="passwordC" required>
                                 </li>
+
 
                                 <li>
                                     <label for="email">Email:</label>
@@ -78,7 +96,7 @@
                                     <label for="deg">Degree:</label>
                                     <input type="text" id="deg" name="degree" value="{{user.degree}}" required>
                                 </li>
-                                <li style="width:100%">
+                                <li style="width:100%; display:none" id='fileUpload'>
                                     <label for="bio"><strong>Upload Proifle Picture:</strong></label>
                                     <input type="file" name="file">
                                 </li>
@@ -104,3 +122,40 @@
     </div>
 </div>
 <!-- /CONTACT -->
+
+<style>
+    .selection {
+        font-family: 'Times New Roman';
+        font-size: 1.5em;
+    }
+</style>
+
+
+<script>
+    function passSwitch() {
+        const selection = document.getElementById('resetpass')
+        const selectResult = selection.options[selection.selectedIndex].text;
+        const a = document.getElementById('passField');
+        const b = document.getElementById('passFieldConfirm');
+        const c = document.getElementById('fileUpload');
+        if (selectResult === 'No') {
+            a.style.display = 'none';
+            b.style.display = 'none';
+        } else {
+            a.style.display = '';
+            b.style.display = '';
+        }
+    }
+
+    function uploadSwitch() {
+        const selection = document.getElementById('changePic')
+        const selectResult = selection.options[selection.selectedIndex].text;
+        const a = document.getElementById('fileUpload');
+        if (selectResult === 'No') {
+            a.style.display = 'none';
+        } else {
+            a.style.display = '';
+        }
+    }
+
+</script>

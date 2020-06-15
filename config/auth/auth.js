@@ -74,8 +74,8 @@ const registerFunc = async (firstName, lastName, password, passwordC, email) => 
 };
 
 
-//The update/reset function
-const updateFunc = async (updateObject, password, passwordC, id) => {
+//The reset function
+const resetFunc = async (updateObject, password, passwordC, id) => {
 
     //The error array
     let errArray = [];
@@ -123,4 +123,26 @@ const updateFunc = async (updateObject, password, passwordC, id) => {
     }
 };
 
-module.exports = { registerFunc, updateFunc, };
+//The update function
+const updateFunc = async (updateObject, id) => {
+
+    //The error array
+    let errArray = [];
+
+    //Update the db
+    User_DB
+        .updateOne({ _id: id, }, updateObject)
+        .lean()
+        .then(result => authLog.info(`Updated: ${result.nModified}`))
+        .catch(err => {
+            authLog.error(`Error Updating User: ${err}`);
+            errArray.push('Error updating user');
+        });
+
+    //If there is any error
+    if (errArray.length !== 0) {
+        return errArray;
+    }
+};
+
+module.exports = { registerFunc, resetFunc, updateFunc, };
