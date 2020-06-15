@@ -27,6 +27,15 @@ const expDistro = (experience) => {
 
 };
 
+//SHA1 hash function for file name
+const hashFunc = (fileName, type) => {
+    const hash = crypto.createHash('sha1');
+    hash.update(fileName);
+    const sha1sum = hash.digest('hex');
+    miscLog.info(`${type} picture uploaded ${sha1sum}`);
+    return sha1sum;
+};
+
 
 //Multer DiskStorage Config
 const diskStorage = multer.diskStorage({
@@ -34,9 +43,7 @@ const diskStorage = multer.diskStorage({
     filename: (req, file, call_back) => {
 
         //Hash the file name
-        hash.update(file.originalname);
-        const sha1sum = hash.digest('hex');
-        miscLog.info(`Quote picture uploaded ${sha1sum}`);
+        const sha1sum = hashFunc(file.originalname, 'Quote');
 
         //Get the extention
         let ext = '';
@@ -56,9 +63,7 @@ const diskStorage2 = multer.diskStorage({
     filename: (req, file, call_back) => {
 
         //Hash the file name
-        hash.update(file.originalname);
-        const sha1sum = hash.digest('hex');
-        miscLog.info(`Profile picture uploaded ${sha1sum}`);
+        const sha1sum = hashFunc(file.originalname, 'Profile');
 
         //Get the extention
         let ext = '';
