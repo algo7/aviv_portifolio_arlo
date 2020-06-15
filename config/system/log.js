@@ -141,6 +141,27 @@ container.add('miscLog', {
 
 });
 
+
+container.add('analysisLog', {
+    format: winston.format.combine(
+        winston.format.label({ label: 'ANALYSIS', }),
+        logFormat
+    ),
+    transports: [
+        new winston.transports
+            .Console({ level: 'silly', }),
+        new winston.transports
+            .File({ level: 'info', filename: `${logStore}/ip.log`, })
+    ],
+    exceptionHandlers: [
+        new winston.transports.Console({ level: 'silly', }),
+        new winston.transports
+            .File({ filename: `${logStore}/ip_exception.log`, })
+    ],
+    exitOnError: false,
+
+});
+
 //Export the Module
 module.exports = (container);
 

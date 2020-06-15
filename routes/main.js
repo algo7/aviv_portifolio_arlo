@@ -4,8 +4,14 @@ const router = express.Router();
 const { expDistro, upload, upload2, } = require('../config/misc');
 const { EnsureAuthenticated, } = require('../config/auth/ensureAuth');
 const { resetFunc, updateFunc, } = require('../config/auth/auth');
+
 //DB Connection
 const { Quote_DB, Experience_DB, User_DB, } = require('../config/dataBase/mongoConnection');
+
+//Winston
+const analysisLog = require('../config/system/log').get('analysisLog');
+const miscLog = require('../config/system/log').get('miscLog');
+
 
 //GET Routes (Unprotected)
 //The landing page
@@ -21,7 +27,7 @@ router.get('/', async (req, res) => {
     let user = await User_DB
         .findOne({})
         .lean()
-        .catch(err => console.log(err));
+        .catch(err => { miscLog.error(err); });
 
     //Remove senstive fields from the user object
     let safeUser = user;
@@ -49,7 +55,7 @@ router.get('/index', async (req, res) => {
     let quoteAuthors = await Quote_DB
         .find()
         .lean()
-        .catch(err => console.log(err));
+        .catch(err => { miscLog.error(err); });
 
     //The authors array
     const authorsArray = quoteAuthors.map(authors => authors.author);
@@ -61,20 +67,20 @@ router.get('/index', async (req, res) => {
     let quote = await Quote_DB
         .findOne({ author: authorsArray[randomAuthor], })
         .lean()
-        .catch(err => console.log(err));
+        .catch(err => { miscLog.error(err); });
 
     //Get experience
     let experience = await Experience_DB
         .find({})
         .sort({ date: -1, })
         .lean()
-        .catch(err => console.log(err));
+        .catch(err => { miscLog.error(err); });
 
     //Get experience
     let user = await User_DB
         .findOne({})
         .lean()
-        .catch(err => console.log(err));
+        .catch(err => { miscLog.error(err); });
 
 
 
@@ -130,7 +136,7 @@ router.get('/edit', EnsureAuthenticated, async (req, res) => {
         .find({})
         .sort({ date: -1, })
         .lean()
-        .catch(err => console.log(err));
+        .catch(err => { miscLog.error(err); });
 
 
     res.render('experience/edit', {
@@ -178,7 +184,7 @@ router.get('/edit/:id', EnsureAuthenticated, async (req, res) => {
         .findById(req.params.id)
         .sort({ date: -1, })
         .lean()
-        .catch(err => console.log(err));
+        .catch(err => { miscLog.error(err); });
 
     //Render the page
     res.render('experience/individual_edit', {
@@ -202,7 +208,7 @@ router.get('/bio', EnsureAuthenticated, async (req, res) => {
     let user = await User_DB
         .findOne({})
         .lean()
-        .catch(err => console.log(err));
+        .catch(err => { miscLog.error(err); });
 
     //Remove senstive fields from the user object
     let safeUser = user;
@@ -215,6 +221,17 @@ router.get('/bio', EnsureAuthenticated, async (req, res) => {
         user: safeUser,
         auth: loginStatus,
     });
+});
+
+//POST Routes (Unprotected)
+//Get IP
+router.post('/analysis', (req, res) => {
+
+    const { body, } = req;
+    const ip = body.ip;
+    const path = body.path;
+    analysisLog.info(`${ip} | ${path}`);
+    res.sendStatus(200);
 });
 
 //POST Routes (Protected)
@@ -239,7 +256,7 @@ router.post('/quote', EnsureAuthenticated, upload.single('file'), (req, res) => 
     new Quote_DB(newQuote)
         .save()
         .then(res.redirect('/'))
-        .catch(err => console.log(err));
+        .catch(err => { miscLog.error(err); });
 });
 
 //Add experience
@@ -283,7 +300,7 @@ router.post('/add', EnsureAuthenticated, (req, res) => {
     new Experience_DB(newExperience)
         .save()
         .then(res.redirect('/'))
-        .catch(err => console.log(err));
+        .catch(err => { miscLog.error(err); });
 
 });
 
@@ -291,7 +308,6 @@ router.post('/add', EnsureAuthenticated, (req, res) => {
 //PUT Routes
 //Edit Personal Info.
 router.put('/bio', EnsureAuthenticated, upload2.single('file'), (req, res) => {
-
 
     const { body, } = req;
 
@@ -330,7 +346,7 @@ router.put('/bio', EnsureAuthenticated, upload2.single('file'), (req, res) => {
                 }
                 res.redirect('/');
             })
-            .catch(err => { console.log(err); });
+            .catch(err => { { miscLog.error(err); } });
         return;
     }
 
@@ -347,7 +363,7 @@ router.put('/bio', EnsureAuthenticated, upload2.single('file'), (req, res) => {
             }
             res.redirect('/');
         })
-        .catch(err => { console.log(err); });
+        .catch(err => { { miscLog.error(err); } });
 
 });
 
@@ -390,7 +406,7 @@ router.put('/edit/:id', EnsureAuthenticated, (req, res) => {
             hrefClass: hrefClass,
         })
         .then(res.redirect('/edit'))
-        .catch(err => console.log(err));
+        .catch(err => { miscLog.error(err); });
 });
 
 //DELETE Routes

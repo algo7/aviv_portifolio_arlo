@@ -1,5 +1,6 @@
 //Custom Modules
 const { bcryptHash, } = require('./bcryptCustom');
+
 //Winston
 const authLog = require('../system/log').get('authLog');
 

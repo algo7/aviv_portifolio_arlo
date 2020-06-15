@@ -745,3 +745,15 @@ function arlo_tm_about_animation() {
 		});
 	}
 }
+
+
+// let xhr = new XMLHttpRequest();
+// let xhr2 = new XMLHttpRequest();
+// xhr.open('GET', 'http://ipinfo.io/ip');
+// xhr.send();
+// xhr.onload = () => {
+// 	xhr2.open('POST', 'http://127.0.0.1:3008/analysis');
+// 	xhr2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+// 	let ipa = (xhr.response).replace(/\n/, '');
+// 	xhr2.send(JSON.stringify({ ip: ipa, path: location.href, }));
+// };

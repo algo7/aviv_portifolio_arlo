@@ -46,6 +46,11 @@ app.use(BodyParser.json({
     extended: true,
 }));
 
+app.use(BodyParser.text({
+    limit: '5mb',
+    extended: true,
+}));
+
 
 // Express Session Middleware
 app.use(
