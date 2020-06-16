@@ -4,7 +4,8 @@
   "description": "My personal portfolio",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "graph": "depcruise -c .dependency-cruiser.js --output-type dot * | dot -T svg > dependencygraph.svg"
   },
   "author": "Aviv Lo, Chao Heng Lo",
   "license": "ISC",
