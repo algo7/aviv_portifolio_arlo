@@ -67,29 +67,27 @@ router.get('/index', async (req, res) => {
         //Pick a random index from the authorsArray
         let randomAuthor = Math.floor(Math.random() * authorsArray.length);
 
-        //Pick a quote from a random authors
-        let quote = await Quote_DB
-            .findOne({ author: authorsArray[randomAuthor], })
-            .lean();
+
+        const [quote, experience, user] = await Promise.all([
+            //Pick a quote from a random author
+            Quote_DB
+                .findOne({ author: authorsArray[randomAuthor], })
+                .lean(),
 
 
-        //Get experience
-        let experience = await Experience_DB
-            .find({})
-            .sort({ date: -1, })
-            .lean();
+            //Get experience
+            Experience_DB
+                .find({})
+                .sort({ date: -1, })
+                .lean(),
 
 
-        //Get experience
-        let user = await User_DB
-            .findOne({})
-            .lean();
+            //Get experience
+            await User_DB
+                .findOne({}, { _id: 0, password: 0, })
+                .lean()
+        ]);
 
-
-        //Remove senstive fields from the user object
-        let safeUser = user;
-        delete safeUser.password;
-        delete safeUser._id;
 
         //Render the page
         res.render('index', {
@@ -99,7 +97,7 @@ router.get('/index', async (req, res) => {
             imgUrl: quote.imgUrl,
             experienceLeft: expDistro(experience)[0],
             experienceRight: expDistro(experience)[1],
-            user: safeUser,
+            user: user,
             auth: loginStatus,
         });
 
@@ -260,25 +258,32 @@ router.post('/analysis', (req, res) => {
 //Add quote
 router.post('/quote', EnsureAuthenticated, upload.single('file'), (req, res) => {
 
-    //Check if there is a picture
-    if (!req.file) {
-        res.status(400).send('A picture is required');
-        return;
+    try {
+
+        //Check if there is a picture
+        if (!req.file) {
+            res.status(400).send('A picture is required');
+            return;
+        }
+
+        //The new quote object
+        let newQuote = {
+            author: req.body.author,
+            description: req.body.description,
+            text: req.body.text,
+            imgUrl: req.file.path.replace('assets/', ''),
+        };
+
+        // Save the quote
+        new Quote_DB(newQuote)
+            .save()
+            .then(res.redirect('/'));
+
+
+    } catch (err) {
+        miscLog.error(err);
     }
 
-    //The new quote object
-    let newQuote = {
-        author: req.body.author,
-        description: req.body.description,
-        text: req.body.text,
-        imgUrl: req.file.path.replace('assets/', ''),
-    };
-
-    // Save the quote
-    new Quote_DB(newQuote)
-        .save()
-        .then(res.redirect('/'))
-        .catch(err => { miscLog.error(err); });
 });
 
 //Add experience
