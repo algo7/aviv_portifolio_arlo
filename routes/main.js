@@ -17,89 +17,97 @@ const miscLog = require('../config/system/log').get('miscLog');
 //The landing page
 router.get('/', async (req, res) => {
 
-    //Login Status
-    let loginStatus = false;
-    if (req.user) {
-        loginStatus = true;
+    try {
+        //Login Status
+        let loginStatus = false;
+        if (req.user) {
+            loginStatus = true;
+        }
+
+        //Get experience
+        let user = await User_DB
+            .findOne({})
+            .lean();
+
+        //Remove senstive fields from the user object
+        let safeUser = user;
+        delete safeUser.password;
+        delete safeUser._id;
+
+        //Render the page
+        res.render('landing', {
+            layout: 'landing',
+            user: safeUser,
+            auth: loginStatus,
+        });
+    } catch (err) {
+        miscLog.error(err);
     }
-
-    //Get experience
-    let user = await User_DB
-        .findOne({})
-        .lean()
-        .catch(err => { miscLog.error(err); });
-
-    //Remove senstive fields from the user object
-    let safeUser = user;
-    delete safeUser.password;
-    delete safeUser._id;
-
-    //Render the page
-    res.render('landing', {
-        layout: 'landing',
-        user: safeUser,
-        auth: loginStatus,
-    });
 });
 
 //The hotelier page
 router.get('/index', async (req, res) => {
 
-    //Login Status
-    let loginStatus = false;
-    if (req.user) {
-        loginStatus = true;
+    try {
+
+        //Login Status
+        let loginStatus = false;
+        if (req.user) {
+            loginStatus = true;
+        }
+
+        //Get quotes authors
+        let quoteAuthors = await Quote_DB
+            .find()
+            .lean();
+
+        //The authors array
+        const authorsArray = quoteAuthors.map(authors => authors.author);
+
+        //Pick a random index from the authorsArray
+        let randomAuthor = Math.floor(Math.random() * authorsArray.length);
+
+        //Pick a quote from a random authors
+        let quote = await Quote_DB
+            .findOne({ author: authorsArray[randomAuthor], })
+            .lean();
+
+
+        //Get experience
+        let experience = await Experience_DB
+            .find({})
+            .sort({ date: -1, })
+            .lean();
+
+
+        //Get experience
+        let user = await User_DB
+            .findOne({})
+            .lean();
+
+
+        //Remove senstive fields from the user object
+        let safeUser = user;
+        delete safeUser.password;
+        delete safeUser._id;
+
+        //Render the page
+        res.render('index', {
+            quote: quote.text,
+            author: quote.author,
+            description: quote.description,
+            imgUrl: quote.imgUrl,
+            experienceLeft: expDistro(experience)[0],
+            experienceRight: expDistro(experience)[1],
+            user: safeUser,
+            auth: loginStatus,
+        });
+
+    } catch (err) {
+
+        miscLog.error(err);
+
     }
-
-    //Get quotes authors
-    let quoteAuthors = await Quote_DB
-        .find()
-        .lean()
-        .catch(err => { miscLog.error(err); });
-
-    //The authors array
-    const authorsArray = quoteAuthors.map(authors => authors.author);
-
-    //Pick a random index from the authorsArray
-    let randomAuthor = Math.floor(Math.random() * authorsArray.length);
-
-    //Pick a quote from a random authors
-    let quote = await Quote_DB
-        .findOne({ author: authorsArray[randomAuthor], })
-        .lean()
-        .catch(err => { miscLog.error(err); });
-
-    //Get experience
-    let experience = await Experience_DB
-        .find({})
-        .sort({ date: -1, })
-        .lean()
-        .catch(err => { miscLog.error(err); });
-
-    //Get experience
-    let user = await User_DB
-        .findOne({})
-        .lean()
-        .catch(err => { miscLog.error(err); });
-
-
-
-    //Remove senstive fields from the user object
-    let safeUser = user;
-    delete safeUser.password;
-    delete safeUser._id;
-
-    //Render the page
-    res.render('index', {
-        quote: quote.text,
-        author: quote.author,
-        description: quote.description,
-        imgUrl: quote.imgUrl,
-        experienceLeft: expDistro(experience)[0],
-        experienceRight: expDistro(experience)[1],
-        user: safeUser,
-        auth: loginStatus,
-    });
 });
 
 //Unauth access
@@ -125,26 +133,29 @@ router.get('/quote', EnsureAuthenticated, (req, res) => {
 //Th edit page
 router.get('/edit', EnsureAuthenticated, async (req, res) => {
 
-    //Login Status
-    let loginStatus = false;
-    if (req.user) {
-        loginStatus = true;
+    try {
+        //Login Status
+        let loginStatus = false;
+        if (req.user) {
+            loginStatus = true;
+        }
+
+        //Get experience
+        let experience = await Experience_DB
+            .find({})
+            .sort({ date: -1, })
+            .lean();
+
+
+        res.render('experience/edit', {
+            layout: 'id_based',
+            experienceLeft: expDistro(experience)[0],
+            experienceRight: expDistro(experience)[1],
+            auth: loginStatus,
+        });
+    } catch (err) {
+        miscLog.error(err);
     }
-
-    //Get experience
-    let experience = await Experience_DB
-        .find({})
-        .sort({ date: -1, })
-        .lean()
-        .catch(err => { miscLog.error(err); });
-
-
-    res.render('experience/edit', {
-        layout: 'id_based',
-        experienceLeft: expDistro(experience)[0],
-        experienceRight: expDistro(experience)[1],
-        auth: loginStatus,
-    });
 });
 
 //Add experience page
@@ -167,60 +178,71 @@ router.get('/add', EnsureAuthenticated, (req, res) => {
 //Individual experience edit page
 router.get('/edit/:id', EnsureAuthenticated, async (req, res) => {
 
-    //Login Status
-    let loginStatus = false;
-    if (req.user) {
-        loginStatus = true;
+    try {
+
+        //Login Status
+        let loginStatus = false;
+        if (req.user) {
+            loginStatus = true;
+        }
+
+        //Check for valid input
+        if ((req.params.id).length !== 24) {
+            res.redirect('/');
+            return;
+        }
+
+        //Get experience
+        let experience = await Experience_DB
+            .findById(req.params.id)
+            .sort({ date: -1, })
+            .lean();
+
+
+        //Render the page
+        res.render('experience/individual_edit', {
+            layout: 'id_based',
+            experience: experience,
+            auth: loginStatus,
+        });
+
+    } catch (err) {
+        miscLog.error(err);
     }
 
-    //Check for valid input
-    if ((req.params.id).length !== 24) {
-        res.redirect('/');
-        return;
-    }
-
-    //Get experience
-    let experience = await Experience_DB
-        .findById(req.params.id)
-        .sort({ date: -1, })
-        .lean()
-        .catch(err => { miscLog.error(err); });
-
-    //Render the page
-    res.render('experience/individual_edit', {
-        layout: 'id_based',
-        experience: experience,
-        auth: loginStatus,
-    });
 
 });
 
 //Edit personal info. page
 router.get('/bio', EnsureAuthenticated, async (req, res) => {
 
-    //Login Status
-    let loginStatus = false;
-    if (req.user) {
-        loginStatus = true;
+    try {
+        //Login Status
+        let loginStatus = false;
+        if (req.user) {
+            loginStatus = true;
+        }
+
+        //Get user
+        let user = await User_DB
+            .findOne({})
+            .lean();
+
+
+        //Remove senstive fields from the user object
+        let safeUser = user;
+        delete safeUser.password;
+        delete safeUser._id;
+
+        //Render the page
+        res.render('bio/bio', {
+            layout: 'id_based',
+            user: safeUser,
+            auth: loginStatus,
+        });
+    } catch (err) {
+        miscLog.error(err);
     }
-
-    //Get user
-    let user = await User_DB
-        .findOne({})
-        .lean()
-        .catch(err => { miscLog.error(err); });
-
-    //Remove senstive fields from the user object
-    let safeUser = user;
-    delete safeUser.password;
-    delete safeUser._id;
-
-    //Render the page
-    res.render('bio/bio', {
-        layout: 'id_based',
-        user: safeUser,
-        auth: loginStatus,
-    });
 });
 
 //POST Routes (Unprotected)
