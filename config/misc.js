@@ -1,7 +1,6 @@
 //Dependencies
 const multer = require('multer');
 const crypto = require('crypto');
-const hash = crypto.createHash('sha1');
 const miscLog = require('./system/log').get('miscLog');
 
 // Experience distribution function

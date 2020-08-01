@@ -62,7 +62,7 @@ app.use(
         cookie: {
             // path: "/",
             httpOnly: true,
-            secure: false, //Set true only if the connection is made over https => otherwise it won't work
+            secure: true, //Set true only if the connection is made over https => otherwise it won't work
             // maxAge: 900000 * 2 //30 mins
             maxAge: 10800 * 1000, //3hrs
         },
