@@ -24,20 +24,15 @@ router.get('/', async (req, res) => {
             loginStatus = true;
         }
 
-        //Get experience
+        //Get userInfo
         let user = await User_DB
-            .findOne({})
+            .findOne({}, { _id: 0, password: 0, })
             .lean();
-
-        //Remove senstive fields from the user object
-        let safeUser = user;
-        delete safeUser.password;
-        delete safeUser._id;
 
         //Render the page
         res.render('landing', {
             layout: 'landing',
-            user: safeUser,
+            user: user,
             auth: loginStatus,
         });
     } catch (err) {
@@ -223,19 +218,15 @@ router.get('/bio', EnsureAuthenticated, async (req, res) => {
 
         //Get user
         let user = await User_DB
-            .findOne({})
+            .findOne({}, { _id: 0, password: 0, })
             .lean();
 
 
-        //Remove senstive fields from the user object
-        let safeUser = user;
-        delete safeUser.password;
-        delete safeUser._id;
 
         //Render the page
         res.render('bio/bio', {
             layout: 'id_based',
-            user: safeUser,
+            user: user,
             auth: loginStatus,
         });
     } catch (err) {
