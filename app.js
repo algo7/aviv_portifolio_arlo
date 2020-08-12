@@ -69,6 +69,8 @@ app.use(
     })
 );
 
+// Required options if running behind a proxy and with cookie secure attribute = true
+app.set('trust proxy', 1);
 
 //Set Static Folder (Absolute)
 app.use('/', express.static(path.join(__dirname, '/assets')));
@@ -103,12 +105,12 @@ app.all('*', (req, res, next) => {
     next();
 });
 
+//Load passport config
+passportLogic(passport);
+
 //Load Routes
 const main = require('./routes/main');
 const reg = require('./routes/register');
-
-//Load passport config
-passportLogic(passport);
 
 //Use Routes
 app.use('/', main);

@@ -73,7 +73,7 @@ router.post('/login', (req, res, next) => {
                 });
         }
 
-
+        console.log(user);
         //If all good, log the dude in
         req.logIn(user, (err) => {
             if (err) {
