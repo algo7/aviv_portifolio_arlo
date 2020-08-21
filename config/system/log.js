@@ -45,11 +45,11 @@ container.add('appLog', {
             .File({ level: 'error', filename: `${logStore}/app_error.log`, })
     ],
     exceptionHandlers: [
-        new winston.transports.Console({ level: 'silly', }),
+
         new winston.transports
             .File({ filename: `${logStore}/app_exception.log`, })
     ],
-    exitOnError: false,
+    exitOnError: true,
 
 });
 
@@ -66,12 +66,11 @@ container.add('mongoLog', {
             .File({ level: 'error', filename: `${logStore}/mongo_error.log`, })
     ],
     exceptionHandlers: [
-        new winston.transports
-            .Console({ level: 'silly', }),
+
         new winston.transports
             .File({ filename: `${logStore}/redis_exception.log`, })
     ],
-    exitOnError: false,
+    exitOnError: true,
 
 });
 
@@ -89,11 +88,9 @@ container.add('redisLog', {
     ],
     exceptionHandlers: [
         new winston.transports
-            .Console({ level: 'silly', }),
-        new winston.transports
             .File({ filename: `${logStore}/redis_exception.log`, })
     ],
-    exitOnError: false,
+    exitOnError: true,
 
 });
 
@@ -111,12 +108,11 @@ container.add('authLog', {
             .File({ level: 'error', filename: `${logStore}/auth_error.log`, })
     ],
     exceptionHandlers: [
-        new winston.transports
-            .Console({ level: 'silly', }),
+
         new winston.transports
             .File({ filename: `${logStore}/auth_exception.log`, })
     ],
-    exitOnError: false,
+    exitOnError: true,
 
 });
 
@@ -137,7 +133,7 @@ container.add('miscLog', {
         new winston.transports
             .File({ filename: `${logStore}/misc_exception.log`, })
     ],
-    exitOnError: false,
+    exitOnError: true,
 
 });
 
@@ -154,11 +150,11 @@ container.add('analysisLog', {
             .File({ level: 'info', filename: `${logStore}/analytics.log`, })
     ],
     exceptionHandlers: [
-        new winston.transports.Console({ level: 'silly', }),
+
         new winston.transports
             .File({ filename: `${logStore}/analytics_exception.log`, })
     ],
-    exitOnError: false,
+    exitOnError: true,
 
 });
 
