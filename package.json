@@ -4,6 +4,8 @@
   "description": "My personal portfolio",
   "main": "app.js",
   "scripts": {
+    "start": "NODE_ENV=production nodemon app.js",
+    "dev": "NODE_ENV=development nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "graph": "depcruise -c .dependency-cruiser.js --output-type dot * | dot -T svg > dependencygraph.svg"
   },
@@ -14,6 +16,7 @@
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-redis": "^4.0.4",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-handlebars": "^4.0.4",
     "express-session": "^1.17.1",

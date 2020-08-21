@@ -4,6 +4,8 @@ const BodyParser = require('body-parser');
 const compression = require('compression');
 const exphbs = require('express-handlebars');
 const passport = require('passport');
+const dotenv = require('dotenv');
+dotenv.config({ path: './creds/cred.env', });
 var methodOverride = require('method-override');
 const path = require('path');
 const { passportLogic, } = require('./config/auth/passport-local');
@@ -121,5 +123,5 @@ app.use(routeCheck(app));
 
 //Start the app
 app.listen(PORT, () => {
-    appLog.info(`Server is listening on port ${PORT}`);
+    appLog.info(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
