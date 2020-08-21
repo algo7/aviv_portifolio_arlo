@@ -4,7 +4,7 @@ const router = express.Router();
 const { expDistro, upload, upload2, } = require('../config/misc');
 const { EnsureAuthenticated, } = require('../config/auth/ensureAuth');
 const { resetFunc, updateFunc, } = require('../config/auth/auth');
-
+const { quote, } = require('../controllers/protected.js');
 //DB Connection
 const { Quote_DB, Experience_DB, User_DB, } = require('../config/dataBase/mongoConnection');
 
@@ -12,6 +12,7 @@ const { Quote_DB, Experience_DB, User_DB, } = require('../config/dataBase/mongoC
 const analysisLog = require('../config/system/log').get('analysisLog');
 const miscLog = require('../config/system/log').get('miscLog');
 
+router.get('/xx', quote);
 
 //GET Routes (Unprotected)
 //The landing page
@@ -39,6 +40,8 @@ router.get('/', async (req, res) => {
         miscLog.error(err);
     }
 });
+
+router.get;
 
 //The hotelier page
 router.get('/index', async (req, res) => {
