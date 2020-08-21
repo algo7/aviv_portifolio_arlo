@@ -5,14 +5,15 @@ const mongoose = require('mongoose');
 const mongoLog = require('../system/log').get('mongoLog');
 
 //Global Variables
-const MongodbPass = require('../../creds/mongoKey');
+const { Mongo_URI, } = require('../../creds/env');
 
 //Connect to DB (Main)
-const DB_Connection = mongoose.createConnection(MongodbPass.Database, {
+const DB_Connection = mongoose.createConnection(Mongo_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
 });
+
 DB_Connection
     .once('open', () => mongoLog.info('MongoDB Connected'))
     .catch(err => mongoLog.error('Error Connecting to DB' + ' ' + err));

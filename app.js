@@ -4,12 +4,11 @@ const BodyParser = require('body-parser');
 const compression = require('compression');
 const exphbs = require('express-handlebars');
 const passport = require('passport');
-const dotenv = require('dotenv');
-dotenv.config({ path: './creds/cred.env', });
-var methodOverride = require('method-override');
+const methodOverride = require('method-override');
 const path = require('path');
 const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
+const { PORT: envPort, } = require('./creds/env');
 
 //Redis
 const { client, RedisStore, session, } =
@@ -19,7 +18,7 @@ const { client, RedisStore, session, } =
 const appLog = require('./config/system/log').get('appLog');
 
 //Global Constant
-const PORT = process.env.PORT || 3008;
+const PORT = envPort || 3008;
 
 //Initialize the App
 const app = express();
