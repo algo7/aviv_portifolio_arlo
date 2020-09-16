@@ -4,7 +4,6 @@ const router = express.Router();
 const { upload, upload2, } = require('../config/misc');
 const { EnsureAuthenticated, } = require('../config/auth/ensureAuth');
 
-
 // Unprotected Controllers
 const { landing, index, notice, analysis, }
     = require('../controllers/unprotected.js');
