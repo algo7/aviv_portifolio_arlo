@@ -41,7 +41,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get;
+router.get('/te', EnsureAuthenticated, quote);
 
 //The hotelier page
 router.get('/index', async (req, res) => {

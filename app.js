@@ -8,8 +8,8 @@ const methodOverride = require('method-override');
 const path = require('path');
 const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
-const { PORT: envPort, } = require('./creds/env');
-
+const { PORT: envPort, Cookie_Secure, } = require('./creds/env');
+console.log(Cookie_Secure);
 
 //Redis
 const { client, RedisStore, session, } =
@@ -64,7 +64,7 @@ app.use(
         cookie: {
             // path: "/",
             httpOnly: true,
-            secure: true, //Set true only if the connection is made over https => otherwise it won't work
+            secure: Cookie_Secure, //Set true only if the connection is made over https => otherwise it won't work
             // maxAge: 900000 * 2 //30 mins
             maxAge: 10800 * 1000, //3hrs
         },
@@ -91,7 +91,6 @@ app.use(passport.session());
 app.all('*', (req, res, next) => {
 
     // Website you wish to allow to connect
-    // res.setHeader('Access-Control-Allow-Origin', 'https://moodli.xx');
     res.setHeader('Access-Control-Allow-Origin', '*');
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
