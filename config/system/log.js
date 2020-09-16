@@ -45,7 +45,8 @@ container.add('appLog', {
             .File({ level: 'error', filename: `${logStore}/app_error.log`, })
     ],
     exceptionHandlers: [
-
+        new winston.transports
+            .Console({ level: 'silly', }),
         new winston.transports
             .File({ filename: `${logStore}/app_exception.log`, })
     ],
