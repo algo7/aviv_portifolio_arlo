@@ -1,10 +1,12 @@
 //Dependencies
 const express = require('express');
 const router = express.Router();
-const { expDistro, upload, upload2, } = require('../config/misc');
+const { upload, upload2, } = require('../config/misc');
 const { EnsureAuthenticated, } = require('../config/auth/ensureAuth');
 const { resetFunc, updateFunc, } = require('../config/auth/auth');
 const { quote, } = require('../controllers/protected.js');
+const { landing, index, notice, edit, } = require('../controllers/unprotected.js');
+
 //DB Connection
 const { Quote_DB, Experience_DB, User_DB, } = require('../config/dataBase/mongoConnection');
 
@@ -12,147 +14,22 @@ const { Quote_DB, Experience_DB, User_DB, } = require('../config/dataBase/mongoC
 const analysisLog = require('../config/system/log').get('analysisLog');
 const miscLog = require('../config/system/log').get('miscLog');
 
-router.get('/xx', quote);
-
 //GET Routes (Unprotected)
 //The landing page
-router.get('/', async (req, res) => {
-
-    try {
-        //Login Status
-        let loginStatus = false;
-        if (req.user) {
-            loginStatus = true;
-        }
-
-        //Get userInfo
-        let user = await User_DB
-            .findOne({}, { _id: 0, password: 0, })
-            .lean();
-
-        //Render the page
-        res.render('landing', {
-            layout: 'landing',
-            user: user,
-            auth: loginStatus,
-        });
-    } catch (err) {
-        miscLog.error(err);
-    }
-});
-
-router.get('/te', EnsureAuthenticated, quote);
+router.get('/', landing);
 
 //The hotelier page
-router.get('/index', async (req, res) => {
-
-    try {
-
-        //Login Status
-        let loginStatus = false;
-        if (req.user) {
-            loginStatus = true;
-        }
-
-        //Get quotes authors
-        let quoteAuthors = await Quote_DB
-            .find()
-            .lean();
-
-        //The authors array
-        const authorsArray = quoteAuthors.map(authors => authors.author);
-
-        //Pick a random index from the authorsArray
-        let randomAuthor = Math.floor(Math.random() * authorsArray.length);
-
-
-        const [quote, experience, user] = await Promise.all([
-            //Pick a quote from a random author
-            Quote_DB
-                .findOne({ author: authorsArray[randomAuthor], })
-                .lean(),
-
-
-            //Get experience
-            Experience_DB
-                .find({})
-                .sort({ date: -1, })
-                .lean(),
-
-
-            //Get experience
-            await User_DB
-                .findOne({}, { _id: 0, password: 0, })
-                .lean()
-        ]);
-
-
-        //Render the page
-        res.render('index', {
-            quote: quote.text,
-            author: quote.author,
-            description: quote.description,
-            imgUrl: quote.imgUrl,
-            experienceLeft: expDistro(experience)[0],
-            experienceRight: expDistro(experience)[1],
-            user: user,
-            auth: loginStatus,
-        });
-
-    } catch (err) {
-
-        miscLog.error(err);
-
-    }
-});
+router.get('/index', index);
 
 //Unauth access
-router.get('/notice', (req, res) => {
-    res.sendStatus(404);
-});
+router.get('/notice', notice);
 
 //GET Routes (Protected)
 //Th add quote page
-router.get('/quote', EnsureAuthenticated, (req, res) => {
-
-    //Login Status
-    let loginStatus = false;
-    if (req.user) {
-        loginStatus = true;
-    }
-    res.render('quote/quote', {
-        layout: 'id_based',
-        auth: loginStatus,
-    });
-});
+router.get('/quote', EnsureAuthenticated, quote);
 
 //Th edit page
-router.get('/edit', EnsureAuthenticated, async (req, res) => {
-
-    try {
-        //Login Status
-        let loginStatus = false;
-        if (req.user) {
-            loginStatus = true;
-        }
-
-        //Get experience
-        let experience = await Experience_DB
-            .find({})
-            .sort({ date: -1, })
-            .lean();
-
-
-        res.render('experience/edit', {
-            layout: 'id_based',
-            experienceLeft: expDistro(experience)[0],
-            experienceRight: expDistro(experience)[1],
-            auth: loginStatus,
-        });
-    } catch (err) {
-        miscLog.error(err);
-    }
-});
+router.get('/edit', EnsureAuthenticated);
 
 //Add experience page
 router.get('/add', EnsureAuthenticated, (req, res) => {

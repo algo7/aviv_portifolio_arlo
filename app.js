@@ -9,7 +9,6 @@ const path = require('path');
 const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
 const { PORT: envPort, Cookie_Secure, } = require('./creds/env');
-console.log(Cookie_Secure);
 
 //Redis
 const { client, RedisStore, session, } =
