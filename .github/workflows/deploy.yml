@@ -22,6 +22,8 @@ jobs:
           SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
           GITKEY: ${{secrets.GIT_KEY}}
           SSH_PROFILE: ${{secrets.SSH_PROFILE}}
+      - name: Install PM2
+        run: sudo npm i -g pm2
       - name: Running Deployment Script
         run: |
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
