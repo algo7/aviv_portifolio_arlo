@@ -3,7 +3,7 @@ name: Deployment
 on: [push]
 
 jobs:
-  job1:
+  deploy:
     runs-on: ubuntu-latest
     name: Deploy to Production
     steps:
@@ -34,7 +34,7 @@ jobs:
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
           cd aviv_portifolio_arlo
           echo "$ECOF" > ./ecosystem.json
-          pm2 deploy ecosystem.json production update
+          npm run deploy
         shell: bash
         env:
           ECOF: ${{secrets.ECOSYSTEM_FILE}}

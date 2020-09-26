@@ -7,7 +7,8 @@
     "start": "NODE_ENV=production nodemon app.js",
     "dev": "NODE_ENV=development nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "graph": "depcruise -c .dependency-cruiser.js --output-type dot * | dot -T svg > dependencygraph.svg"
+    "graph": "depcruise -c .dependency-cruiser.js --output-type dot * | dot -T svg > dependencygraph.svg",
+    "deploy": "pm2 deploy ecosystem.json production update"
   },
   "author": "Aviv Lo, Chao Heng Lo",
   "license": "ISC",
