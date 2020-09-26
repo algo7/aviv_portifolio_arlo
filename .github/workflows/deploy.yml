@@ -33,13 +33,6 @@ jobs:
           KNOWN_HOSTS: ${{secrets.KNOWN_HOSTS}}
 
       # Step Name
-      - name: Install PM2
-        # Single-Line Bash Script
-        run: sudo npm i -g pm2 &>/dev/null
-        # Shell Type
-        shell: bash
-
-      # Step Name
       - name: Cache node modules
         uses: actions/cache@v2
         env:
