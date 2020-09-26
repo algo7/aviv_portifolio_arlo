@@ -5,7 +5,7 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Deployment
+    name: Run
     steps:
       - name: Install PM2
         run: |
@@ -24,10 +24,10 @@ jobs:
           echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/portfolio.key
           echo "$GITKEY" > ~/.ssh/GitKey
-          eval "$(ssh-agent -s)" &>/dev/null
-          ssh-add ~/.ssh/GitKey
           sudo chmod 600 ~/.ssh/GitKey
           sudo chmod 600 ~/.ssh/portfolio.key
+          eval "$(ssh-agent -s)" &>/dev/null
+          ssh-add ~/.ssh/GitKey
           ssh -T git@github.com &>/dev/null
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
           cd aviv_portifolio_arlo
