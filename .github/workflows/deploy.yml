@@ -25,3 +25,5 @@ jobs:
       - name: Running Deployment Script
         run: |
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
+          cd aviv_portifolio_arlo
+          pm2 deploy ecosystem.json production update
