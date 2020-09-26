@@ -5,15 +5,12 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Check licenses
+    name: Deployment
     steps:
       - name: Set up SSH
         run: |
-          mkdir -p ~/.ssh
-          echo "Host moodli
-                  User algorithm
-                  HostName 34.65.242.184
-                  IdentityFile ~/.ssh/portfolio.key" > ~/.ssh/config
+          mkdir -p ~/.ssh/
+          echo "$SSH_PROFILE" > ~/.ssh/config
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/portfolio.key
           git clone git clone aviv_portifolio_arlo
           cd git clone aviv_portifolio_arlo
@@ -23,3 +20,4 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
           ECOF: ${{secrets.ECOSYSTEM_FILE}}
+          SSHCONF: ${{secrets.SSH_PROFILE}}
