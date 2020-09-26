@@ -6,13 +6,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: Run
-    steps:
-      - name: Install PM2
-        run: |
-          sudo npm i -g pm2 &>/dev/null
       - name: Set up SSH
         run: |
-          mkdir -p ~/.ssh/
+          mkdir -p ~/.ssh
           echo "$SSH_PROFILE" > ~/.ssh/config
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/portfolio.key
           echo "$GITKEY" > ~/.ssh/GitKey
@@ -26,12 +22,4 @@ jobs:
           SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
           GITKEY: ${{secrets.GIT_KEY}}
           SSH_PROFILE: ${{secrets.SSH_PROFILE}}
-      - name: Running Deployment Script
-        run: |
-          git clone git@github.com:algo7/aviv_portifolio_arlo.git
-          cd aviv_portifolio_arlo
-          echo "$ECOF" > ./ecosystem.json
-          pm2 deploy ecosystem.json production update
-        shell: bash
-        env:
-          ECOF: ${{secrets.ECOSYSTEM_FILE}}
+     
