@@ -25,6 +25,7 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/portfolio.key
           echo "$GITKEY" > ~/.ssh/GitKey
           eval "$(ssh-agent -s)" &>/dev/null
+          ssh-add ~/.ssh/GitKey
           sudo chmod 600 ~/.ssh/GitKey
           sudo chmod 600 ~/.ssh/portfolio.key
           ssh -T git@github.com &>/dev/null
