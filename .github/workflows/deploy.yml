@@ -5,5 +5,5 @@ on: [push]
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{SECRETE.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
+    steps:
+      run: echo ${{SECRETE.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
