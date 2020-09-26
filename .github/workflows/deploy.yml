@@ -8,7 +8,7 @@ jobs:
     name: Deployment
     steps:
       - name: Install PM2
-        run: sudo npm i -g pm2
+        run: sudo npm i -g pm2 &>/dev/null
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh/
@@ -16,12 +16,12 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/portfolio.key
           echo "$GITKEY" > ~/.ssh/GitKey
           sudo chmod 600 ~/.ssh/GitKey
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/GitKey
+          eval "$(ssh-agent -s)" &>/dev/null
+          ssh-add ~/.ssh/GitKey &>/dev/null
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
           cd aviv_portifolio_arlo
           echo "$ECOF" > ./ecosystem.json
-          pm2 deploy production update
+          pm2 deploy ecosystem.json production update
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
