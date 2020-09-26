@@ -26,7 +26,7 @@ jobs:
           echo "$GITKEY" > ~/.ssh/GitKey
           eval "$(ssh-agent -s)" &>/dev/null
           sudo chmod 600 ~/.ssh/GitKey
-          ssh -T git@github.com
+          ssh -T git@github.com &>/dev/null
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
           cd aviv_portifolio_arlo
           echo "$ECOF" > ./ecosystem.json
