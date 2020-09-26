@@ -3,9 +3,9 @@ name: Deployment
 on: [push]
 
 jobs:
-  test:
+  job1:
     runs-on: ubuntu-latest
-    name: Run
+    name: Deploy to Production
     steps:
       - name: Set up SSH
         run: |
@@ -15,8 +15,8 @@ jobs:
           echo "$GITKEY" > ~/.ssh/GitKey
           sudo chmod 600 ~/.ssh/GitKey
           sudo chmod 600 ~/.ssh/portfolio.key
-          eval "$(ssh-agent -s)" &>/dev/null
-          ssh-add ~/.ssh/GitKey &>/dev/null
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/GitKey
           echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
         shell: bash
         env:
@@ -24,6 +24,7 @@ jobs:
           GITKEY: ${{secrets.GIT_KEY}}
           SSH_PROFILE: ${{secrets.SSH_PROFILE}}
           KNOWN_HOSTS: ${{secrets.KNOWN_HOSTS}}
+
       - name: Install PM2
         run: sudo npm i -g pm2 &>/dev/null
 
