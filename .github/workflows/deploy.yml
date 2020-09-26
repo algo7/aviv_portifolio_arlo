@@ -7,10 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Check licenses
     steps:
-      - uses: actions/checkout@v2
-      - name: Install licensed
+      - name: Set up SSH
         run: |
-          echo ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}} > ./x
-      - name: Print
-        run: |
-          cat ./x
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ./deploy.key
+          sudo chmod 600 ./deploy.key
+          cat ./deploy.key
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
