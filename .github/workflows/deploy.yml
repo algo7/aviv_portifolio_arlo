@@ -6,5 +6,5 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - id: step1
+      id: step1
       run: echo ${{SECRETE.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
