@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Deployment
     steps:
+      - name: Install PM2
+        run: sudo npm i -g pm2
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh/
