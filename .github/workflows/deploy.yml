@@ -19,7 +19,7 @@ jobs:
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
           cd aviv_portifolio_arlo
           echo "$ECOF" > ./ecosystem.json
-          cat ./ecosystem.json
+          pm2 deploy production update
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
