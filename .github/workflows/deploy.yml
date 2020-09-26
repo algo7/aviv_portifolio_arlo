@@ -10,7 +10,7 @@ jobs:
     # Job Name (Will be Displayed)
     name: Deploy to Production
     steps:
-      # Step 1 Name
+      # Step Name
       - name: Set up SSH
         # Run Miltiline Bash Script
         run: |
@@ -32,14 +32,24 @@ jobs:
           SSH_PROFILE: ${{secrets.SSH_PROFILE}}
           KNOWN_HOSTS: ${{secrets.KNOWN_HOSTS}}
 
-      # Step 2 Name
+      # Step Name
       - name: Install PM2
         # Single-Line Bash Script
         run: sudo npm i -g pm2 &>/dev/null
         # Shell Type
         shell: bash
 
-      # Step 3 Name
+      # Step Name
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: /usr/lib/node_modules/pm2
+          key: 123456
+          restore-keys: 123456
+
+      # Step Name
       - name: Running Deployment Script
         # Run Miltiline Bash Script
         run: |
