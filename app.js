@@ -63,7 +63,7 @@ app.use(
         cookie: {
             // path: "/",
             httpOnly: true,
-            secure: Cookie_Secure, //Set true only if the connection is made over https => otherwise it won't work
+            secure: Boolean(Cookie_Secure), //Set true only if the connection is made over https => otherwise it won't work
             // maxAge: 900000 * 2 //30 mins
             maxAge: 10800 * 1000, //3hrs
         },
@@ -119,7 +119,7 @@ app.use('/', reg);
 //Route Check
 app.use(routeCheck(app));
 
-//Start the app///
+//Start the appg
 app.listen(PORT, () => {
     appLog.info(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
