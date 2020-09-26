@@ -12,8 +12,8 @@ jobs:
           mkdir -p ~/.ssh/
           echo "$SSH_PROFILE" > ~/.ssh/config
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/portfolio.key
-          git clone git clone aviv_portifolio_arlo
-          cd git clone aviv_portifolio_arlo
+          git clone git@github.com:algo7/aviv_portifolio_arlo.git
+          cd aviv_portifolio_arlo
           echo "$ECOF" > ./ecosystem.json
           cat ./ecosystem.json
         shell: bash
