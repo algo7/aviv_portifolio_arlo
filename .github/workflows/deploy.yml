@@ -23,10 +23,10 @@ jobs:
           echo "$GITKEY" > ~/.ssh/GitKey
           sudo chmod 600 ~/.ssh/GitKey
           eval "$(ssh-agent -s)" &>/dev/null
-          rm -rf ~/.ssh/known_hosts
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
           cd aviv_portifolio_arlo
           echo "$ECOF" > ./ecosystem.json
+          rm -rf ~/.ssh/known_hosts
           pm2 deploy ecosystem.json production update
         shell: bash
         env:
