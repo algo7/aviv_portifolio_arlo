@@ -14,7 +14,10 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "$SSH_PROFILE" > ~/.ssh/config
+          echo "Host moodli
+ User algorithm
+ HostName 34.65.242.184
+ IdentityFile ~/.ssh/portfolio.key" > ~/.ssh/config
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/portfolio.key
           echo "$GITKEY" > ~/.ssh/GitKey
           sudo chmod 600 ~/.ssh/GitKey
