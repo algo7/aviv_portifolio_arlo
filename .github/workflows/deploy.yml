@@ -10,7 +10,6 @@ jobs:
       - name: Install PM2
         run: |
           sudo npm i -g pm2 &>/dev/null
-          pm2 ls
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh/
@@ -28,6 +27,8 @@ jobs:
           eval "$(ssh-agent -s)" &>/dev/null
           ssh-add ~/.ssh/GitKey
           ssh -T git@github.com &>/dev/null
+      - name: Running Deployment Script
+        run: |
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
           cd aviv_portifolio_arlo
           echo "$ECOF" > ./ecosystem.json
