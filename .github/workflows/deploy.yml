@@ -17,11 +17,13 @@ jobs:
           sudo chmod 600 ~/.ssh/portfolio.key
           eval "$(ssh-agent -s)" &>/dev/null
           ssh-add ~/.ssh/GitKey &>/dev/null
+          echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
           GITKEY: ${{secrets.GIT_KEY}}
           SSH_PROFILE: ${{secrets.SSH_PROFILE}}
+          KNOWN_HOSTS: ${{secrets.KNOWN_HOSTS}}
       - name: Install PM2
         run: sudo npm i -g pm2 &>/dev/null
 
