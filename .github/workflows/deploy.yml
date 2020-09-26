@@ -33,3 +33,4 @@ jobs:
           ECOF: ${{secrets.ECOSYSTEM_FILE}}
           SSHCONF: ${{secrets.SSH_PROFILE}}
           GITKEY: ${{secrets.GIT_KEY}}
+          SSH_KNOWN_HOSTS: ${{secrets.KWOWN_HOSTS}}
