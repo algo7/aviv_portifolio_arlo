@@ -8,7 +8,9 @@ jobs:
     name: Deployment
     steps:
       - name: Install PM2
-        run: sudo npm i -g pm2 &>/dev/null
+        run: |
+          sudo npm i -g pm2 &>/dev/null
+          pm2 ls
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh/
