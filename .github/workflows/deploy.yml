@@ -11,3 +11,5 @@ jobs:
       - name: Install licensed
         run: |
           pm2 deploy production update
+      - name: Print
+        run: echo ${{secretes.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
