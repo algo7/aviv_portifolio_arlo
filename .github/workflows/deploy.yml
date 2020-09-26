@@ -6,6 +6,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: Run
+    steps:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
@@ -22,4 +23,3 @@ jobs:
           SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
           GITKEY: ${{secrets.GIT_KEY}}
           SSH_PROFILE: ${{secrets.SSH_PROFILE}}
-     
