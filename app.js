@@ -76,7 +76,7 @@ app.set('trust proxy', 1);
 //Set Static Folder (Absolute)
 app.use('/', express.static(path.join(__dirname, '/assets')));
 
-//Handlebars Middleware/
+//Handlebars Middleware
 app.engine('handlebars', exphbs({
     defaultLayout: 'main',
 }));
