@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install licensed
         run: |
-          echo ${{secretes.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}} > ./x
+          echo ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}} > ./x
       - name: Print
         run: |
           cat ./x
