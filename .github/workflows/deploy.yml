@@ -27,6 +27,7 @@ jobs:
 
       - name: Install PM2
         run: sudo npm i -g pm2 &>/dev/null
+        shell: bash
 
       - name: Running Deployment Script
         run: |
