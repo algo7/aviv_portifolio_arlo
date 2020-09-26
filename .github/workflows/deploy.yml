@@ -6,7 +6,4 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - id: step1
-      run: echo ${{SECRETE.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
-      - id: step2
       run: echo "::set-output name=test::world"
