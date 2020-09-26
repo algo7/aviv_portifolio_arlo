@@ -119,7 +119,7 @@ app.use('/', reg);
 //Route Check
 app.use(routeCheck(app));
 
-//Start the app//
+//Start the app///
 app.listen(PORT, () => {
     appLog.info(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
