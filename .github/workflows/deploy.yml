@@ -21,7 +21,6 @@ jobs:
           echo "Host github.com" >> ~/.ssh/config
           echo "User algo7" >> ~/.ssh/config
           echo "IdentityFile ~/.ssh/GitKey" >> ~/.ssh/config
-          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/portfolio.key
           echo "$GITKEY" > ~/.ssh/GitKey
           sudo chmod 600 ~/.ssh/GitKey
@@ -39,4 +38,3 @@ jobs:
           ECOF: ${{secrets.ECOSYSTEM_FILE}}
           SSHCONF: ${{secrets.SSH_PROFILE}}
           GITKEY: ${{secrets.GIT_KEY}}
-          SSH_KNOWN_HOSTS: ${{secrets.KWOWN_HOSTS}}
