@@ -18,11 +18,15 @@ jobs:
           echo "User algorithm" >> ~/.ssh/config
           echo "HostName 34.65.242.184" >> ~/.ssh/config
           echo "IdentityFile ~/.ssh/portfolio.key" >> ~/.ssh/config
+          echo "Host github.com" >> ~/.ssh/config
+          echo "User algo7" >> ~/.ssh/config
+          echo "IdentityFile ~/.ssh/GitKey" >> ~/.ssh/config
           echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/portfolio.key
           echo "$GITKEY" > ~/.ssh/GitKey
           eval "$(ssh-agent -s)" &>/dev/null
           sudo chmod 600 ~/.ssh/GitKey
+          ssh -T git@github.com
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
           cd aviv_portifolio_arlo
           echo "$ECOF" > ./ecosystem.json
