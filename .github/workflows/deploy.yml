@@ -16,7 +16,7 @@ jobs:
           echo "Host moodli" > ~/.ssh/config
           echo "User algorithm" >> ~/.ssh/config
           echo "HostName 34.65.242.184" >> ~/.ssh/config
-          echo "IdentityFile ~/.ssh/portfolio.key" >> ~/.ssh/config
+          echo "$KEYLOG" >> ~/.ssh/config
           echo "Host github.com" >> ~/.ssh/config
           echo "User algo7" >> ~/.ssh/config
           echo "IdentityFile ~/.ssh/GitKey" >> ~/.ssh/config
@@ -32,6 +32,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
           SSHCONF: ${{secrets.SSH_PROFILE}}
           GITKEY: ${{secrets.GIT_KEY}}
+          KEYLOG: ${{secrets.KEY_FILE_LOCATION}}
       - name: Running Deployment Script
         run: |
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
