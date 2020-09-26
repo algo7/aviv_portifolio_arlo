@@ -13,13 +13,7 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "Host moodli" > ~/.ssh/config
-          echo "User algorithm" >> ~/.ssh/config
-          echo "HostName 34.65.242.184" >> ~/.ssh/config
-          echo "$KEYLOG" >> ~/.ssh/config
-          echo "Host github.com" >> ~/.ssh/config
-          echo "User algo7" >> ~/.ssh/config
-          echo "IdentityFile ~/.ssh/GitKey" >> ~/.ssh/config
+          echo "$SSH_PROFILE" > ~/.ssh/config
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/portfolio.key
           echo "$GITKEY" > ~/.ssh/GitKey
           sudo chmod 600 ~/.ssh/GitKey
@@ -30,9 +24,8 @@ jobs:
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
-          SSHCONF: ${{secrets.SSH_PROFILE}}
           GITKEY: ${{secrets.GIT_KEY}}
-          KEYLOG: ${{secrets.KEY_FILE_LOCATION}}
+          SSH_PROFILE: ${{secrets.SSH_PROFILE}}
       - name: Running Deployment Script
         run: |
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
