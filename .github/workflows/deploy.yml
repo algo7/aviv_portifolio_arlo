@@ -3,11 +3,16 @@ name: Deployment
 on: [push]
 
 jobs:
+  # Arbitrary Job Section Name (Won't be Displayed)
   deploy:
+    # Operating System to Run the Script On
     runs-on: ubuntu-latest
+    # Job Name (Will be Displayed)
     name: Deploy to Production
     steps:
+      # Step 1 Name
       - name: Set up SSH
+        # Run Miltiline Bash Script
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PROFILE" > ~/.ssh/config
@@ -18,23 +23,32 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/GitKey
           echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+        # Shell Type
         shell: bash
+        # Environmental Variables (Use on GitHub Runners)
         env:
           SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
           GITKEY: ${{secrets.GIT_KEY}}
           SSH_PROFILE: ${{secrets.SSH_PROFILE}}
           KNOWN_HOSTS: ${{secrets.KNOWN_HOSTS}}
 
+      # Step 2 Name
       - name: Install PM2
+        # Single-Line Bash Script
         run: sudo npm i -g pm2 &>/dev/null
+        # Shell Type
         shell: bash
 
+      # Step 3 Name
       - name: Running Deployment Script
+        # Run Miltiline Bash Script
         run: |
           git clone git@github.com:algo7/aviv_portifolio_arlo.git
           cd aviv_portifolio_arlo
           echo "$ECOF" > ./ecosystem.json
           npm run deploy
+        # Shell Type
         shell: bash
+        # Environmental Variables (Use on GitHub Runners)
         env:
           ECOF: ${{secrets.ECOSYSTEM_FILE}}
