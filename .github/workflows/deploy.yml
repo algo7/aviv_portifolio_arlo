@@ -17,9 +17,11 @@ jobs:
           sudo chmod 600 ~/.ssh/portfolio.key
           eval "$(ssh-agent -s)" &>/dev/null
           ssh-add ~/.ssh/GitKey &>/dev/null
-          ssh -T git@github.com
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
           GITKEY: ${{secrets.GIT_KEY}}
           SSH_PROFILE: ${{secrets.SSH_PROFILE}}
+      - name: Running Deployment Script
+        run: |
+          git clone git@github.com:algo7/aviv_portifolio_arlo.git
