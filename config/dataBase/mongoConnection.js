@@ -4,11 +4,8 @@ const mongoose = require('mongoose');
 //Winston
 const mongoLog = require('../system/log').get('mongoLog');
 
-//Global Variables
-const { Mongo_URI, } = require('../../creds/env');
-
 //Connect to DB (Main)
-const DB_Connection = mongoose.createConnection(Mongo_URI, {
+const DB_Connection = mongoose.createConnection(process.env.Mongo_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

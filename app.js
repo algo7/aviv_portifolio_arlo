@@ -1,3 +1,5 @@
+// Load Environmental Variables
+require('./creds/env');
 //Dependencies
 const express = require('express');
 const BodyParser = require('body-parser');
@@ -8,7 +10,6 @@ const methodOverride = require('method-override');
 const path = require('path');
 const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
-const { PORT: envPort, Cookie_Secure, } = require('./creds/env');
 
 //Redis
 const { client, RedisStore, session, } =
@@ -18,7 +19,7 @@ const { client, RedisStore, session, } =
 const appLog = require('./config/system/log').get('appLog');
 
 //Global Constant
-const PORT = envPort || 3008;
+const PORT = process.env.PORT || 3008;
 
 //Initialize the App
 const app = express();
@@ -57,13 +58,13 @@ app.use(BodyParser.text({
 app.use(
     session({
         store: new RedisStore({ client, }),
-        secret: 'liaus;dhg[qwhrgoipu42-49-329*&^OJKLAKHDJJAKLJofuy032qpjij12li34uv',
+        secret: process.env.Cookie_Secrete,
         resave: true,
         saveUninitialized: false,
         cookie: {
             // path: "/",
             httpOnly: true,
-            secure: Boolean(Cookie_Secure), //Set true only if the connection is made over https => otherwise it won't work
+            secure: Boolean(process.env.Cookie_Secure), //Set true only if the connection is made over https => otherwise it won't work
             // maxAge: 900000 * 2 //30 mins
             maxAge: 10800 * 1000, //3hrs
         },
