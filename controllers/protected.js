@@ -151,6 +151,9 @@ const quotea = (req, res) => {
 
     try {
 
+        // Extract data from the request body
+        const { type, author, description, text, } = req.body;
+
         //Check if there is a picture
         if (!req.file) {
             res.status(400).send('A picture is required');
@@ -159,9 +162,10 @@ const quotea = (req, res) => {
 
         //The new quote object
         let newQuote = {
-            author: req.body.author,
-            description: req.body.description,
-            text: req.body.text,
+            type: type,
+            author: author,
+            description: description,
+            text: text,
             imgUrl: req.file.path.replace('assets/', ''),
         };
 
