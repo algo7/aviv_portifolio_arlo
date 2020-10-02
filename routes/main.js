@@ -15,7 +15,7 @@ const { add, adda, editie, edit, bio, bioe, quotea, quote, expe, expd, }
 //GET Routes (Unprotected)
 //The landing page
 router.get('/', landing);
-//landing
+
 //The hotelier page
 router.get('/hotelier', index);
 

@@ -49,13 +49,18 @@ const index = async (req, res) => {
     // Set quote type
     let quoteType = null;
 
+    // Set experience type
+    let expType = null;
+
     // Check path
     if (req.path === '/hotelier') {
         pageRender = 'main/hotelier';
         quoteType = 'hotelier';
+        expType = 'hotelier';
     } else {
         pageRender = 'main/developer';
         quoteType = 'developer';
+        expType = 'developer';
     }
 
     try {
@@ -87,18 +92,17 @@ const index = async (req, res) => {
 
             //Get experience
             Experience_DB
-                .find({})
+                .find({ type: expType, })
                 .sort({ date: -1, })
                 .lean(),
 
 
-            //Get experience
+            //Get user info (to display)
             await User_DB
                 .findOne({}, { _id: 0, password: 0, })
                 .lean()
         ]);
 
-        console.log(experience);
 
         //Render the page
         res.render(pageRender, {
