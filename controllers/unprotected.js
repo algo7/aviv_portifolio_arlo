@@ -98,6 +98,7 @@ const index = async (req, res) => {
                 .lean()
         ]);
 
+        console.log(experience);
 
         //Render the page
         res.render(pageRender, {

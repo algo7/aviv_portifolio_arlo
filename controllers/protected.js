@@ -215,7 +215,7 @@ const adda = (req, res) => {
 
     //The new experience object
     let newExperience = {
-        tyep: type,
+        type: type,
         year: year,
         location: location,
         position: position,
