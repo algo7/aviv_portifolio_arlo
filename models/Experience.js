@@ -6,21 +6,30 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const experienceSchema = new Schema({
-
+    type: {
+        type: String,
+        enum: ['hotelier', 'developer'],
+        require: true,
+    },
     year: {
         type: String,
+        require: true,
     },
     location: {
         type: String,
+        require: true,
     },
     position: {
         type: String,
+        require: true,
     },
     description: {
         type: String,
+        require: true,
     },
     typeImageUrl: {
         type: String,
+        require: true,
     },
     link: {
         type: String,
