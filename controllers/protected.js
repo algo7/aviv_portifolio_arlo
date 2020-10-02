@@ -186,8 +186,11 @@ const quotea = (req, res) => {
 // @access Private
 const adda = (req, res) => {
 
-    //Get the experience type
+    //Get the experience type (for the icon)
     let typeImageUrl = req.body.typeImageUrl;
+
+    // Extract data from the request body
+    const { type, year, location, position, description, } = req.body;
 
     //Assign the correct image url base on the type
     switch (typeImageUrl) {
@@ -212,10 +215,11 @@ const adda = (req, res) => {
 
     //The new experience object
     let newExperience = {
-        year: req.body.year,
-        location: req.body.location,
-        position: req.body.position,
-        description: req.body.description,
+        tyep: type,
+        year: year,
+        location: location,
+        position: position,
+        description: description,
         typeImageUrl: typeImageUrl,
         link: link,
         hrefClass: hrefClass,
