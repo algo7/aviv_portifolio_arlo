@@ -17,7 +17,9 @@
                         </div>
                         <div class="empty_notice"><span>Please Fill Required Fields</span></div>
                         <div class="first">
+
                             <ul>
+
                                 <li>
                                     <input id="name" type="text" name="author" placeholder="Author">
                                 </li>
@@ -26,11 +28,20 @@
                                 </li>
 
                             </ul>
+
                         </div>
                         <div class="last">
                             <textarea id="message" name="text" placeholder="Text"></textarea>
                         </div>
-
+                        <ul>
+                            <li>
+                                <label class="selection" for="quote_type">Quote Type: </label>
+                                <select id="quote_type" name="type">
+                                    <option value="hotelier">Hotelier</option>
+                                    <option value="developer">Developer</option>
+                                </select>
+                            </li>
+                        </ul>
                         <ul>
                             <li>
                                 {{!-- <div class="upload-btn-wrapper">
