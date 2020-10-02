@@ -17,7 +17,10 @@ const { add, adda, editie, edit, bio, bioe, quotea, quote, expe, expd, }
 router.get('/', landing);
 
 //The hotelier page
-router.get('/index', index);
+router.get('/hotelier', index);
+
+// The developer page
+router.get('/developer', index);
 
 //Unauth access
 router.get('/notice', notice);

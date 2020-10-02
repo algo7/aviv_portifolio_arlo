@@ -1,0 +1,382 @@
+<!-- RIGHTPART -->
+<div class="arlo_tm_rightpart">
+	<div class="rightpart_inner">
+
+		<!-- HERO -->
+		<div class="arlo_tm_section" id="home">
+			<div class="arlo_tm_hero_header">
+				<div class="hero_image jarallax" data-img-url="img/slider/7.jpg" data-speed="0"></div>
+				<div class="overlay"></div>
+				<div class="hero_content">
+					<div class="image_wrap">
+						<img src="img/about/500x500.jpg" alt="" />
+						<div class="main" data-img-url="{{user.profileImg}}"></div>
+					</div>
+					<div class="name_holder">
+						<h3>{{user.firstName}} <span>{{user.lastName}}</span></h3>
+					</div>
+					<div class="text_typing">
+						<p>I'm a <span class="arlo_tm_animation_text_word"></span></p>
+					</div>
+				</div>
+				<div class="arlo_tm_arrow_classic bounce anchor">
+					<a href="#about"><i class="xcon-angle-double-down"></i></a>
+				</div>
+			</div>
+		</div>
+		<!-- /HERO -->
+
+		<!-- ABOUT -->
+		<div class="arlo_tm_section" id="about">
+			<div class="arlo_tm_about_wrap_all">
+				<div class="arlo_tm_about">
+					<div class="container">
+						<div class="about_inner">
+							<div class="leftbox">
+								<div class="about_image_wrap parallax" data-relative-input="true">
+									<div class="image layer" data-depth="0.1">
+										<img src="img/about/550x650.jpg" alt="" />
+										<div class="inner" data-img-url="img/about/2.jpg"></div>
+									</div>
+									<div class="border layer" data-depth="0.2">
+										<img src="img/about/550x650.jpg" alt="" />
+										<div class="inner"></div>
+									</div>
+								</div>
+							</div>
+							<div class="rightbox">
+								<div class="arlo_title_holder about">
+									<span>Main Info</span>
+									<h3>About Me</h3>
+								</div>
+								<div class="text">
+									<p>My name is <span>{{user.firstName}} {{user.lastName}}</span>.
+										{{user.bio}}
+									</p>
+								</div>
+								<div class="about_short_contact_wrap">
+									<ul>
+										<li>
+											<img class="svg" src="img/svg/gift.svg" alt="" />
+											<span><label>Birthday:</label> {{user.birthDay}}</span>
+										</li>
+										<li>
+											<img class="svg" src="img/svg/calendar-4.svg" alt="" />
+											<span>
+												<label>Birth Name:</label>
+												{{user.birthName}}
+											</span>
+										</li>
+										<li>
+											<img class="svg" src="img/svg/location-1.svg" alt="" />
+											<span><label>Location:</label> <a class="href_location"
+													href="#">{{user.location}}</a></span>
+										</li>
+										<li>
+											<img class="svg" src="img/svg/game-controller-2.svg" alt="" />
+											<span>
+												<label>Interests:</label>
+												{{user.interests}}
+											</span>
+										</li>
+										<li>
+											<img class="svg" src="img/svg/call-2.svg" alt="" />
+											<span><label>Phone:</label> <a
+													href="tel:{{user.phone}}">{{user.phone}}</a></span>
+										</li>
+										<li>
+											<img class="svg" src="img/svg/study-5.svg" alt="" />
+											<span>
+												<label>Study:</label>
+												<a class="href_location" href="#">
+													{{user.study}}</a>
+											</span>
+										</li>
+										<li>
+											<img class="svg" src="img/svg/message-3.svg" alt="" />
+											<span><label>Mail:</label> <a
+													href="mailto:{{user.email}}">{{user.email}}</a></span>
+										</li>
+										<li>
+											<img class="svg" src="img/svg/degree-1.svg" alt="" />
+											<span><label>Degree:</label>{{user.degree}}</span>
+										</li>
+									</ul>
+								</div>
+
+								{{!-- <div class="buttons">
+												<ul>
+													<li><a href="#"><span>Download CV</span></a></li>
+													<li><a href="#"><span>Send Message</span></a></li>
+												</ul>
+											</div> --}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /ABOUT -->
+
+
+		<!-- PORTFOLIO -->
+		<!-- <div class="arlo_tm_section" id="portfolio">
+						<div class="arlo_tm_portfolio" style="background-color: #191919">
+							<div class="container">
+								<div class="arlo_title_holder">
+									<span>Creative Works</span>
+									<h3>Portfolio</h3>
+								</div>
+								<div class="portfolio_inner">
+									<div class="arlo_tm_portfolio_titles"></div>
+									<div class="portfolio_filter">
+										<ul>
+											<li><a href="#" class="current" data-filter="*">All</a></li>
+											<li><a href="#" data-filter=".video">Video</a></li>
+											<li><a href="#" data-filter=".animation">Animation</a></li>
+											<li><a href="#" data-filter=".image">Image</a></li>
+										</ul>
+									</div>
+									<div class="portfolio_list">
+										<ul class="gallery_zoom">
+											<li class="video">
+												<div class="inner">
+													<div class="entry arlo_tm_portfolio_animation_wrap"
+														data-title="Popup Video" data-category="Video">
+														<a class="popup-youtube"
+															href="https://www.youtube.com/watch?v=ICr_bOuM9Zo">
+															<img src="img/portfolio/600x600.jpg" alt="" />
+															<div class="main_image" data-img-url="img/portfolio/1.jpg">
+															</div>
+														</a>
+													</div>
+												</div>
+											</li>
+											<li class="image">
+												<div class="inner">
+													<div class="entry arlo_tm_portfolio_animation_wrap"
+														data-title="Popup Image" data-category="Image">
+														<a class="zoom" href="img/portfolio/2.jpg">
+															<img src="img/portfolio/600x600.jpg" alt="" />
+															<div class="main_image" data-img-url="img/portfolio/2.jpg">
+															</div>
+														</a>
+													</div>
+												</div>
+											</li>
+											<li class="animation">
+												<div class="inner">
+													<div class="entry arlo_tm_portfolio_animation_wrap"
+														data-title="Animate Image" data-category="Animation">
+														<a class="zoom" href="img/portfolio/8.webp">
+															<img src="img/portfolio/600x600.jpg" alt="" />
+															<div class="main_image" data-img-url="img/portfolio/8.webp">
+															</div>
+														</a>
+													</div>
+												</div>
+											</li>
+											<li class="image">
+												<div class="inner">
+													<div class="entry arlo_tm_portfolio_animation_wrap"
+														data-title="Popup Image" data-category="Image">
+														<a class="zoom" href="img/portfolio/4.jpg">
+															<img src="img/portfolio/600x600.jpg" alt="" />
+															<div class="main_image" data-img-url="img/portfolio/4.jpg">
+															</div>
+														</a>
+													</div>
+												</div>
+											</li>
+											<li class="image">
+												<div class="inner">
+													<div class="entry arlo_tm_portfolio_animation_wrap"
+														data-title="Popup Image" data-category="Image">
+														<a class="zoom" href="img/portfolio/5.jpg">
+															<img src="img/portfolio/600x600.jpg" alt="" />
+															<div class="main_image" data-img-url="img/portfolio/5.jpg">
+															</div>
+														</a>
+													</div>
+												</div>
+											</li>
+											<li class="image">
+												<div class="inner">
+													<div class="entry arlo_tm_portfolio_animation_wrap"
+														data-title="Popup Image" data-category="Image">
+														<a class="zoom" href="img/portfolio/6.jpg">
+															<img src="img/portfolio/600x600.jpg" alt="" />
+															<div class="main_image" data-img-url="img/portfolio/6.jpg">
+															</div>
+														</a>
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+		<!-- /PORTFOLIO -->
+
+		<!-- Quote -->
+		<div class="arlo_tm_section" id="inspiration">
+			<div class="arlo_tm_testimonial">
+				<div class="testimonial_inner">
+					<div class="testimonial_bg">
+						<div class="image jarallax" data-speed-="0" data-img-url="img/slider/1.jpg"></div>
+						<div class="overlay"></div>
+					</div>
+					<div class="testimonial_content">
+						<div class="container">
+							<div class="content_inner">
+								<div class="icon">
+									<img class="svg" src="img/svg/quotes.svg" alt="" />
+								</div>
+								<div class="texts">
+									<p style='
+												width:80%;margin:auto;
+												font-family: "Montserrat";'>
+										<strong>{{quote}}
+										</strong>
+									</p>
+									<br>
+
+									<div class="author">
+										<div class="image">
+											<div class="main" data-img-url="{{imgUrl}}"></div>
+										</div>
+										<div class=" job">
+											<h3 style="padding-bottom: 20px;">{{author}}</h3>
+											<span>
+												{{description}}
+											</span>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /TESTIMONIAL -->
+
+		<!-- TIMELINE -->
+		<div class="arlo_tm_section" id="experience">
+			<div class="arlo_tm_timeline">
+				<div class="container">
+					<div class="arlo_title_holder">
+						<span>Working Process</span>
+						<h3>Experience</h3>
+					</div>
+
+					<div class="timeline_inner">
+
+						<div class="left">
+							<ul>
+								{{#each experienceLeft}}
+								<li>
+									<div class="inner">
+										<img class="svg" src="{{typeImageUrl}}" alt="" />
+										<p class="year">
+											{{this.year}} @
+											<a class="href_location" href="#" style="color:white">
+												{{this.location}}
+											</a>
+										</p>
+										<h3 class="title">{{this.position}}</h3>
+										<p class="text">
+											{{this.description}}
+										</p>
+									</div>
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+
+						<div class="right">
+							<ul>
+								{{#each experienceRight}}
+								<li>
+									<div class="inner">
+										<img class="svg" src="{{typeImageUrl}}" alt="" />
+										<p class=" year">{{this.year}} @
+											<a class="{{this.hrefClass}}" href="{{this.link}}" style="color:white">
+												{{this.location}}
+											</a>
+										</p>
+										<h3 class="title">{{this.position}}</h3>
+										<p class="text">
+											{{this.description}}
+										</p>
+									</div>
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /TIMELINE -->
+
+
+		<!-- CONTACT -->
+		<div class="arlo_tm_section" id="contact">
+			<div class="arlo_tm_contact">
+				<div class="container">
+					<div class="arlo_title_holder">
+						<span>Get in Touch</span>
+						<h3>Contact</h3>
+					</div>
+					<div class="contact_inner">
+						<div class="short_list">
+							<ul>
+								<li>
+									<img class="svg" src="img/svg/location-1.svg" alt="" />
+									<h3>Location</h3>
+									<p>{{user.location}}</p>
+								</li>
+								<li>
+									<img class="svg" src="img/svg/message-3.svg" alt="" />
+									<h3>Email</h3>
+									<p>{{user.email}}</p>
+								</li>
+								<li>
+									<img class="svg" src="img/svg/call-2.svg" alt="" />
+									<h3>Phone</h3>
+									<p>{{user.phone}}</p>
+								</li>
+							</ul>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /CONTACT -->
+
+		<!-- FOOTER -->
+		<div class="arlo_tm_footer">
+			<div class="container">
+				<div class="footer_inner">
+					<div class="top">
+						<a class="arlo_tm_totop" href="#"></a>
+					</div>
+					<div class="copy">
+
+					</div>
+					<div class="top">
+						<a class="arlo_tm_totop" href="#"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /FOOTER -->
+
+	</div>
+</div>
+<!-- /RIGHTPART -->

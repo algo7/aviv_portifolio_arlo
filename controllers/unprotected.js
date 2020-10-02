@@ -43,6 +43,16 @@ const landing = async (req, res) => {
 // @access Public
 const index = async (req, res) => {
 
+    // Set page to be rendered
+    let pageRender = null;
+
+    // Check path
+    if (req.path === 'main/hotelier') {
+        pageRender = 'hotelier';
+    } else {
+        pageRender = 'main/developer';
+    }
+
     try {
 
         //Login Status
@@ -85,7 +95,7 @@ const index = async (req, res) => {
 
 
         //Render the page
-        res.render('index', {
+        res.render(pageRender, {
             quote: quote.text,
             author: quote.author,
             description: quote.description,
