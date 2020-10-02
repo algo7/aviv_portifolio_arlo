@@ -35,7 +35,7 @@ app.set('etag', false);
 app.set('x-powered-by', false);
 
 //Enable Caching
-// app.enable('view cache');
+app.enable('view cache');
 
 // BodyParser Middleware
 app.use(BodyParser.urlencoded({
