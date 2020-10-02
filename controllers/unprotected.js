@@ -46,11 +46,16 @@ const index = async (req, res) => {
     // Set page to be rendered
     let pageRender = null;
 
+    // Set quote type
+    let quoteType = null;
+
     // Check path
-    if (req.path === 'main/hotelier') {
-        pageRender = 'hotelier';
+    if (req.path === '/hotelier') {
+        pageRender = 'main/hotelier';
+        quoteType = 'hotelier';
     } else {
         pageRender = 'main/developer';
+        quoteType = 'developer';
     }
 
     try {
@@ -63,7 +68,7 @@ const index = async (req, res) => {
 
         //Get quotes authors
         let quoteAuthors = await Quote_DB
-            .find()
+            .find({ type: quoteType, })
             .lean();
 
         //The authors array
