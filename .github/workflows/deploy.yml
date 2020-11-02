@@ -40,16 +40,6 @@ jobs:
         shell: bash
 
       # Step Name
-      - name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-pm2
-        with:
-          path: /usr/lib/node_modules/pm2
-          key: 123456
-          restore-keys: 123456
-
-      # Step Name
       - name: Running Deployment Script
         # Run Miltiline Bash Script
         run: |
