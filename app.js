@@ -117,7 +117,7 @@ const reg = require('./routes/register');
 app.use('/', main);
 app.use('/', reg);
 
-//Route Check
+//Route Check/
 app.use(routeCheck(app));
 
 //Start the appg
