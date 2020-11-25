@@ -1,5 +1,6 @@
 // Load Environmental Variables
 require('./creds/env');
+
 //Dependencies
 const express = require('express');
 const BodyParser = require('body-parser');

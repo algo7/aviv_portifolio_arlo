@@ -98,7 +98,7 @@ const index = async (req, res) => {
 
 
             //Get user info (to display)
-            await User_DB
+            User_DB
                 .findOne({}, { _id: 0, password: 0, })
                 .lean()
         ]);
