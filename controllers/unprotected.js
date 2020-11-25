@@ -38,7 +38,7 @@ const landing = async (req, res) => {
     }
 };
 
-// @desc The hotelier page
+// @desc The index page
 // @route GET /index
 // @access Public
 const index = async (req, res) => {
