@@ -1,4 +1,4 @@
-//Dependencies
+// Dependencies
 const multer = require('multer');
 const crypto = require('crypto');
 const miscLog = require('./system/log').get('miscLog');
@@ -12,13 +12,13 @@ const expDistro = (experience) => {
     const rightSide = experience.slice(roundedHalfPoint);
     const sliceEndIndex = expLength - roundedHalfPoint;
 
-    //If the rounded half point != the original half point
-    //2 Array are not of the same length
+    // If the rounded half point != the original half point
+    // 2 Array are not of the same length
     if (roundedHalfPoint != halfPoint) {
         const leftSide = experience.slice(0, sliceEndIndex + 1);
         return [leftSide, rightSide];
 
-        //2 Array are of the same length
+        // 2 Array are of the same length
     } else {
         const leftSide = experience.slice(0, sliceEndIndex);
         return [leftSide, rightSide];
@@ -26,7 +26,7 @@ const expDistro = (experience) => {
 
 };
 
-//SHA1 hash function for file name
+// SHA1 hash function for file name
 const hashFunc = (fileName, type) => {
     const hash = crypto.createHash('sha1');
     hash.update(fileName);
@@ -36,15 +36,15 @@ const hashFunc = (fileName, type) => {
 };
 
 
-//Multer DiskStorage Config
+// Multer DiskStorage Config
 const diskStorage = multer.diskStorage({
     destination: 'assets/img/quote',
     filename: (req, file, call_back) => {
 
-        //Hash the file name
+        // Hash the file name
         const sha1sum = hashFunc(file.originalname, 'Quote');
 
-        //Get the extention
+        // Get the extention
         let ext = '';
         try {
             ext = file.mimetype.split('/')[1];
@@ -56,12 +56,12 @@ const diskStorage = multer.diskStorage({
     },
 });
 
-//Multer DiskStorage Config2
+// Multer DiskStorage Config2
 const diskStorage2 = multer.diskStorage({
     destination: 'assets/img/profile',
     filename: (req, file, call_back) => {
 
-        //Hash the file name
+        // Hash the file name
         const sha1sum = hashFunc(file.originalname, 'Profile');
 
         //Get the extention
@@ -76,7 +76,7 @@ const diskStorage2 = multer.diskStorage({
     },
 });
 
-//Create Multer Instance
+// Create Multer Instance
 const upload = multer({ storage: diskStorage, });
 const upload2 = multer({ storage: diskStorage2, });
 
