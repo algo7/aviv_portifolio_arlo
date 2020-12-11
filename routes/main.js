@@ -1,4 +1,4 @@
-//Dependencies
+// Dependencies
 const express = require('express');
 const router = express.Router();
 const { upload, upload2, } = require('../config/misc');
@@ -12,56 +12,56 @@ const { landing, index, notice, analysis, }
 const { add, adda, editie, edit, bio, bioe, quotea, quote, expe, expd, }
     = require('../controllers/protected.js');
 
-//GET Routes (Unprotected)
-//The landing page
+// GET Routes (Unprotected)
+// The landing page
 router.get('/', landing);
 
-//The hotelier page
+// The hotelier page
 router.get('/hotelier', index);
 
 // The developer page
 router.get('/developer', index);
 
-//Unauth access
+// Unauth access
 router.get('/notice', notice);
 
-//GET Routes (Protected)
-//Th add quote page
+// GET Routes (Protected)
+// The add quote page
 router.get('/quote', EnsureAuthenticated, quote);
 
-//Th edit experience page
+// The edit experience page
 router.get('/edit', EnsureAuthenticated, edit);
 
-//Add experience page
+// Add experience page
 router.get('/add', EnsureAuthenticated, add);
 
-//Individual experience edit page
+// Individual experience edit page
 router.get('/edit/:id', EnsureAuthenticated, editie);
 
-//Edit personal info. page
+// Edit personal info. page
 router.get('/bio', EnsureAuthenticated, bio);
 
-//POST Routes (Unprotected)
-//Get IP
+// POST Routes (Unprotected)
+// Get IP
 router.post('/analysis', analysis);
 
-//POST Routes (Protected)
-//Add quote
+// POST Routes (Protected)
+// Add quote
 router.post('/quote', EnsureAuthenticated, upload.single('file'), quotea);
 
-//Add experience
+// Add experience
 router.post('/add', EnsureAuthenticated, adda);
 
-//PUT Routes
-//Edit Personal Info.
+// PUT Routes
+// Edit Personal Info.
 router.put('/bio', EnsureAuthenticated, upload2.single('file'), bioe);
 
-//Edit experience
+// Edit experience
 router.put('/edit/:id', EnsureAuthenticated, expe);
 
-//DELETE Routes
-//Delete experience
+// DELETE Routes
+// Delete experience
 router.delete('/delete/:id', EnsureAuthenticated, expd);
 
-//Export the Module
+// Export the Module
 module.exports = router;
