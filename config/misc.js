@@ -71,6 +71,7 @@ const diskStorage2 = multer.diskStorage({
             //Prepend date to the file name hash
             call_back(null, `${Date.now()}_${sha1sum}.${ext}`);
         } catch (error) {
+            call_back('Image Upload Failed', null);
             miscLog.error(`Profile upload error: ${error}`);
         }
     },
