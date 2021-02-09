@@ -61,12 +61,12 @@ const diskStorage2 = multer.diskStorage({
     destination: 'assets/img/profile',
     filename: (req, file, call_back) => {
 
-        // Hash the file name
-        const sha1sum = hashFunc(file.originalname, 'Profile');
-
         //Get the extention
         let ext = '';
         try {
+            // Hash the file name
+            const sha1sum = hashFunc(file.originalname, 'Profile');
+
             ext = file.mimetype.split('/')[1];
             //Prepend date to the file name hash
             call_back(null, `${Date.now()}_${sha1sum}.${ext}`);
