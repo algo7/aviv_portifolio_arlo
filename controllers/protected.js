@@ -183,52 +183,57 @@ const quotea = (req, res) => {
 // @The add experience route
 // @route POST /add
 // @access Private
-const adda = (req, res) => {
+const adda = async (req, res) => {
 
-    //Get the experience type (for the icon)
-    let typeImageUrl = req.body.typeImageUrl;
+    try {
 
-    // Extract data from the request body
-    const { type, year, location, position, description, } = req.body;
+        // Extract data from the request body
+        const { type, year, location, position, description, link: reqLink, } = req.body;
 
-    //Assign the correct image url base on the type
-    switch (typeImageUrl) {
-        case 'study':
-            typeImageUrl = 'img/svg/degree-5.svg';
-            break;
-        case 'work':
-            typeImageUrl = 'img/svg/portfolio.svg';
-            break;
-        default:
-            res.send('Invalid Experience Type!');
-            return;
+        // Experience icon type
+        let typeImageUrl = null;
+
+        // Assign the correct image url base on the type
+        switch (type) {
+            case 'study':
+                typeImageUrl = 'img/svg/degree-5.svg';
+                break;
+            case 'work':
+                typeImageUrl = 'img/svg/portfolio.svg';
+                break;
+            default:
+                res.send('Invalid Experience Type!');
+                return;
+        }
+
+        // Set links for external website if there is any
+        let hrefClass = 'href_location';
+        let link = '#';
+        if (reqLink) {
+            hrefClass = '';
+            link = reqLink;
+        }
+
+        // The new experience object
+        const newExperience = {
+            type: type,
+            year: year,
+            location: location,
+            position: position,
+            description: description,
+            typeImageUrl: typeImageUrl,
+            link: link,
+            hrefClass: hrefClass,
+        };
+
+        await Experience_DB.create(newExperience);
+
+        res.redirect('/');
+
+    } catch (err) {
+        res.status(500).send('Error Adding Experience!');
+        miscLog.error(err);
     }
-
-    //Set links for external website if there is any
-    let hrefClass = 'href_location';
-    let link = '#';
-    if (req.body.link) {
-        hrefClass = '';
-        link = req.body.link;
-    }
-
-    //The new experience object
-    let newExperience = {
-        type: type,
-        year: year,
-        location: location,
-        position: position,
-        description: description,
-        typeImageUrl: typeImageUrl,
-        link: link,
-        hrefClass: hrefClass,
-    };
-
-    new Experience_DB(newExperience)
-        .save()
-        .then(res.redirect('/'))
-        .catch(err => { miscLog.error(err); });
-
 };
 
 // @The edit personal info. route
@@ -305,11 +310,15 @@ const bioe = async (req, res) => {
 const expe = async (req, res) => {
 
     try {
-        //Get the experience type
-        let { typeImageUrl, year, location, position, description, link: reqLink, } = req.body.typeImageUrl;
 
-        //Assign the correct image url base on the type
-        switch (typeImageUrl) {
+        // Get the experience type
+        let { type, year, location, position, description, link: reqLink, } = req.body;
+
+        // Experience icon type
+        let typeImageUrl = null;
+
+        // Assign the correct image url base on the type
+        switch (type) {
             case 'study':
                 typeImageUrl = 'img/svg/degree-5.svg';
                 break;
