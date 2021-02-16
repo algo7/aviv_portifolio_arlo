@@ -25,15 +25,17 @@ const bcryptHash = async (password) => {
 
 
 // Bcrypt Compare Functions
-const bcryptComp = (plainText, dbHash, cbBComp) => {
+const bcryptComp = async (plainText, dbHash) => {
 
-    // Compare the password
-    bcrypt.compare(plainText, dbHash)
-        .then(passwordMatch => cbBComp(null, passwordMatch))
-        .catch(err => {
-            cbBComp(new Error('GG'));
-            authLog.error(`Error Matching Password: ${err}`);
-        });
+    try {
+        // Compare the password
+        const passwordMatched = await bcrypt.compare(plainText, dbHash);
+        return passwordMatched;
+
+    } catch (err) {
+        // Rethrow the error
+        throw (`Error Matching Password: ${err}`);
+    }
 };
 
 

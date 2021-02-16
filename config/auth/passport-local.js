@@ -1,66 +1,66 @@
-//Dependencies
+// Dependencies
 const passport = require('passport');
 const { Strategy: LocalStrategy, } = require('passport-local');
 
-//Custom Modules
+// Custom Modules
 const { bcryptComp, } = require('./bcryptCustom');
 
-//Winston
+// Winston
 const authLog = require('../system/log').get('authLog');
 
-//Load model for User_DB
+// Load model for User_DB
 const { User_DB, } = require('../dataBase/mongoConnection');
 
 // Session
-//Take in user id => keep the session data small
+// Take in user id => keep the session data small
 passport.serializeUser((id, done) => {
     done(null, id);
 });
 
-//Deserialize when needed by querying the DB for full user details
-passport.deserializeUser((id, done) => {
-    User_DB.findById(id)
-        .then(user => {
-            done(null, user);
-        })
-        .catch(err => authLog.error(`Error Deserializing User: ${id}:` + ' ' + err));
+// Deserialize when needed by querying the DB for full user details
+passport.deserializeUser(async (id, done) => {
+
+    try {
+
+        const user = await User_DB.findById(id);
+        return done(null, user);
+
+    } catch (err) {
+        authLog.error(`Error Deserializing User: ${id}: ${err}`);
+    }
+
 });
 
 const passportLogic = (passport) => {
-    passport.use(new LocalStrategy({ usernameField: 'email', }, (email, password, done) => {
+    passport.use(new LocalStrategy({ usernameField: 'email', }, async (email, password, done) => {
 
-        //Lookup the user 
-        User_DB.findOne({ email: email, })
-            .then(userData => {
+        try {
 
-                //If the user does not exist
-                if (!userData) {
+            // Lookup the user 
+            const userData = await User_DB.findOne({ email: email, });
 
-                    return done(null, false);
+            // If the user does not exist
+            if (!userData) {
+                return done(null, false);
+                // If the user exists
+            }
 
-                    //If the user exists
-                }
+            // Compare the password
+            const passwordMatched = await bcryptComp(password, userData.password);
 
-                //Compare the password
-                bcryptComp(password, userData.password, (err, cbBComp) => {
+            // If the password does not match
+            if (!passwordMatched) {
+                return done(null, false);
+            }
 
-                    //Error handling
-                    if (err) {
-                        return done(err, false);
-                    }
+            // Return the user id
+            return done(null, userData.id);
 
-                    //If the password does not match
-                    if (!cbBComp) {
-                        return done(null, false);
-                    }
+        } catch (err) {
+            authLog.error(`Error Looking Up User: ${err}`);
+            return done(err, false);
+        }
 
-                    //Return user id
-                    return done(null, userData.id);
-
-                });
-
-            })
-            .catch(err => authLog.error(`Error Looking Up User: ${err}`));
     }));
 };
 
