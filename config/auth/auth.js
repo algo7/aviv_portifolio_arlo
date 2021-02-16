@@ -124,24 +124,25 @@ const resetFunc = async (updateObject, password, passwordC, id) => {
     }
 };
 
-//The update function
+// The update function
 const updateFunc = async (updateObject, id) => {
 
-    //The error array
+    // The error array
     let errArray = [];
 
-    //Update the db
-    User_DB
-        .updateOne({ _id: id, }, updateObject)
-        .lean()
-        .then(result => authLog.info(`Updated: ${result.nModified}`))
-        .catch(err => {
-            authLog.error(`Error Updating User: ${err}`);
-            errArray.push('Error updating user');
-        });
+    try {
 
-    //If there is any error
-    if (errArray.length !== 0) {
+        // Update the db
+        const result = await User_DB
+            .updateOne({ _id: id, }, updateObject)
+            .lean();
+
+        authLog.info(`Updated: ${result.nModified}`);
+
+
+    } catch (err) {
+        authLog.error(`Error Updating User: ${err}`);
+        errArray.push('Error updating user');
         return errArray;
     }
 };

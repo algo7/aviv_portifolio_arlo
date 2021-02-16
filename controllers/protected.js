@@ -289,7 +289,7 @@ const bioe = async (req, res) => {
         const result = await updateFunc(updateUser, req.user.id);
 
         // If the error array is there
-        if (result) {
+        if (result.length) {
             return res.send(result);
         }
 
@@ -301,6 +301,7 @@ const bioe = async (req, res) => {
 
 
 };
+
 
 // @The edit experience route
 // @route PUT /edit/:id
