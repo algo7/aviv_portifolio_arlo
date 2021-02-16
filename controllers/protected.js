@@ -235,63 +235,70 @@ const adda = (req, res) => {
 // @The edit personal info. route
 // @route PUT /bio
 // @access Private
-const bioe = (req, res) => {
+const bioe = async (req, res) => {
 
-    const { body, } = req;
+    try {
 
-    //The new user object
-    let updateUser = {
-        firstName: body.firstName,
-        lastName: body.lastName,
-        password: null,
-        email: body.email,
-        birthDay: body.birthDay,
-        birthName: body.birthName,
-        location: body.location,
-        phone: body.phone,
-        interests: body.interests,
-        study: body.study,
-        degree: body.degree,
-        bio: body.bio,
-    };
+        const { firstName, lastName, email,
+            location, phone, interests,
+            birthDay, study, bio,
+            birthName, degree, resetPass,
+            password, passwordC, } = req;
+
+        // The new user object
+        let updateUser = {
+            firstName: firstName,
+            lastName: lastName,
+            password: null,
+            email: email,
+            birthDay: birthDay,
+            birthName: birthName,
+            location: location,
+            phone: phone,
+            interests: interests,
+            study: study,
+            degree: degree,
+            bio: bio,
+        };
 
 
-    //Check if there is a picture
-    if (req.file) {
-        updateUser.profileImg = req.file.path.replace('assets/', '');
-    }
+        // Check if there is a picture
+        if (req.file) {
+            updateUser.profileImg = req.file.path.replace('assets/', '');
+        }
 
-    //If the reset switch is on
-    if (body.resetPass === 'yes') {
+        // If the reset switch is on
+        if (resetPass === 'yes') {
 
-        //Call the reset function
-        resetFunc(updateUser, body.password, body.passwordC, req.user.id)
-            .then(result => {
-                //If the error array is there
-                if (result) {
-                    res.send(result);
-                    return;
-                }
-                res.redirect('/');
-            })
-            .catch(err => { { miscLog.error(err); } });
-        return;
-    }
+            // Call the reset function
+            const result = await resetFunc(updateUser, password, passwordC, req.user.id);
 
-    //Remove the password field
-    delete updateUser.password;
-
-    //Call the update function
-    updateFunc(updateUser, req.user.id)
-        .then(result => {
-            //If the error array is there
+            // If the error array is there
             if (result) {
-                res.send(result);
-                return;
+                return res.send(result);
             }
-            res.redirect('/');
-        })
-        .catch(err => { { miscLog.error(err); } });
+
+            return res.redirect('/');
+
+        }
+
+        // Remove the password field
+        delete updateUser.password;
+
+        // Call the update function
+        const result = await updateFunc(updateUser, req.user.id);
+
+        // If the error array is there
+        if (result) {
+            return res.send(result);
+        }
+
+        res.redirect('/');
+
+    } catch (err) {
+        miscLog.error(err);
+    }
+
 
 };
 
