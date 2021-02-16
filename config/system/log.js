@@ -1,16 +1,34 @@
-//Dependencies
+// Dependencies
 const winston = require('winston');
 const path = require('path');
 
-//Global variables
+// Global variables
 let readableDate = () => {
     return new Date(Date.now()).toUTCString();
 };
 
-//Log store path
+// Log store path
 const logStore = path.join(__dirname, '../logs');
 
-//Custom Log Format
+
+// Log Level
+// { 
+//     error: 0, 
+//     warn: 1, 
+//     info: 2, 
+//     http: 3,
+//     verbose: 4, 
+//     debug: 5, 
+//     silly: 6 
+//   }
+let logLv = null;
+if (process.env.NODE_ENV === 'production') {
+    logLv = 'http';
+} else {
+    logLv = 'silly';
+}
+
+// Custom Log Format
 const logFormat = winston.format.combine(
     winston.format.colorize(),
     winston.format.timestamp(),
@@ -29,10 +47,10 @@ const logFormat = winston.format.combine(
 );
 
 
-//Container for Multiple Loggers
+// Container for Multiple Loggers
 const container = new winston.Container();
 
-//Logging Category for app.js
+// Logging Category for app.js
 container.add('appLog', {
     format: winston.format.combine(
         winston.format.label({ label: 'APP', }),
@@ -40,21 +58,21 @@ container.add('appLog', {
     ),
     transports: [
         new winston.transports
-            .Console({ level: 'silly', }),
+            .Console({ level: logLv, }),
         new winston.transports
             .File({ level: 'error', filename: `${logStore}/app_error.log`, })
     ],
     exceptionHandlers: [
         new winston.transports
-            .Console({ level: 'silly', }),
+            .Console({ level: logLv, }),
         new winston.transports
-            .File({ filename: `${logStore}/app_exception.log`, })
+            .File({ level: 'error', filename: `${logStore}/app_exception.log`, })
     ],
     exitOnError: true,
 
 });
 
-//Logging Category for mongoConnection.js
+// Logging Category for mongoConnection.js
 container.add('mongoLog', {
     format: winston.format.combine(
         winston.format.label({ label: 'MONGO', }),
@@ -62,20 +80,16 @@ container.add('mongoLog', {
     ),
     transports: [
         new winston.transports
-            .Console({ level: 'silly', }),
+            .Console({ level: logLv, }),
         new winston.transports
             .File({ level: 'error', filename: `${logStore}/mongo_error.log`, })
     ],
-    exceptionHandlers: [
 
-        new winston.transports
-            .File({ filename: `${logStore}/redis_exception.log`, })
-    ],
     exitOnError: true,
 
 });
 
-//Logging Category for redisConnection.js
+// Logging Category for redisConnection.js
 container.add('redisLog', {
     format: winston.format.combine(
         winston.format.label({ label: 'REDIS', }),
@@ -83,20 +97,17 @@ container.add('redisLog', {
     ),
     transports: [
         new winston.transports
-            .Console({ level: 'silly', }),
+            .Console({ level: logLv, }),
         new winston.transports
             .File({ level: 'error', filename: `${logStore}/redis_error.log`, })
     ],
-    exceptionHandlers: [
-        new winston.transports
-            .File({ filename: `${logStore}/redis_exception.log`, })
-    ],
+
     exitOnError: true,
 
 });
 
 
-//Logging Category for Auth-related tasks
+// Logging Category for Auth-related tasks
 container.add('authLog', {
     format: winston.format.combine(
         winston.format.label({ label: 'AUTH', }),
@@ -104,21 +115,17 @@ container.add('authLog', {
     ),
     transports: [
         new winston.transports
-            .Console({ level: 'silly', }),
+            .Console({ level: logLv, }),
         new winston.transports
             .File({ level: 'error', filename: `${logStore}/auth_error.log`, })
     ],
-    exceptionHandlers: [
 
-        new winston.transports
-            .File({ filename: `${logStore}/auth_exception.log`, })
-    ],
     exitOnError: true,
 
 });
 
 
-//Logging Category for Auth-related tasks
+// Logging Category for Auth-related tasks
 container.add('miscLog', {
     format: winston.format.combine(
         winston.format.label({ label: 'MISC', }),
@@ -126,34 +133,44 @@ container.add('miscLog', {
     ),
     transports: [
         new winston.transports
-            .Console({ level: 'silly', }),
+            .Console({ level: logLv, }),
         new winston.transports
             .File({ level: 'error', filename: `${logStore}/misc_error.log`, })
     ],
-    exceptionHandlers: [
-        new winston.transports
-            .File({ filename: `${logStore}/misc_exception.log`, })
-    ],
+
     exitOnError: true,
 
 });
 
 
-container.add('analysisLog', {
+// Logging Category for Analytics
+container.add('analyticsLog', {
     format: winston.format.combine(
         winston.format.label({ label: 'ANALYTICS', }),
         logFormat
     ),
     transports: [
         new winston.transports
-            .Console({ level: 'silly', }),
+            .Console({ level: logLv, }),
         new winston.transports
             .File({ level: 'info', filename: `${logStore}/analytics.log`, })
     ],
-    exceptionHandlers: [
 
+    exitOnError: true,
+
+});
+
+// Logging Category for Route Logger
+container.add('routeLog', {
+    format: winston.format.combine(
+        winston.format.label({ label: 'ROUTELOGGER', }),
+        logFormat
+    ),
+    transports: [
         new winston.transports
-            .File({ filename: `${logStore}/analytics_exception.log`, })
+            .Console({ level: logLv, }),
+        new winston.transports
+            .File({ level: 'http', filename: `${logStore}/routelogger.log`, })
     ],
     exitOnError: true,
 
