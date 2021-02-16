@@ -8,7 +8,7 @@ const { Quote_DB,
 
 //Winston
 const miscLog = require('../config/system/log').get('miscLog');
-const analysisLog = require('../config/system/log').get('analysisLog');
+const analyticsLog = require('../config/system/log').get('analyticsLog');
 
 // @desc The landing page
 // @route GET /
@@ -138,7 +138,7 @@ const analysis = (req, res) => {
     const { body, } = req;
     const ip = body.ip;
     const path = body.path;
-    analysisLog.info(`${ip} | ${path}`);
+    analyticsLog.info(`${ip} | ${path}`);
     res.sendStatus(200);
 };
 

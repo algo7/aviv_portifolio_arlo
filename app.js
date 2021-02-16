@@ -11,7 +11,7 @@ const methodOverride = require('method-override');
 const path = require('path');
 const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
-
+const { routeLogger, } = require('./config/middlewares/routeLogger');
 //Redis
 const { client, RedisStore, session, } =
     require('./config/dataBase/redisConnection');
@@ -22,21 +22,21 @@ const appLog = require('./config/system/log').get('appLog');
 //Global Constant
 const PORT = process.env.PORT || 3008;
 
-//Initialize the App
+// Initialize the App
 const app = express();
 
 // override with POST having ?_method=methodHere
 app.use(methodOverride('_'));
 
-//Compression Module
+// Compression Module
 app.use(compression({ level: 9, memLevel: 9, }));
 
-//Disable etag
+// Disable etag
 app.set('etag', false);
 app.set('x-powered-by', false);
 
-//Enable Caching
-app.enable('view cache');
+// Enable Caching
+// app.enable('view cache');
 
 // BodyParser Middleware
 app.use(BodyParser.urlencoded({
@@ -65,9 +65,9 @@ app.use(
         cookie: {
             // path: "/",
             httpOnly: true,
-            secure: Boolean(process.env.Cookie_Secure), //Set true only if the connection is made over https => otherwise it won't work
-            // maxAge: 900000 * 2 //30 mins
-            maxAge: 10800 * 1000, //3hrs
+            secure: Boolean(process.env.Cookie_Secure), // Set true only if the connection is made over https => otherwise it won't work
+            // maxAge: 900000 * 2 // 30 mins
+            maxAge: 10800 * 1000, // 3hrs
         },
     })
 );
@@ -75,17 +75,17 @@ app.use(
 // Required options if running behind a proxy and with cookie secure attribute = true
 app.set('trust proxy', 1);
 
-//Set Static Folder (Absolute)
+// Set Static Folder (Absolute)
 app.use('/', express.static(path.join(__dirname, '/assets')));
 
-//Handlebars Middleware
+// Handlebars Middleware
 app.engine('handlebars', exphbs({
     defaultLayout: 'main',
 }));
 
 app.set('view engine', 'handlebars');
 
-//Passport middleware
+// Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -101,27 +101,30 @@ app.all('*', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET');
-    //No cache
+    // No cache
     // res.setHeader('Cache-Control', 'max-age=120,private');
     res.setHeader('Cache-Control', 'no-cache');
     next();
 });
 
-//Load passport config
+// Load passport config
 passportLogic(passport);
 
-//Load Routes
+// Route Logger
+app.use(routeLogger);
+
+// Load Routes
 const main = require('./routes/main');
 const reg = require('./routes/register');
 
-//Use Routes
+// Use Routes
 app.use('/', main);
 app.use('/', reg);
 
-//Route Check/
+// Route Check/
 app.use(routeCheck(app));
 
-//Start the appg
+// Start the appg
 app.listen(PORT, () => {
     appLog.info(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
