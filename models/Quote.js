@@ -10,7 +10,7 @@ const Schema = mongoose.Schema;
 const quoteSchema = new Schema({
     type: {
         type: String,
-        enum: ['hotelier', 'developer'],
+        enum: ['hotelier', 'developer', 'martial_artist'],
         required: true,
     },
     text: {
