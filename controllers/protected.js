@@ -298,45 +298,53 @@ const bioe = (req, res) => {
 // @The edit experience route
 // @route PUT /edit/:id
 // @access Private
-const expe = (req, res) => {
+const expe = async (req, res) => {
 
-    //Get the experience type
-    let typeImageUrl = req.body.typeImageUrl;
+    try {
+        //Get the experience type
+        let { typeImageUrl, year, location, position, description, link: reqLink, } = req.body.typeImageUrl;
 
-    //Assign the correct image url base on the type
-    switch (typeImageUrl) {
-        case 'study':
-            typeImageUrl = 'img/svg/degree-5.svg';
-            break;
-        case 'work':
-            typeImageUrl = 'img/svg/portfolio.svg';
-            break;
-        default:
-            res.send('Invalid Experience Type!');
-            return;
+        //Assign the correct image url base on the type
+        switch (typeImageUrl) {
+            case 'study':
+                typeImageUrl = 'img/svg/degree-5.svg';
+                break;
+            case 'work':
+                typeImageUrl = 'img/svg/portfolio.svg';
+                break;
+            default:
+                res.status(400).send('Invalid Experience Type!');
+                return;
+        }
+
+        //Set links for external website if there is any
+        let hrefClass = 'href_location';
+        let link = '#';
+        if (reqLink) {
+            hrefClass = '';
+            link = reqLink;
+        }
+
+        //Update the db
+        await Experience_DB
+            .updateOne({ _id: req.params.id, }, {
+                year: year,
+                location: location,
+                position: position,
+                description: description,
+                typeImageUrl: typeImageUrl,
+                link: link,
+                hrefClass: hrefClass,
+            });
+
+        res.redirect('/edit');
+
+    } catch (err) {
+        res.status(500).send('Error Editing Experience!');
+        miscLog.error(err);
     }
 
-    //Set links for external website if there is any
-    let hrefClass = 'href_location';
-    let link = '#';
-    if (req.body.link) {
-        hrefClass = '';
-        link = req.body.link;
-    }
 
-    //Update the db
-    Experience_DB
-        .updateOne({ _id: req.params.id, }, {
-            year: req.body.year,
-            location: req.body.location,
-            position: req.body.position,
-            description: req.body.description,
-            typeImageUrl: typeImageUrl,
-            link: link,
-            hrefClass: hrefClass,
-        })
-        .then(res.redirect('/edit'))
-        .catch(err => { miscLog.error(err); });
 };
 
 // @The delete experience route
