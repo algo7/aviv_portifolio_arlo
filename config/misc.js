@@ -3,38 +3,57 @@ const multer = require('multer');
 const crypto = require('crypto');
 const miscLog = require('./system/log').get('miscLog');
 
-// Experience distribution function
+/**
+* Experience distribution function for displaying the experience on the index page
+* @param {Array<Object>} experience - An array of mongodb document
+* @returns {Array<Object>} An array with 2 elements, each of them contains an equal amount of mongodb document if even number of inputs is given
+*/
 const expDistro = (experience) => {
 
-    const expLength = experience.length;
-    const halfPoint = expLength / 2;
-    const roundedHalfPoint = Math.round(expLength / 2);
-    const rightSide = experience.slice(roundedHalfPoint);
-    const sliceEndIndex = expLength - roundedHalfPoint;
+    try {
 
-    // If the rounded half point != the original half point
-    // 2 Array are not of the same length
-    if (roundedHalfPoint != halfPoint) {
-        const leftSide = experience.slice(0, sliceEndIndex + 1);
-        return [leftSide, rightSide];
+        const expLength = experience.length;
+        const halfPoint = expLength / 2;
+        const roundedHalfPoint = Math.round(expLength / 2);
+        const rightSide = experience.slice(roundedHalfPoint);
+        const sliceEndIndex = expLength - roundedHalfPoint;
 
-        // 2 Array are of the same length
-    } else {
-        const leftSide = experience.slice(0, sliceEndIndex);
-        return [leftSide, rightSide];
+        // If the rounded half point != the original half point
+        // 2 Array are not of the same length
+        if (roundedHalfPoint != halfPoint) {
+            const leftSide = experience.slice(0, sliceEndIndex + 1);
+            return [leftSide, rightSide];
+
+            // 2 Array are of the same length
+        } else {
+            const leftSide = experience.slice(0, sliceEndIndex);
+            return [leftSide, rightSide];
+        }
+    } catch (err) {
+        // Rethrow the error
+        throw (`Error distributing the experience ${err}`);
     }
 
 };
 
-// SHA1 hash function for file name
+/**
+* SHA1 hash function for the file name
+* @param {String} fileName - The name of the file to be saved
+* @param {String} type - The usage type of the file (quote or profile pig)
+* @returns {String} the SHA1 hash of the file name
+*/
 const hashFunc = (fileName, type) => {
-    const hash = crypto.createHash('sha1');
-    hash.update(fileName);
-    const sha1sum = hash.digest('hex');
-    miscLog.info(`${type} picture uploaded ${sha1sum}`);
-    return sha1sum;
+    try {
+        const hash = crypto.createHash('sha1');
+        hash.update(fileName + Date.now());
+        const sha1sum = hash.digest('hex');
+        miscLog.info(`${type} picture uploaded ${sha1sum}`);
+        return sha1sum;
+    } catch (err) {
+        // Rethrow the error
+        throw (`Error Hashing the File Name: ${err}`);
+    }
 };
-
 
 // Multer DiskStorage Config
 const diskStorage = multer.diskStorage({

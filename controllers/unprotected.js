@@ -16,7 +16,7 @@ const analysisLog = require('../config/system/log').get('analysisLog');
 const landing = async (req, res) => {
 
     try {
-        //Login status
+        //Login Status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
@@ -65,7 +65,7 @@ const index = async (req, res) => {
             section = 'developer';
         }
 
-        // Login status
+        // Login Status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
@@ -103,6 +103,8 @@ const index = async (req, res) => {
                 .lean()
         ]);
 
+        const expLeft = expDistro(experience)[0];
+        const expRight = expDistro(experience)[1];
 
         // Render the page
         res.render(pageRender, {
@@ -110,8 +112,8 @@ const index = async (req, res) => {
             author: quote.author,
             description: quote.description,
             imgUrl: quote.imgUrl,
-            experienceLeft: expDistro(experience)[0],
-            experienceRight: expDistro(experience)[1],
+            experienceLeft: expLeft,
+            experienceRight: expRight,
             user: user,
             auth: loginStatus,
         });

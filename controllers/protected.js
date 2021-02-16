@@ -7,7 +7,7 @@ const { Quote_DB,
     Experience_DB,
     User_DB, } = require('../config/dataBase/mongoConnection');
 
-//Winston
+// Winston
 const miscLog = require('../config/system/log').get('miscLog');
 
 // @desc The add quote page
@@ -29,7 +29,7 @@ const quote = async (req, res) => {
 
 
 // @desc The edit experience page
-// @route GET /edit/:section
+// @route GET /edit
 // @access Private
 const edit = async (req, res) => {
 
@@ -52,8 +52,6 @@ const edit = async (req, res) => {
             queryObj = { section: section.toLowerCase(), };
         }
 
-
-
         // Login status
         let loginStatus = false;
         if (req.user) {
@@ -66,15 +64,19 @@ const edit = async (req, res) => {
             .sort({ date: -1, })
             .lean();
 
+        const expLeft = expDistro(experience)[0];
+        const expRight = expDistro(experience)[1];
 
         res.render('experience/edit', {
             layout: 'id_based',
-            experienceLeft: expDistro(experience)[0],
-            experienceRight: expDistro(experience)[1],
+            experienceLeft: expLeft,
+            experienceRight: expRight,
             filterSelected: filterSelected,
             auth: loginStatus,
         });
+
     } catch (err) {
+        res.status(500).send('Error Displaying Page');
         miscLog.error(err);
     }
 };
@@ -84,13 +86,13 @@ const edit = async (req, res) => {
 // @access Private
 const add = (req, res) => {
 
-    //Login status
+    // Login status
     let loginStatus = false;
     if (req.user) {
         loginStatus = true;
     }
 
-    //Render the page
+    // Render the page
     res.render('experience/add', {
         layout: 'id_based',
         auth: loginStatus,
@@ -140,26 +142,26 @@ const editie = async (req, res) => {
 // @route GET /bio
 // @access Private
 const bio = async (req, res) => {
+
     try {
-        //Login status
+        // Login status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
         }
 
-        //Get user
+        // Get the user
         let user = await User_DB
             .findOne({}, { _id: 0, password: 0, })
             .lean();
 
-
-
-        //Render the page
+        // Render the page
         res.render('bio/bio', {
             layout: 'id_based',
             user: user,
             auth: loginStatus,
         });
+
     } catch (err) {
         res.status(500).send('Error Loading Bio');
         miscLog.error(err);
@@ -279,7 +281,6 @@ const bioe = async (req, res) => {
         let updateUser = {
             firstName: firstName,
             lastName: lastName,
-            password: null,
             email: email,
             birthDay: birthDay,
             birthName: birthName,
@@ -301,23 +302,13 @@ const bioe = async (req, res) => {
         if (resetPass === 'yes') {
 
             // Call the reset function
-            const result = await resetFunc(updateUser, password, passwordC, req.user.id);
-
-            // If the error array is there
-            if (result) {
-                return res.send(result);
-            }
+            await resetFunc(updateUser, password, passwordC, req.user.id);
 
             return res.redirect('/');
-
         }
-
-        // Remove the password field
-        delete updateUser.password;
 
         // Call the update function
         await updateFunc(updateUser, req.user.id);
-
 
         res.redirect('/');
 
