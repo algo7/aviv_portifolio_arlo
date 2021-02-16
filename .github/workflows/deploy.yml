@@ -1,7 +1,9 @@
 name: Deployment
 
-on: [push]
-
+on:
+  push:
+    branches:
+      - main
 jobs:
   # Arbitrary Job Section Name (Won't be Displayed)
   deploy:
