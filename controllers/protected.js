@@ -82,7 +82,7 @@ const edit = async (req, res) => {
 // @desc Add experience page
 // @route GET /add
 // @access Private
-const add = async (req, res) => {
+const add = (req, res) => {
 
     //Login status
     let loginStatus = false;
@@ -130,8 +130,8 @@ const editie = async (req, res) => {
         });
 
     } catch (err) {
-        miscLog.error(`Error Rendering the Edit Experience Page: ${err}`);
         res.status(500).send('Error Rendering the Edit Experience Page');
+        miscLog.error(`Error Rendering the Edit Experience Page: ${err}`);
     }
 
 };
@@ -161,6 +161,7 @@ const bio = async (req, res) => {
             auth: loginStatus,
         });
     } catch (err) {
+        res.status(500).send('Error Loading Bio');
         miscLog.error(err);
     }
 };
@@ -168,7 +169,7 @@ const bio = async (req, res) => {
 // @The add quote route
 // @route POST /quote
 // @access Private
-const quotea = (req, res) => {
+const quotea = async (req, res) => {
 
     try {
 
@@ -191,12 +192,12 @@ const quotea = (req, res) => {
         };
 
         // Save the quote
-        new Quote_DB(newQuote)
-            .save()
-            .then(res.redirect('/'));
+        await Quote_DB.create(newQuote);
 
 
+        res.redirect('/');
     } catch (err) {
+        res.status(500).send('Error Adding Quote');
         miscLog.error(err);
     }
 
@@ -210,7 +211,9 @@ const adda = async (req, res) => {
     try {
 
         // Extract data from the request body
-        const { type, year, location, position, description, link: reqLink, } = req.body;
+        const { type, year, location,
+            position, description, link: reqLink,
+            section, } = req.body;
 
         // Experience icon type
         let typeImageUrl = null;
@@ -239,6 +242,7 @@ const adda = async (req, res) => {
         // The new experience object
         const newExperience = {
             type: type,
+            section: section,
             year: year,
             location: location,
             position: position,
@@ -333,8 +337,9 @@ const expe = async (req, res) => {
 
     try {
 
-        // Get the experience type
-        let { type, year, location, position, description, link: reqLink, } = req.body;
+        const { type, year, location,
+            position, description, link: reqLink,
+            section, } = req.body;
 
         // Experience icon type
         let typeImageUrl = null;
@@ -364,6 +369,7 @@ const expe = async (req, res) => {
         await Experience_DB
             .updateOne({ _id: req.params.id, }, {
                 year: year,
+                section: section,
                 location: location,
                 position: position,
                 description: description,
