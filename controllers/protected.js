@@ -286,17 +286,13 @@ const bioe = async (req, res) => {
         delete updateUser.password;
 
         // Call the update function
-        const result = await updateFunc(updateUser, req.user.id);
+        await updateFunc(updateUser, req.user.id);
 
-        // If the error array is there
-        if (result.length) {
-            return res.send(result);
-        }
 
         res.redirect('/');
 
     } catch (err) {
-        miscLog.error(err);
+        miscLog.error(`Error Editing personal info.${err}`);
     }
 
 

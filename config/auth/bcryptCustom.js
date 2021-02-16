@@ -17,7 +17,8 @@ const bcryptHash = async (password) => {
         return hash;
 
     } catch (err) {
-        authLog.error(`Error Hashing the Password: ${err}`);
+        // Rethrow the error
+        throw (`Error Hashing the Password: ${err}`);
     }
 
 };

@@ -104,21 +104,17 @@ const resetFunc = async (updateObject, password, passwordC, id) => {
             .updateOne({ _id: id, }, updateObject)
             .lean();
 
-
         authLog.info(`Updated: ${result.nModified}`);
 
     } catch (err) {
-
-        authLog.error(`Error Updating User: ${err}`);
+        // Rethrow the error
+        throw (`Error Updating User: ${err}`);
     }
 
 };
 
 // The update function
 const updateFunc = async (updateObject, id) => {
-
-    // The error array
-    let errArray = [];
 
     try {
 
@@ -131,9 +127,8 @@ const updateFunc = async (updateObject, id) => {
 
 
     } catch (err) {
-        authLog.error(`Error Updating User: ${err}`);
-        errArray.push('Error updating user');
-        return errArray;
+        // Rethrow the error
+        throw (`Error Updating User: ${err}`);
     }
 };
 
