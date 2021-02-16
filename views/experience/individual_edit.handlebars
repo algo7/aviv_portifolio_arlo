@@ -11,9 +11,7 @@
 
                     {{!-- Form --}}
                     <form action="/edit/{{experience._id}}?_=put" method="post" class="contact_form" id="contact_form">
-                        <div class="returnmessage"
-                            data-success="Your message has been received, We will contact you soon.">
-                        </div>
+
                         <div class="empty_notice"><span>Please Fill Required Fields</span></div>
                         <div class="first">
 
@@ -49,10 +47,11 @@
                                 </li>
                                 <li>
                                     <label class="selection" for="portfolio_section">Portfolio Section: </label>
-                                    <select id="portfolio_section" name="portfolio_section">
+                                    <select id="portfolio_section" name="section">
                                         <option selected="selected">{{experience.section}}</option>
                                         <option value="hotelier">Hotelier</option>
                                         <option value="developer">Developer</option>
+                                        <option value="martial_artist">Martial Artist</option>
                                     </select>
                                 </li>
 

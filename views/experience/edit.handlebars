@@ -5,6 +5,19 @@
             <div class="arlo_title_holder">
                 <span>Working Process</span>
                 <h3>Experience</h3>
+                {{!-- Experience type filter --}}
+                <label>Filter:</label>
+                <form action="/edit" method="get" class="sec_select" id="sec_select">
+                    <select id="experience_section" name="section"
+                        onclick="document.getElementById('sec_select').submit();">
+                        <option selected="selected">{{filterSelected}}</option>
+                        <option value="all">All</option>
+                        <option value="Developer">Developer</option>
+                        <option value="Hotelier">Hotelier</option>
+                        <option value="Martial Artist">Martial Artist</option>
+                    </select>
+                </form>
+
             </div>
 
             <div class="timeline_inner">

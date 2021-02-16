@@ -15,7 +15,7 @@ const miscLog = require('../config/system/log').get('miscLog');
 // @access Private
 const quote = async (req, res) => {
 
-    //Login Status
+    //Login status
     let loginStatus = false;
     if (req.user) {
         loginStatus = true;
@@ -27,21 +27,42 @@ const quote = async (req, res) => {
 
 };
 
+
 // @desc The edit experience page
-// @route GET /edit
+// @route GET /edit/:section
 // @access Private
 const edit = async (req, res) => {
 
     try {
-        //Login Status
+
+        const { section, } = req.query;
+
+        // Experience edit page filter
+        let queryObj = null;
+        let filterSelected = null;
+
+        if (!section ||
+            section !== 'Hotelier' &&
+            section !== 'Developer' &&
+            section !== 'Martial Artist') {
+            filterSelected = 'All';
+            queryObj = {};
+        } else {
+            filterSelected = section;
+            queryObj = { section: section.toLowerCase(), };
+        }
+
+
+
+        // Login status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
         }
 
-        //Get experience
+        // Get experience
         let experience = await Experience_DB
-            .find({})
+            .find(queryObj)
             .sort({ date: -1, })
             .lean();
 
@@ -50,6 +71,7 @@ const edit = async (req, res) => {
             layout: 'id_based',
             experienceLeft: expDistro(experience)[0],
             experienceRight: expDistro(experience)[1],
+            filterSelected: filterSelected,
             auth: loginStatus,
         });
     } catch (err) {
@@ -60,9 +82,9 @@ const edit = async (req, res) => {
 // @desc Add experience page
 // @route GET /add
 // @access Private
-const add = async (req, res) => {
+const add = (req, res) => {
 
-    //Login Status
+    //Login status
     let loginStatus = false;
     if (req.user) {
         loginStatus = true;
@@ -83,7 +105,7 @@ const editie = async (req, res) => {
 
     try {
 
-        // Login Status
+        // Login status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
@@ -108,8 +130,8 @@ const editie = async (req, res) => {
         });
 
     } catch (err) {
-        miscLog.error(`Error Rendering the Edit Experience Page: ${err}`);
         res.status(500).send('Error Rendering the Edit Experience Page');
+        miscLog.error(`Error Rendering the Edit Experience Page: ${err}`);
     }
 
 };
@@ -119,7 +141,7 @@ const editie = async (req, res) => {
 // @access Private
 const bio = async (req, res) => {
     try {
-        //Login Status
+        //Login status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
@@ -139,6 +161,7 @@ const bio = async (req, res) => {
             auth: loginStatus,
         });
     } catch (err) {
+        res.status(500).send('Error Loading Bio');
         miscLog.error(err);
     }
 };
@@ -146,7 +169,7 @@ const bio = async (req, res) => {
 // @The add quote route
 // @route POST /quote
 // @access Private
-const quotea = (req, res) => {
+const quotea = async (req, res) => {
 
     try {
 
@@ -169,12 +192,12 @@ const quotea = (req, res) => {
         };
 
         // Save the quote
-        new Quote_DB(newQuote)
-            .save()
-            .then(res.redirect('/'));
+        await Quote_DB.create(newQuote);
 
 
+        res.redirect('/');
     } catch (err) {
+        res.status(500).send('Error Adding Quote');
         miscLog.error(err);
     }
 
@@ -188,7 +211,9 @@ const adda = async (req, res) => {
     try {
 
         // Extract data from the request body
-        const { type, year, location, position, description, link: reqLink, } = req.body;
+        const { type, year, location,
+            position, description, link: reqLink,
+            section, } = req.body;
 
         // Experience icon type
         let typeImageUrl = null;
@@ -217,6 +242,7 @@ const adda = async (req, res) => {
         // The new experience object
         const newExperience = {
             type: type,
+            section: section,
             year: year,
             location: location,
             position: position,
@@ -303,7 +329,6 @@ const bioe = async (req, res) => {
 
 };
 
-
 // @The edit experience route
 // @route PUT /edit/:id
 // @access Private
@@ -311,8 +336,9 @@ const expe = async (req, res) => {
 
     try {
 
-        // Get the experience type
-        let { type, year, location, position, description, link: reqLink, } = req.body;
+        const { type, year, location,
+            position, description, link: reqLink,
+            section, } = req.body;
 
         // Experience icon type
         let typeImageUrl = null;
@@ -342,6 +368,7 @@ const expe = async (req, res) => {
         await Experience_DB
             .updateOne({ _id: req.params.id, }, {
                 year: year,
+                section: section,
                 location: location,
                 position: position,
                 description: description,

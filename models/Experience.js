@@ -13,7 +13,7 @@ const experienceSchema = new Schema({
     },
     section: {
         type: String,
-        enum: ['hotelier', 'developer', 'martial_artist'],
+        enum: ['hotelier', 'developer', 'martial artist'],
         require: true,
     },
     year: {

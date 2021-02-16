@@ -16,7 +16,7 @@ const analysisLog = require('../config/system/log').get('analysisLog');
 const landing = async (req, res) => {
 
     try {
-        //Login Status
+        //Login status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
@@ -43,29 +43,29 @@ const landing = async (req, res) => {
 // @access Public
 const index = async (req, res) => {
 
-    // Set page to be rendered
-    let pageRender = null;
-
-    // Set quote type
-    let quoteType = null;
-
-    // Set experience type
-    let section = null;
-
-    // Check path
-    if (req.path === '/hotelier') {
-        pageRender = 'main/hotelier';
-        quoteType = 'hotelier';
-        section = 'hotelier';
-    } else {
-        pageRender = 'main/developer';
-        quoteType = 'developer';
-        section = 'developer';
-    }
-
     try {
 
-        // Login Status
+        // Set page to be rendered
+        let pageRender = null;
+
+        // Set quote type
+        let quoteType = null;
+
+        // Set experience type
+        let section = null;
+
+        // Check path
+        if (req.path === '/hotelier') {
+            pageRender = 'main/hotelier';
+            quoteType = 'hotelier';
+            section = 'hotelier';
+        } else {
+            pageRender = 'main/developer';
+            quoteType = 'developer';
+            section = 'developer';
+        }
+
+        // Login status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
@@ -117,9 +117,8 @@ const index = async (req, res) => {
         });
 
     } catch (err) {
-
-        miscLog.error(err);
-
+        res.status(500).send('Error Displaying Page');
+        miscLog.error(`Error Displaying /index Page ${err}`);
     }
 };
 
