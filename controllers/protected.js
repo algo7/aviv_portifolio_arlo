@@ -196,10 +196,10 @@ const adda = async (req, res) => {
         // Assign the correct image url base on the type
         switch (type) {
             case 'study':
-                typeImageUrl = 'img/svg/degree-5.svg';
+                typeImageUrl = 'img/svg/degree.svg';
                 break;
             case 'work':
-                typeImageUrl = 'img/svg/portfolio.svg';
+                typeImageUrl = 'img/svg/work.svg';
                 break;
             default:
                 res.send('Invalid Experience Type!');
@@ -320,10 +320,10 @@ const expe = async (req, res) => {
         // Assign the correct image url base on the type
         switch (type) {
             case 'study':
-                typeImageUrl = 'img/svg/degree-5.svg';
+                typeImageUrl = 'img/svg/degree.svg';
                 break;
             case 'work':
-                typeImageUrl = 'img/svg/portfolio.svg';
+                typeImageUrl = 'img/svg/work.svg';
                 break;
             default:
                 res.status(400).send('Invalid Experience Type!');
