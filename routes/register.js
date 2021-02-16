@@ -19,6 +19,10 @@ router.use(emptyInputCheck({
 //GET Routes
 //Login
 router.get('/login', (req, res) => {
+
+    if (req.user) {
+        return res.redirect('/');
+    }
     res.render('auth/login', { layout: 'id_based', });
 });
 
