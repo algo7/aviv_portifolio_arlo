@@ -20,9 +20,11 @@ router.use(emptyInputCheck({
 //Login
 router.get('/login', (req, res) => {
 
+    // Redirect the user to the home page if the user is already logged in
     if (req.user) {
         return res.redirect('/');
     }
+
     res.render('auth/login', { layout: 'id_based', });
 });
 
