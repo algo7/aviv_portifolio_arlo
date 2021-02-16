@@ -350,11 +350,20 @@ const expe = async (req, res) => {
 // @The delete experience route
 // @route DELETE /delete/:id
 // @access Private
-const expd = (req, res) => {
-    //Remove the experience
-    Experience_DB
-        .deleteOne({ _id: req.params.id, })
-        .then(res.redirect('/'));
+const expd = async (req, res) => {
+
+    try {
+        // Remove the experience
+        await Experience_DB
+            .deleteOne({ _id: req.params.id, });
+
+        res.redirect('/');
+
+    } catch (err) {
+
+        res.status(500).send('Error Deleting Experience!');
+        miscLog.error(err);
+    }
 };
 
 module.exports = { quotea, quote, edit, editie, add, adda, bio, bioe, expe, expd, };
