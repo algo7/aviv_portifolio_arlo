@@ -50,61 +50,61 @@ const index = async (req, res) => {
     let quoteType = null;
 
     // Set experience type
-    let expType = null;
+    let section = null;
 
     // Check path
     if (req.path === '/hotelier') {
         pageRender = 'main/hotelier';
         quoteType = 'hotelier';
-        expType = 'hotelier';
+        section = 'hotelier';
     } else {
         pageRender = 'main/developer';
         quoteType = 'developer';
-        expType = 'developer';
+        section = 'developer';
     }
 
     try {
 
-        //Login Status
+        // Login Status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
         }
 
-        //Get quotes authors
+        // Get quotes authors
         let quoteAuthors = await Quote_DB
             .find({ type: quoteType, })
             .lean();
 
-        //The authors array
+        // The authors array
         const authorsArray = quoteAuthors.map(authors => authors.author);
 
-        //Pick a random index from the authorsArray
+        // Pick a random index from the authorsArray
         let randomAuthor = Math.floor(Math.random() * authorsArray.length);
 
 
         const [quote, experience, user] = await Promise.all([
-            //Pick a quote from a random author
+            // Pick a quote from a random author
             Quote_DB
                 .findOne({ author: authorsArray[randomAuthor], })
                 .lean(),
 
 
-            //Get experience
+            // Get experience
             Experience_DB
-                .find({ type: expType, })
+                .find({ section: section, })
                 .sort({ date: -1, })
                 .lean(),
 
 
-            //Get user info (to display)
+            // Get user info (to display)
             User_DB
                 .findOne({}, { _id: 0, password: 0, })
                 .lean()
         ]);
 
 
-        //Render the page
+        // Render the page
         res.render(pageRender, {
             quote: quote.text,
             author: quote.author,

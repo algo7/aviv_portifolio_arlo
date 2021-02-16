@@ -41,9 +41,18 @@
 
                                 <li>
                                     <label class="selection" for="experience_type">Experience Type: </label>
-                                    <select id="experience_type" name="typeImageUrl">
+                                    <select id="experience_type" name="type">
+                                        <option selected="selected">{{experience.type}}</option>
                                         <option value="study">Study</option>
                                         <option value="work">Work</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <label class="selection" for="portfolio_section">Portfolio Section: </label>
+                                    <select id="portfolio_section" name="portfolio_section">
+                                        <option selected="selected">{{experience.section}}</option>
+                                        <option value="hotelier">Hotelier</option>
+                                        <option value="developer">Developer</option>
                                     </select>
                                 </li>
 

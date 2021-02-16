@@ -83,26 +83,24 @@ const editie = async (req, res) => {
 
     try {
 
-        //Login Status
+        // Login Status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
         }
 
-        //Check for valid input
+        // Check for valid input
         if ((req.params.id).length !== 24) {
-            res.redirect('/');
-            return;
+            return res.redirect('/');
         }
 
-        //Get experience
-        let experience = await Experience_DB
+        // Get experience
+        const experience = await Experience_DB
             .findById(req.params.id)
             .sort({ date: -1, })
             .lean();
 
-
-        //Render the page
+        // Render the page
         res.render('experience/individual_edit', {
             layout: 'id_based',
             experience: experience,
@@ -110,7 +108,8 @@ const editie = async (req, res) => {
         });
 
     } catch (err) {
-        miscLog.error(err);
+        miscLog.error(`Error Rendering the Edit Experience Page: ${err}`);
+        res.status(500).send('Error Rendering the Edit Experience Page');
     }
 
 };
@@ -184,169 +183,200 @@ const quotea = (req, res) => {
 // @The add experience route
 // @route POST /add
 // @access Private
-const adda = (req, res) => {
+const adda = async (req, res) => {
 
-    //Get the experience type (for the icon)
-    let typeImageUrl = req.body.typeImageUrl;
+    try {
 
-    // Extract data from the request body
-    const { type, year, location, position, description, } = req.body;
+        // Extract data from the request body
+        const { type, year, location, position, description, link: reqLink, } = req.body;
 
-    //Assign the correct image url base on the type
-    switch (typeImageUrl) {
-        case 'study':
-            typeImageUrl = 'img/svg/degree-5.svg';
-            break;
-        case 'work':
-            typeImageUrl = 'img/svg/portfolio.svg';
-            break;
-        default:
-            res.send('Invalid Experience Type!');
-            return;
+        // Experience icon type
+        let typeImageUrl = null;
+
+        // Assign the correct image url base on the type
+        switch (type) {
+            case 'study':
+                typeImageUrl = 'img/svg/degree.svg';
+                break;
+            case 'work':
+                typeImageUrl = 'img/svg/work.svg';
+                break;
+            default:
+                res.send('Invalid Experience Type!');
+                return;
+        }
+
+        // Set links for external website if there is any
+        let hrefClass = 'href_location';
+        let link = '#';
+        if (reqLink) {
+            hrefClass = '';
+            link = reqLink;
+        }
+
+        // The new experience object
+        const newExperience = {
+            type: type,
+            year: year,
+            location: location,
+            position: position,
+            description: description,
+            typeImageUrl: typeImageUrl,
+            link: link,
+            hrefClass: hrefClass,
+        };
+
+        await Experience_DB.create(newExperience);
+
+        res.redirect('/');
+
+    } catch (err) {
+        res.status(500).send('Error Adding Experience!');
+        miscLog.error(err);
     }
-
-    //Set links for external website if there is any
-    let hrefClass = 'href_location';
-    let link = '#';
-    if (req.body.link) {
-        hrefClass = '';
-        link = req.body.link;
-    }
-
-    //The new experience object
-    let newExperience = {
-        type: type,
-        year: year,
-        location: location,
-        position: position,
-        description: description,
-        typeImageUrl: typeImageUrl,
-        link: link,
-        hrefClass: hrefClass,
-    };
-
-    new Experience_DB(newExperience)
-        .save()
-        .then(res.redirect('/'))
-        .catch(err => { miscLog.error(err); });
-
 };
 
 // @The edit personal info. route
 // @route PUT /bio
 // @access Private
-const bioe = (req, res) => {
+const bioe = async (req, res) => {
 
-    const { body, } = req;
+    try {
 
-    //The new user object
-    let updateUser = {
-        firstName: body.firstName,
-        lastName: body.lastName,
-        password: null,
-        email: body.email,
-        birthDay: body.birthDay,
-        birthName: body.birthName,
-        location: body.location,
-        phone: body.phone,
-        interests: body.interests,
-        study: body.study,
-        degree: body.degree,
-        bio: body.bio,
-    };
+        const { firstName, lastName, email,
+            location, phone, interests,
+            birthDay, study, bio,
+            birthName, degree, resetPass,
+            password, passwordC, } = req;
+
+        // The new user object
+        let updateUser = {
+            firstName: firstName,
+            lastName: lastName,
+            password: null,
+            email: email,
+            birthDay: birthDay,
+            birthName: birthName,
+            location: location,
+            phone: phone,
+            interests: interests,
+            study: study,
+            degree: degree,
+            bio: bio,
+        };
 
 
-    //Check if there is a picture
-    if (req.file) {
-        updateUser.profileImg = req.file.path.replace('assets/', '');
-    }
+        // Check if there is a picture
+        if (req.file) {
+            updateUser.profileImg = req.file.path.replace('assets/', '');
+        }
 
-    //If the reset switch is on
-    if (body.resetPass === 'yes') {
+        // If the reset switch is on
+        if (resetPass === 'yes') {
 
-        //Call the reset function
-        resetFunc(updateUser, body.password, body.passwordC, req.user.id)
-            .then(result => {
-                //If the error array is there
-                if (result) {
-                    res.send(result);
-                    return;
-                }
-                res.redirect('/');
-            })
-            .catch(err => { { miscLog.error(err); } });
-        return;
-    }
+            // Call the reset function
+            const result = await resetFunc(updateUser, password, passwordC, req.user.id);
 
-    //Remove the password field
-    delete updateUser.password;
-
-    //Call the update function
-    updateFunc(updateUser, req.user.id)
-        .then(result => {
-            //If the error array is there
+            // If the error array is there
             if (result) {
-                res.send(result);
-                return;
+                return res.send(result);
             }
-            res.redirect('/');
-        })
-        .catch(err => { { miscLog.error(err); } });
+
+            return res.redirect('/');
+
+        }
+
+        // Remove the password field
+        delete updateUser.password;
+
+        // Call the update function
+        await updateFunc(updateUser, req.user.id);
+
+
+        res.redirect('/');
+
+    } catch (err) {
+        miscLog.error(`Error Editing personal info.${err}`);
+        res.status(500).send('Error Editing personal info.');
+    }
+
 
 };
+
 
 // @The edit experience route
 // @route PUT /edit/:id
 // @access Private
-const expe = (req, res) => {
+const expe = async (req, res) => {
 
-    //Get the experience type
-    let typeImageUrl = req.body.typeImageUrl;
+    try {
 
-    //Assign the correct image url base on the type
-    switch (typeImageUrl) {
-        case 'study':
-            typeImageUrl = 'img/svg/degree-5.svg';
-            break;
-        case 'work':
-            typeImageUrl = 'img/svg/portfolio.svg';
-            break;
-        default:
-            res.send('Invalid Experience Type!');
-            return;
+        // Get the experience type
+        let { type, year, location, position, description, link: reqLink, } = req.body;
+
+        // Experience icon type
+        let typeImageUrl = null;
+
+        // Assign the correct image url base on the type
+        switch (type) {
+            case 'study':
+                typeImageUrl = 'img/svg/degree.svg';
+                break;
+            case 'work':
+                typeImageUrl = 'img/svg/work.svg';
+                break;
+            default:
+                res.status(400).send('Invalid Experience Type!');
+                return;
+        }
+
+        //Set links for external website if there is any
+        let hrefClass = 'href_location';
+        let link = '#';
+        if (reqLink) {
+            hrefClass = '';
+            link = reqLink;
+        }
+
+        //Update the db
+        await Experience_DB
+            .updateOne({ _id: req.params.id, }, {
+                year: year,
+                location: location,
+                position: position,
+                description: description,
+                typeImageUrl: typeImageUrl,
+                link: link,
+                hrefClass: hrefClass,
+            });
+
+        res.redirect('/edit');
+
+    } catch (err) {
+        res.status(500).send('Error Editing Experience!');
+        miscLog.error(err);
     }
 
-    //Set links for external website if there is any
-    let hrefClass = 'href_location';
-    let link = '#';
-    if (req.body.link) {
-        hrefClass = '';
-        link = req.body.link;
-    }
 
-    //Update the db
-    Experience_DB
-        .updateOne({ _id: req.params.id, }, {
-            year: req.body.year,
-            location: req.body.location,
-            position: req.body.position,
-            description: req.body.description,
-            typeImageUrl: typeImageUrl,
-            link: link,
-            hrefClass: hrefClass,
-        })
-        .then(res.redirect('/edit'))
-        .catch(err => { miscLog.error(err); });
 };
 
 // @The delete experience route
 // @route DELETE /delete/:id
 // @access Private
-const expd = (req, res) => {
-    //Remove the experience
-    Experience_DB
-        .deleteOne({ _id: req.params.id, })
-        .then(res.redirect('/'));
+const expd = async (req, res) => {
+
+    try {
+        // Remove the experience
+        await Experience_DB
+            .deleteOne({ _id: req.params.id, });
+
+        res.redirect('/');
+
+    } catch (err) {
+
+        res.status(500).send('Error Deleting Experience!');
+        miscLog.error(err);
+    }
 };
 
 module.exports = { quotea, quote, edit, editie, add, adda, bio, bioe, expe, expd, };
