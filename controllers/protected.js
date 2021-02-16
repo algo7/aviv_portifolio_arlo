@@ -36,13 +36,22 @@ const edit = async (req, res) => {
     try {
 
         const { section, } = req.query;
-
+        console.log(section);
         // Experience edit page filter
         let queryObj = { section: section, };
+        let filterSelected = null;
 
-        if (section !== 'hotelier' && section !== 'developer') {
+        if (section !== 'hotelier' &&
+            section !== 'developer' &&
+            section !== 'martial_artist') {
+            filterSelected = 'All';
             queryObj = {};
+        } else {
+            // Capitalized the 1st letter of the section
+            filterSelected = section.charAt(0).toUpperCase() + section.slice(1);
         }
+
+
 
         // Login status
         let loginStatus = false;
@@ -61,7 +70,7 @@ const edit = async (req, res) => {
             layout: 'id_based',
             experienceLeft: expDistro(experience)[0],
             experienceRight: expDistro(experience)[1],
-            filterSelected: section.charAt(0).toUpperCase() + section.slice(1), // Capitalized the 1st letter
+            filterSelected: filterSelected,
             auth: loginStatus,
         });
     } catch (err) {
