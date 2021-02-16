@@ -8,7 +8,12 @@ const Schema = mongoose.Schema;
 const experienceSchema = new Schema({
     type: {
         type: String,
-        enum: ['hotelier', 'developer'],
+        enum: ['study', 'work'],
+        require: true,
+    },
+    section: {
+        type: String,
+        enum: ['hotelier', 'developer', 'martial_artist'],
         require: true,
     },
     year: {
