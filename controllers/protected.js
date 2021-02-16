@@ -64,14 +64,17 @@ const edit = async (req, res) => {
             .sort({ date: -1, })
             .lean();
 
+        const expLeft = expDistro(experience)[0];
+        const expRight = expDistro(experience)[1];
 
         res.render('experience/edit', {
             layout: 'id_based',
-            experienceLeft: expDistro(experience)[0],
-            experienceRight: expDistro(experience)[1],
+            experienceLeft: expLeft,
+            experienceRight: expRight,
             filterSelected: filterSelected,
             auth: loginStatus,
         });
+
     } catch (err) {
         res.status(500).send('Error Displaying Page');
         miscLog.error(err);
@@ -278,7 +281,6 @@ const bioe = async (req, res) => {
         let updateUser = {
             firstName: firstName,
             lastName: lastName,
-            password: null,
             email: email,
             birthDay: birthDay,
             birthName: birthName,
@@ -300,23 +302,13 @@ const bioe = async (req, res) => {
         if (resetPass === 'yes') {
 
             // Call the reset function
-            const result = await resetFunc(updateUser, password, passwordC, req.user.id);
-
-            // If the error array is there
-            if (result) {
-                return res.send(result);
-            }
+            await resetFunc(updateUser, password, passwordC, req.user.id);
 
             return res.redirect('/');
-
         }
-
-        // Remove the password field
-        delete updateUser.password;
 
         // Call the update function
         await updateFunc(updateUser, req.user.id);
-
 
         res.redirect('/');
 
