@@ -36,19 +36,20 @@ const edit = async (req, res) => {
     try {
 
         const { section, } = req.query;
-        console.log(section);
+
         // Experience edit page filter
-        let queryObj = { section: section, };
+        let queryObj = null;
         let filterSelected = null;
 
-        if (section !== 'hotelier' &&
-            section !== 'developer' &&
-            section !== 'martial_artist') {
+        if (!section ||
+            section !== 'Hotelier' &&
+            section !== 'Developer' &&
+            section !== 'Martial Artist') {
             filterSelected = 'All';
             queryObj = {};
         } else {
-            // Capitalized the 1st letter of the section
-            filterSelected = section.charAt(0).toUpperCase() + section.slice(1);
+            filterSelected = section;
+            queryObj = { section: section.toLowerCase(), };
         }
 
 
