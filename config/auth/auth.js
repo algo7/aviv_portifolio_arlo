@@ -75,53 +75,43 @@ const registerFunc = async (firstName, lastName, password, passwordC, email) => 
 };
 
 
-//The reset function
+// The reset function
 const resetFunc = async (updateObject, password, passwordC, id) => {
 
-    //The error array
-    let errArray = [];
+    try {
 
-
-    //Check if the password matches
-    if (password != passwordC) {
-        errArray.push('Password does not match');
-    }
-
-    //Compare the pass to the pattern
-    let matchPattern = password.match(StrValidation);
-
-    //If the pass does not comply with the rule
-    if (!matchPattern) {
-        errArray.push('Password too simple');
-    }
-
-    //Hash the password
-    bcryptHash(password, (err, cbBHash) => {
-
-        if (err) {
-            authLog.error('Error Hasing Password' + ' ' + err);
-            errArray.push('Error hasing password');
+        // Check if the password matches
+        if (password != passwordC) {
+            throw ('Password does not match');
         }
 
-        //The the user object's password to the hash before saving
-        updateObject.password = cbBHash;
+        // Compare the pass to the pattern
+        const matchPattern = password.match(StrValidation);
 
-        //Update the db
-        User_DB
+        // If the pass does not comply with the rule
+        if (!matchPattern) {
+            throw ('Password too simple');
+        }
+
+        // Hash the password
+        const hash = await bcryptHash(password);
+
+        // The the user object's password to the hash before saving
+        updateObject.password = hash;
+
+        // Update the db
+        const result = await User_DB
             .updateOne({ _id: id, }, updateObject)
-            .lean()
-            .then(result => authLog.info(`Updated: ${result.nModified}`))
-            .catch(err => {
-                authLog.error(`Error Updating User: ${err}`);
-                errArray.push('Error updating user');
-            });
+            .lean();
 
-    });
 
-    //If there is any error
-    if (errArray.length !== 0) {
-        return errArray;
+        authLog.info(`Updated: ${result.nModified}`);
+
+    } catch (err) {
+
+        authLog.error(`Error Updating User: ${err}`);
     }
+
 };
 
 // The update function
