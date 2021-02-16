@@ -16,7 +16,7 @@ const analysisLog = require('../config/system/log').get('analysisLog');
 const landing = async (req, res) => {
 
     try {
-        //Login Status
+        //Login status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
@@ -65,7 +65,7 @@ const index = async (req, res) => {
             section = 'developer';
         }
 
-        // Login Status
+        // Login status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;

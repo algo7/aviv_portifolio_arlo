@@ -15,7 +15,7 @@ const miscLog = require('../config/system/log').get('miscLog');
 // @access Private
 const quote = async (req, res) => {
 
-    //Login Status
+    //Login status
     let loginStatus = false;
     if (req.user) {
         loginStatus = true;
@@ -27,21 +27,32 @@ const quote = async (req, res) => {
 
 };
 
+
 // @desc The edit experience page
-// @route GET /edit
+// @route GET /edit/:section
 // @access Private
 const edit = async (req, res) => {
 
     try {
-        //Login Status
+
+        const { section, } = req.query;
+
+        // Experience edit page filter
+        let queryObj = { section: section, };
+
+        if (section !== 'hotelier' && section !== 'developer') {
+            queryObj = {};
+        }
+
+        // Login status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
         }
 
-        //Get experience
+        // Get experience
         let experience = await Experience_DB
-            .find({})
+            .find(queryObj)
             .sort({ date: -1, })
             .lean();
 
@@ -50,6 +61,7 @@ const edit = async (req, res) => {
             layout: 'id_based',
             experienceLeft: expDistro(experience)[0],
             experienceRight: expDistro(experience)[1],
+            filterSelected: section.charAt(0).toUpperCase() + section.slice(1), // Capitalized the 1st letter
             auth: loginStatus,
         });
     } catch (err) {
@@ -62,7 +74,7 @@ const edit = async (req, res) => {
 // @access Private
 const add = async (req, res) => {
 
-    //Login Status
+    //Login status
     let loginStatus = false;
     if (req.user) {
         loginStatus = true;
@@ -83,7 +95,7 @@ const editie = async (req, res) => {
 
     try {
 
-        // Login Status
+        // Login status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
@@ -119,7 +131,7 @@ const editie = async (req, res) => {
 // @access Private
 const bio = async (req, res) => {
     try {
-        //Login Status
+        //Login status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
