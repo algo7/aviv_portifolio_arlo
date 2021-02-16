@@ -329,7 +329,6 @@ const bioe = async (req, res) => {
 
 };
 
-
 // @The edit experience route
 // @route PUT /edit/:id
 // @access Private
