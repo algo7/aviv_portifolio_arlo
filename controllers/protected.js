@@ -293,6 +293,7 @@ const bioe = async (req, res) => {
 
     } catch (err) {
         miscLog.error(`Error Editing personal info.${err}`);
+        res.status(500).send('Error Editing personal info.');
     }
 
 
