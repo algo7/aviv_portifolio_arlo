@@ -83,26 +83,24 @@ const editie = async (req, res) => {
 
     try {
 
-        //Login Status
+        // Login Status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
         }
 
-        //Check for valid input
+        // Check for valid input
         if ((req.params.id).length !== 24) {
-            res.redirect('/');
-            return;
+            return res.redirect('/');
         }
 
-        //Get experience
-        let experience = await Experience_DB
+        // Get experience
+        const experience = await Experience_DB
             .findById(req.params.id)
             .sort({ date: -1, })
             .lean();
 
-
-        //Render the page
+        // Render the page
         res.render('experience/individual_edit', {
             layout: 'id_based',
             experience: experience,
@@ -110,7 +108,8 @@ const editie = async (req, res) => {
         });
 
     } catch (err) {
-        miscLog.error(err);
+        miscLog.error(`Error Rendering the Edit Experience Page: ${err}`);
+        res.status(500).send('Error Rendering the Edit Experience Page');
     }
 
 };
