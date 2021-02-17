@@ -1,47 +1,52 @@
 // Dependencies
 const { expDistro, } = require('../config/misc');
 
-//DB Connection
+// DB Connection
 const { Quote_DB,
     Experience_DB,
     User_DB, } = require('../config/dataBase/mongoConnection');
 
-//Winston
+// Winston
 const miscLog = require('../config/system/log').get('miscLog');
 const analyticsLog = require('../config/system/log').get('analyticsLog');
+
+// Custom Error Class
+const ErrorResponse = require('../config/utils/customErrorClass');
 
 // @desc The landing page
 // @route GET /
 // @access Public
-const landing = async (req, res) => {
+const landing = async (req, res, next) => {
 
     try {
-        //Login Status
+        // Login Status
         let loginStatus = false;
         if (req.user) {
             loginStatus = true;
         }
 
-        //Get userInfo
+        // Get userInfo
         let user = await User_DB
             .findOne({}, { _id: 0, password: 0, })
             .lean();
 
-        //Render the page
+        // Render the page
         res.render('landing', {
             layout: 'landing',
             user: user,
             auth: loginStatus,
         });
+
     } catch (err) {
-        miscLog.error(err);
+
+        next(new ErrorResponse('Error Loading Landing Page', 500, req.path, err));
     }
 };
 
 // @desc The index page
 // @route GET /index
 // @access Public
-const index = async (req, res) => {
+const index = async (req, res, next) => {
 
     try {
 
@@ -119,8 +124,7 @@ const index = async (req, res) => {
         });
 
     } catch (err) {
-        res.status(500).send('Error Displaying Page');
-        miscLog.error(`Error Displaying /index Page ${err}`);
+        next(new ErrorResponse('Error Displaying Index Page', 500, req.path, err));
     }
 };
 

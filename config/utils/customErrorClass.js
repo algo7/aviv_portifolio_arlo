@@ -1,9 +1,10 @@
 class ErrorResponse extends Error {
-    constructor(message, statusCode, type) {
+    constructor(message, statusCode, path, devError) {
         // Call the Error constructor and pass in our err message
         super(message);
         this.statusCode = statusCode;
-        this.type = type;
+        this.path = path;
+        this.devError = devError;
     }
 }
 

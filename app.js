@@ -1,7 +1,7 @@
 // Load Environmental Variables
 require('./creds/env');
 
-//Dependencies
+// Dependencies
 const express = require('express');
 const BodyParser = require('body-parser');
 const compression = require('compression');
@@ -12,14 +12,17 @@ const path = require('path');
 const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
 const { routeLogger, } = require('./config/middlewares/routeLogger');
-//Redis
+// Redis
 const { client, RedisStore, session, } =
     require('./config/dataBase/redisConnection');
 
-//Winston
+// Winston
 const appLog = require('./config/system/log').get('appLog');
 
-//Global Constant
+// Custom Error Handler
+const errorHandler = require('./config/middlewares/customErrorHandler');
+
+// Global Constant
 const PORT = process.env.PORT || 3008;
 
 // Initialize the App
@@ -120,6 +123,9 @@ const reg = require('./routes/register');
 // Use Routes
 app.use('/', main);
 app.use('/', reg);
+
+// Use the custom error handler
+app.use(errorHandler);
 
 // Route Check/
 app.use(routeCheck(app));
