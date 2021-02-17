@@ -35,13 +35,13 @@ const logFormat = winston.format.combine(
     winston.format.errors({ stack: true, }),
     winston.format.printf(info => {
 
-        // //Determine Message type => special handling for object and error
+        // Determine Message type => special handling for object and error
 
-        if (!info.stack) {
-            return `${readableDate()} | [${info.label}] ${info.level}: ${JSON.stringify(info.message, null, 0)}`;
+        if (info.stack) {
+            return `${readableDate()} | [${info.label}] ${info.level}: ${JSON.stringify(info.message, null, 0)} | Stack: ${info.stack}`;
         }
 
-        return `${readableDate()} | [${info.label}] ${info.level}: ${info.message} Stack: ${info.stack}`;
+        return `${readableDate()} | [${info.label}] ${info.level}: ${info.message} `;
 
     })
 );
