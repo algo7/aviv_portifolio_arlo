@@ -36,7 +36,6 @@ const logFormat = winston.format.combine(
     winston.format.printf(info => {
 
         // Determine Message type => special handling for object and error
-
         if (info.stack) {
             return `${readableDate()} | [${info.label}] ${info.level}: ${JSON.stringify(info.message, null, 0)} | Stack: ${info.stack}`;
         }
