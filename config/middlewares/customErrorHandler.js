@@ -29,20 +29,23 @@ const errMap = new Map([
 // Error handling middleware
 const errorHandler = async (err, req, res, next) => {
 
-
     // Log the error
-    miscLog.error(`Path: ${req.path} |  ${err.stack}`);
+    miscLog.error(`Path: ${req.path} | Stack: ${err.stack}`);
 
     // Make a copy of the error object
     let cErr = { ...err, };
     cErr.message = err.message;
 
-    // Check for mongodb validation error
+    // Check for mongoose validation error
     if (err.name) {
-        const message = errMap.get(err.name)(err);
-        cErr = new ErrorResponse(message, 400);
+        // Check if the error type exists in the map
+        if (errMap.get(err.name)) {
+            const message = errMap.get(err.name)(err);
+            cErr = new ErrorResponse(message, 400);
+        }
     }
 
+    // Check for native mongodb error
     if (err.code) {
         const message = await getAsync(err.code);
         cErr = new ErrorResponse(message, 400);
