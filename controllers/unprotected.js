@@ -9,9 +9,6 @@ const { Quote_DB,
 // Winston
 const analyticsLog = require('../config/system/log').get('analyticsLog');
 
-// Custom Error Class
-const ErrorResponse = require('../config/utils/customErrorClass');
-
 // @desc The landing page
 // @route GET /
 // @access Public
@@ -29,14 +26,13 @@ const landing = async (req, res, next) => {
             .findOne({}, { _id: 0, password: 0, })
             .lean();
 
-        await User_DB.findById('dddd');
-
         // Render the page
         res.render('landing', {
             layout: 'landing',
             user: user,
             auth: loginStatus,
         });
+
 
     } catch (err) {
         next(err);
@@ -124,7 +120,7 @@ const index = async (req, res, next) => {
         });
 
     } catch (err) {
-        next(new ErrorResponse('Error Displaying Index Page', 500, req.path, err));
+        next(err);
     }
 };
 

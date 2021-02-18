@@ -1,25 +1,57 @@
+// Dependencies
+const { promisify, } = require('util');
+
+// Redis
+const { redisClient, } = require('../dataBase/redisConnection');
+
+// Promisify the redis get query
+const getAsync = promisify(redisClient.GET).bind(redisClient);
+
 // Custom Error Class
 const ErrorResponse = require('../utils/customErrorClass');
 
 // Winston
 const miscLog = require('../system/log').get('miscLog');
 
+// Mongoose Error Map
+// Action Map
+const errMap = new Map([
+    ['ValidationError', (errObj) => {
+        // Parse the mongodb error object to get the name of the missing fields
+        const paths = Object.values(errObj.errors).map(val => val.path);
+        return `Missing or incorrect format for field: ${paths}`;
+    }],
+    ['CastError', () => undefined],
+    ['MongoError', () => undefined]
+]);
+
+
 // Error handling middleware
-const errorHandler = (err, req, res, next) => {
+const errorHandler = async (err, req, res, next) => {
+
 
     // Log the error
-    miscLog.error(`Path: ${err.path} | ${err.devError} | ${err.stack}`);
+    miscLog.error(`Path: ${req.path} |  ${err.stack}`);
 
     // Make a copy of the error object
     let cErr = { ...err, };
     cErr.message = err.message;
-    const { name, } = err;
-    console.error(name);
+
+    // Check for mongodb validation error
+    if (err.name) {
+        const message = errMap.get(err.name)(err);
+        cErr = new ErrorResponse(message, 400);
+    }
+
+    if (err.code) {
+        const message = await getAsync(err.code);
+        cErr = new ErrorResponse(message, 400);
+    }
 
     // Send the response to the front end
-    res
-        .status(err.statusCode || 500)
-        .json({ msg: err.message || 'Server Error', });
+    return res
+        .status(cErr.statusCode || 500)
+        .json({ msg: cErr.message || 'Server Error', });
 };
 
 module.exports = errorHandler;
