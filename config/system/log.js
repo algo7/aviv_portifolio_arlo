@@ -3,7 +3,7 @@ const winston = require('winston');
 const path = require('path');
 
 // Global variables
-let readableDate = () => {
+const readableDate = () => {
     return new Date(Date.now()).toUTCString();
 };
 

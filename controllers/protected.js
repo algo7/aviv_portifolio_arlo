@@ -168,7 +168,7 @@ const quotea = asyncHandler(async (req, res) => {
     }
 
     //The new quote object
-    let newQuote = {
+    const newQuote = {
         type: type,
         author: author,
         description: description,
