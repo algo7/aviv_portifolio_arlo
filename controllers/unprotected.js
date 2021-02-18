@@ -147,9 +147,3 @@ const analysis = (req, res) => {
 };
 
 module.exports = { landing, index, notice, analysis, };
-
-// const data = require('../config/utils/mongoError.json');
-// const a = data.error_codes.map(codes => {
-//     return [codes.code, codes.name];
-// });
-// a.forEach(a => console.log(a[0], a[1]));
