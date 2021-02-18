@@ -28,7 +28,7 @@ const landing = asyncHandler(async (req, res) => {
     }
 
     // Get userInfo
-    let user = await User_DB
+    const user = await User_DB
         .findOne({}, { _id: 0, password: 0, })
         .lean();
 
@@ -72,7 +72,7 @@ const index = asyncHandler(async (req, res) => {
     }
 
     // Get quotes authors
-    let quoteAuthors = await Quote_DB
+    const quoteAuthors = await Quote_DB
         .find({ type: quoteType, })
         .lean();
 
@@ -80,7 +80,7 @@ const index = asyncHandler(async (req, res) => {
     const authorsArray = quoteAuthors.map(authors => authors.author);
 
     // Pick a random index from the authorsArray
-    let randomAuthor = Math.floor(Math.random() * authorsArray.length);
+    const randomAuthor = Math.floor(Math.random() * authorsArray.length);
 
 
     const [quote, experience, user] = await Promise.all([

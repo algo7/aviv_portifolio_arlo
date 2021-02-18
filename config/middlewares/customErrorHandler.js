@@ -23,7 +23,9 @@ const errMap = new Map([
     ['CastError', () => undefined],
     ['MongoError', () => undefined],
     ['ReferenceError', () => undefined],
-    ['SyntaxError', () => undefined]
+    ['SyntaxError', () => undefined],
+    ['TypeError', () => undefined]
+
 ]);
 
 
