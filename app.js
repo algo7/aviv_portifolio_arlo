@@ -1,6 +1,8 @@
 // Load Environmental Variables
 require('./creds/env');
 
+// Load Mongo Error Dataset into Redis
+require('./config/utils/mongoErrorLoader');
 // Dependencies
 const express = require('express');
 const BodyParser = require('body-parser');
@@ -12,8 +14,9 @@ const path = require('path');
 const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
 const { routeLogger, } = require('./config/middlewares/routeLogger');
+
 // Redis
-const { client, RedisStore, session, } =
+const { redisClient: client, RedisStore, session, } =
     require('./config/dataBase/redisConnection');
 
 // Winston

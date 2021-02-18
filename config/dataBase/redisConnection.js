@@ -8,7 +8,7 @@ const RedisStore = require('connect-redis')(session);
 const redisLog = require('../system/log').get('redisLog');
 
 //Connect to Redis
-const client = redis.createClient({
+const redisClient = redis.createClient({
     host: '127.0.0.1',
     port: '6379',
     password: process.env.Redis_Pass,
@@ -18,4 +18,4 @@ const client = redis.createClient({
 
 
 //Export the Module
-module.exports = { RedisStore, client, session, };
+module.exports = { RedisStore, redisClient, session, };

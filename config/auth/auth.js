@@ -4,6 +4,9 @@ const { bcryptHash, } = require('./bcryptCustom');
 // Winston
 const authLog = require('../system/log').get('authLog');
 
+// Custom Error Class
+const ErrorResponse = require('../utils/customErrorClass');
+
 // DB Connection
 const { User_DB, } = require('../dataBase/mongoConnection');
 
@@ -26,7 +29,7 @@ const registerFunc = async (firstName, lastName, password, passwordC, email) => 
 
         // Check if the password matches the the confirmation password
         if (password != passwordC) {
-            throw ('Password does not match');
+            throw new ErrorResponse('Password does not match', 400);
         }
 
         // Compare the pass to the pattern
@@ -34,7 +37,7 @@ const registerFunc = async (firstName, lastName, password, passwordC, email) => 
 
         // If the pass does not comply with the rule
         if (!matchPattern) {
-            throw ('Password too simple');
+            throw new ErrorResponse('Password too simple', 400);
         }
 
         const [userData, hash] = await Promise.all([
@@ -49,7 +52,7 @@ const registerFunc = async (firstName, lastName, password, passwordC, email) => 
 
         // Check if the user exists already
         if (userData) {
-            throw ('User already exists');
+            throw new ErrorResponse('User already exists', 409);
         }
 
         // Create the new user object
@@ -70,7 +73,7 @@ const registerFunc = async (firstName, lastName, password, passwordC, email) => 
 
     } catch (err) {
         // Rethrow the error
-        throw (`Error Creating User: ${err}`);
+        throw (err);
     }
 
 };
@@ -102,7 +105,7 @@ const resetFunc = async (updateObject, password, passwordC, id) => {
 
         // Check if the password matches
         if (password != passwordC) {
-            throw ('Password does not match');
+            throw new ErrorResponse('Password does not match', 400);
         }
 
         // Compare the pass to the pattern
@@ -110,7 +113,7 @@ const resetFunc = async (updateObject, password, passwordC, id) => {
 
         // If the pass does not comply with the rule
         if (!matchPattern) {
-            throw ('Password too simple');
+            throw new ErrorResponse('Password too simple', 400);
         }
 
         // Hash the password
@@ -128,7 +131,7 @@ const resetFunc = async (updateObject, password, passwordC, id) => {
 
     } catch (err) {
         // Rethrow the error
-        throw (`Error Updating User: ${err}`);
+        throw (err);
     }
 
 };
@@ -166,7 +169,7 @@ const updateFunc = async (updateObject, id) => {
 
     } catch (err) {
         // Rethrow the error
-        throw (`Error Updating User: ${err}`);
+        throw (err);
     }
 };
 
