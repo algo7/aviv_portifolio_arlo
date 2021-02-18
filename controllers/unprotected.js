@@ -15,6 +15,7 @@ const analyticsLog = require('../config/system/log').get('analyticsLog');
 // Async Handler
 const asyncHandler = require('../config/middlewares/asyncHandler');
 
+
 // @desc The landing page
 // @route GET /
 // @access Public

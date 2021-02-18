@@ -13,8 +13,7 @@ const ErrorResponse = require('../utils/customErrorClass');
 // Winston
 const miscLog = require('../system/log').get('miscLog');
 
-// Mongoose Error Map
-// Action Map
+// Error Names Map
 const errMap = new Map([
     ['ValidationError', (errObj) => {
         // Parse the mongodb error object to get the name of the missing fields
@@ -22,7 +21,9 @@ const errMap = new Map([
         return `Missing or incorrect format for field: ${paths}`;
     }],
     ['CastError', () => undefined],
-    ['MongoError', () => undefined]
+    ['MongoError', () => undefined],
+    ['ReferenceError', () => undefined],
+    ['SyntaxError', () => undefined]
 ]);
 
 
