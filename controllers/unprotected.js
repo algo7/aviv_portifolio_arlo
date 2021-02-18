@@ -7,7 +7,6 @@ const { Quote_DB,
     User_DB, } = require('../config/dataBase/mongoConnection');
 
 // Winston
-const miscLog = require('../config/system/log').get('miscLog');
 const analyticsLog = require('../config/system/log').get('analyticsLog');
 
 // Custom Error Class
@@ -30,6 +29,8 @@ const landing = async (req, res, next) => {
             .findOne({}, { _id: 0, password: 0, })
             .lean();
 
+        await User_DB.findById('dddd');
+
         // Render the page
         res.render('landing', {
             layout: 'landing',
@@ -38,8 +39,7 @@ const landing = async (req, res, next) => {
         });
 
     } catch (err) {
-
-        next(new ErrorResponse('Error Loading Landing Page', 500, req.path, err));
+        next(err);
     }
 };
 
@@ -147,3 +147,9 @@ const analysis = (req, res) => {
 };
 
 module.exports = { landing, index, notice, analysis, };
+
+// const data = require('../config/utils/mongoError.json');
+// const a = data.error_codes.map(codes => {
+//     return [codes.code, codes.name];
+// });
+// a.forEach(a => console.log(a[0], a[1]));

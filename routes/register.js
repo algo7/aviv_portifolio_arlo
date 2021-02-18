@@ -6,7 +6,7 @@ const { emptyInputCheck, } = require('express-suite');
 // const { registerFunc, } = require('../config/auth/register');
 
 // Redis
-const { client, } = require('../config/dataBase/redisConnection');
+const { redisClient, } = require('../config/dataBase/redisConnection');
 
 // Empty Input Check Config
 router.use(emptyInputCheck({
@@ -32,7 +32,7 @@ router.get('/login', (req, res) => {
 router.get('/out', (req, res) => {
 
     // Delete the session key in redis
-    client.del(`sess:${req.sessionID}`);
+    redisClient.del(`sess:${req.sessionID}`);
 
     // Express Logout func
     req.logOut();

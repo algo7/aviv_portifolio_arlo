@@ -13,7 +13,7 @@ const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
 const { routeLogger, } = require('./config/middlewares/routeLogger');
 // Redis
-const { client, RedisStore, session, } =
+const { redisClient: client, RedisStore, session, } =
     require('./config/dataBase/redisConnection');
 
 // Winston
