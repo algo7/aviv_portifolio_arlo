@@ -15,6 +15,7 @@ const miscLog = require('../system/log').get('miscLog');
 
 // Error Names Map
 const errMap = new Map([
+    // Mongoose Errors
     ['ValidationError', (errObj) => {
         // Parse the mongodb error object to get the name of the missing fields
         const paths = Object.values(errObj.errors).map(val => val.path);
@@ -22,6 +23,7 @@ const errMap = new Map([
     }],
     ['CastError', () => undefined],
     ['MongoError', () => undefined],
+    // Nodejs Native Errors
     ['ReferenceError', () => undefined],
     ['SyntaxError', () => undefined],
     ['TypeError', () => undefined]
