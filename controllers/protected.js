@@ -7,9 +7,6 @@ const { Quote_DB,
     Experience_DB,
     User_DB, } = require('../config/dataBase/mongoConnection');
 
-// Winston
-const miscLog = require('../config/system/log').get('miscLog');
-
 // Async Handler
 const asyncHandler = require('../config/middlewares/asyncHandler');
 
