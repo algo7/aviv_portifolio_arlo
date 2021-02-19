@@ -3,6 +3,7 @@ require('./creds/env');
 
 // Load Mongo Error Dataset into Redis
 require('./config/utils/mongoErrorLoader');
+
 // Dependencies
 const express = require('express');
 const BodyParser = require('body-parser');

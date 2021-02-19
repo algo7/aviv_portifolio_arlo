@@ -15,6 +15,7 @@ const miscLog = require('../system/log').get('miscLog');
 
 // Error Names Map
 const errMap = new Map([
+    // Mongoose Errors
     ['ValidationError', (errObj) => {
         // Parse the mongodb error object to get the name of the missing fields
         const paths = Object.values(errObj.errors).map(val => val.path);
@@ -22,6 +23,7 @@ const errMap = new Map([
     }],
     ['CastError', () => undefined],
     ['MongoError', () => undefined],
+    // Nodejs Native Errors
     ['ReferenceError', () => undefined],
     ['SyntaxError', () => undefined],
     ['TypeError', () => undefined]
@@ -31,9 +33,6 @@ const errMap = new Map([
 
 // Error handling middleware
 const errorHandler = async (err, req, res, next) => {
-
-    // Log the error
-    miscLog.error(`Path: ${req.path} | Stack: ${err.stack}`);
 
     // Make a copy of the error object
     let cErr = { ...err, };
@@ -54,10 +53,27 @@ const errorHandler = async (err, req, res, next) => {
         cErr = new ErrorResponse(message, 400);
     }
 
-    // Send the response to the front end
-    return res
-        .status(cErr.statusCode || 500)
-        .json({ msg: cErr.message || 'Server Error', });
+    // If stack trace logging is enabled
+    if (err.logStack === false) {
+
+        // Log the error without stack trace
+        miscLog.error(`Path: ${req.path} | Stack: ${err.message}`);
+
+        // Send the response to the front end
+        return res
+            .status(cErr.statusCode || 500)
+            .json({ msg: cErr.message || 'Server Error', });
+
+    } else {
+
+        // Log the error
+        miscLog.error(`Path: ${req.path} | Stack: ${err.stack}`);
+
+        // Send the response to the front end
+        return res
+            .status(cErr.statusCode || 500)
+            .json({ msg: cErr.message || 'Server Error', });
+    }
 };
 
 module.exports = errorHandler;

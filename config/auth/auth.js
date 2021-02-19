@@ -29,7 +29,7 @@ const registerFunc = async (firstName, lastName, password, passwordC, email) => 
 
         // Check if the password matches the the confirmation password
         if (password != passwordC) {
-            throw new ErrorResponse('Password does not match', 400);
+            throw new ErrorResponse('Password does not match', 400, false);
         }
 
         // Compare the pass to the pattern
@@ -37,7 +37,7 @@ const registerFunc = async (firstName, lastName, password, passwordC, email) => 
 
         // If the pass does not comply with the rule
         if (!matchPattern) {
-            throw new ErrorResponse('Password too simple', 400);
+            throw new ErrorResponse('Password too simple', 400, false);
         }
 
         const [userData, hash] = await Promise.all([
@@ -52,7 +52,7 @@ const registerFunc = async (firstName, lastName, password, passwordC, email) => 
 
         // Check if the user exists already
         if (userData) {
-            throw new ErrorResponse('User already exists', 409);
+            throw new ErrorResponse('User already exists', 409, false);
         }
 
         // Create the new user object
@@ -105,7 +105,7 @@ const resetFunc = async (updateObject, password, passwordC, id) => {
 
         // Check if the password matches
         if (password != passwordC) {
-            throw new ErrorResponse('Password does not match', 400);
+            throw new ErrorResponse('Password does not match', 400, false);
         }
 
         // Compare the pass to the pattern
@@ -113,7 +113,7 @@ const resetFunc = async (updateObject, password, passwordC, id) => {
 
         // If the pass does not comply with the rule
         if (!matchPattern) {
-            throw new ErrorResponse('Password too simple', 400);
+            throw new ErrorResponse('Password too simple', 400, false);
         }
 
         // Hash the password
