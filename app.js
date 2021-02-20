@@ -12,6 +12,7 @@ const exphbs = require('express-handlebars');
 const passport = require('passport');
 const methodOverride = require('method-override');
 const path = require('path');
+const mongoSanitizer = require('express-mongo-sanitize');
 const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
 const { routeLogger, } = require('./config/middlewares/routeLogger');
@@ -123,6 +124,9 @@ app.use(routeLogger);
 // Load Routes
 const main = require('./routes/main');
 const reg = require('./routes/register');
+
+// Prevent NOSQL Injection
+app.use(mongoSanitizer());
 
 // Use Routes
 app.use('/', main);
