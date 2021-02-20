@@ -1,4 +1,4 @@
-<!-- Topbar -->
+<!-- MOBILE  Topbar -->
 <div class="arlo_tm_topbar">
     <div class="topbar_inner">
         <div class="container">
@@ -19,7 +19,7 @@
         <div class="container">
             <div class="dropdown_inner">
                 <ul>
-                    <li><a onclick="window.location.href='/';">Home</a></li>
+                    <li><a href="#" id="homeMobile">Home</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#inspiration">Inspiration</a></li>
                     <li><a href="#experience">Experience</a></li>
@@ -27,16 +27,17 @@
                     <li><a href="#contact">Contact</a></li>
                     {{#if auth}}
                     <li>
-                        <a href="/edit" onclick="window.location.href='/edit';">Edit Experience
+                        <a href="/edit" id="editMobile">Edit Experience
                         </a>
                     </li>
                     <li>
-                        <a href="/bio" onclick="window.location.href='/bio';">Edit Bio
+                        <a href="/bio" id="bioMobile">Edit Bio
                         </a>
                     </li>
-                    <li><a href="/add" onclick="window.location.href='/add';">+ Experience</a></li>
-                    <li><a href="/quote" onclick="window.location.href='/quote';">+ Quote</a></li>
-                    <li><a href="/out" onclick="window.location.href='/out';">Logout</a></li>
+                    <li><a href="/add" id="addMobile">+ Experience</a></li>
+                    <li><a href="/quote" id="quoteMobile">+ Quote</a></li>
+                    <li><a href="/out" id="outMobile">Logout</a></li>
+                    <script nonce='{{cspNonce}}' src='/js/navigation.js'></script>
                     {{/if}}
                 </ul>
             </div>
@@ -55,7 +56,7 @@
             </div>
             <div class="menu">
                 <ul>
-                    <li><a onclick="window.location.href='/';">Home</a></li>
+                    <li><a href="#" id="homeDesktop">Home</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#inspiration">Inspiration</a></li>
                     <li><a href="#experience">Experience</a></li>
@@ -63,20 +64,24 @@
                     <li><a href="#contact">Contact</a></li>
                     {{#if auth}}
                     <li>
-                        <a href="/edit" onclick="window.location.href='/edit';">Edit Experience
+                        <a href="/edit" id="edit">Edit Experience
                         </a>
                     </li>
                     <li>
-                        <a href="/bio" onclick="window.location.href='/bio';">Edit Bio
+                        <a href="/bio" id="bio">Edit Bio
                         </a>
                     </li>
-                    <li><a href="/add" onclick="window.location.href='/add';">+ Experience</a></li>
-                    <li><a href="/quote" onclick="window.location.href='/quote';">+ Quote</a></li>
-                    <li><a href="/out" onclick="window.location.href='/out';">Logout</a></li>
+                    <li><a href="/add" id="add">+ Experience</a></li>
+                    <li><a href="/quote" id="quote">+ Quote</a></li>
+                    <li><a href="/out" id="out">Logout</a></li>
+                    <!-- CSP Btn Navigation -->
+                    <script nonce='{{cspNonce}}' src='/js/navigation.js'></script>
                     {{/if}}
                 </ul>
             </div>
         </div>
     </div>
 </div>
-<!-- /CLASSIC MENU -->
+
+<!-- CSP Btn Navigation -->
+<script nonce='{{cspNonce}}' src='/js/navigation_unauth.js'></script>

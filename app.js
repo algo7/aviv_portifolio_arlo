@@ -13,9 +13,10 @@ const passport = require('passport');
 const methodOverride = require('method-override');
 const path = require('path');
 const mongoSanitizer = require('express-mongo-sanitize');
-// const helmet = require('helmet');
+const helmet = require('helmet');
 const xssC = require('xss-clean');
 const hpp = require('hpp');
+const crypto = require('crypto');
 const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
 const { routeLogger, } = require('./config/middlewares/routeLogger');
@@ -120,11 +121,6 @@ app.all('*', (req, res, next) => {
     next();
 });
 
-// Set security headers
-// app.use(helmet());
-
-// Prevent XSS
-app.use(xssC());
 
 // Load passport config
 passportLogic(passport);
@@ -138,6 +134,29 @@ const reg = require('./routes/register');
 
 // Prevent NOSQL Injection
 app.use(mongoSanitizer());
+
+// Set security headers
+app.use(helmet());
+
+// Nonce
+app.use((req, res, next) => {
+    res.locals.cspNonce = crypto.randomBytes(16).toString('hex');
+    next();
+});
+
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            'default-src': helmet.contentSecurityPolicy.dangerouslyDisableDefaultSrc,
+            'script-src': ["'self'", "'strict-dynamic'", 'www.googletagmanager.com', 'adservice.google.com', 'partner.googleadservices.com', 'adservice.google.com.tw', 'www.googletagservices.com', 'pagead2.googlesyndication.com', 'tpc.googlesyndication.com', (req, res) => `'nonce-${res.locals.cspNonce}'`, "'unsafe-eval'"],
+            'connect-src': ['ipinfo.io', 'www.avivlo.com', '127.0.0.1:3008', 'pagead2.googlesyndication.com', 'www.google-analytics.com', 'stats.g.doubleclick.net', 'partner.googleadservices.com'
+            ],
+        },
+    })
+);
+
+// Prevent XSS
+app.use(xssC());
 
 // Use Routes
 app.use('/', main);
