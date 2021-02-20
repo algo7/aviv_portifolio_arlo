@@ -4,6 +4,4 @@
 ecosystem.json
 config/logs
 *.env
-/assets/img/profile/*
-assets/img/quote/*
 ecosystem.json
