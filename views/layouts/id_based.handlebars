@@ -7,59 +7,8 @@
 <html lang="en">
 <!--<![endif]-->
 
-<head>
+{{>_head}}
 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-    <meta name="description" content="Aviv Lo Portfolio">
-    <meta name="author" content="Aviv Lo">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-    <title>Aviv Lo | Home</title>
-
-    <!-- STYLES -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Montserrat:200i,300,300i,400,400i,500,500i,600,700,700i,800&display=swap"
-        rel="stylesheet">
-
-
-    <link rel="stylesheet" type="text/css" href="/css/plugins.css" />
-    <link rel="stylesheet" type="text/css" href="/css/stylem.css" />
-    <!--[if lt IE 9]> <script type="text/javascript" src="/js/modernizr.custom.js"></script> <![endif]-->
-    <!-- /STYLES -->
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169382107-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-169382107-1');
-    </script>
-
-    {{!-- Adsense --}}
-    <script data-ad-client="ca-pub-2838941426792321" async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-    {{!-- Facebook --}}
-    <meta property="og:site_name" content="Aviv Lo">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Aviv Lo">
-    <meta property="og:description" content="Aviv Lo's Portfolio">
-    <meta property="og:url" content="https://www.avivlo.com/">
-
-    {{!-- Twitter --}}
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="Aviv Lo">
-    <meta name="twitter:domain" content="https://www.avivlo.com">
-    <meta name="twitter:title" content="Aviv Lo">
-    <meta name="twitter:description" content="Aviv Lo's Portfolio">
-
-</head>
 {{>_othernav}}
 
 <body class="dark classic">
@@ -72,10 +21,10 @@
     </div>
     <!-- WRAPPER ALL -->
     <!-- SCRIPTS -->
-    <script src="/js/jquery.js"></script>
+    <script nonce='{{cspNonce}}' src="/js/jquery.js"></script>
     <!--[if lt IE 10]> <script type="text/javascript" src="/js/ie8.js"></script> <![endif]-->
-    <script src="/js/plugins.js"></script>
-    <script src="/js/init.js"></script>
+    <script nonce='{{cspNonce}}' src="/js/plugins.js"></script>
+    <script nonce='{{cspNonce}}' src="/js/init.js"></script>
     <!-- /SCRIPTS -->
 
 </body>
