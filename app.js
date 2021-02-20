@@ -120,6 +120,7 @@ app.all('*', (req, res, next) => {
 // Set security headers
 app.use(helmet());
 
+// Prevent XSS
 app.use(xssC());
 
 // Load passport config
