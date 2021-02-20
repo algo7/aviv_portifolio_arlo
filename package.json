@@ -25,6 +25,7 @@
     "express-session": "^1.17.1",
     "express-suite": "^1.6.3",
     "helmet": "^4.4.1",
+    "hpp": "^0.2.3",
     "method-override": "^3.0.0",
     "mongoose": "^5.11.16",
     "multer": "^1.4.2",
