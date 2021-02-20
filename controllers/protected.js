@@ -242,7 +242,7 @@ const bioe = asyncHandler(async (req, res) => {
         location, phone, interests,
         birthDay, study, bio,
         birthName, degree, resetPass,
-        password, passwordC, } = req;
+        password, passwordC, } = req.body;
 
     // The new user object
     let updateUser = {
@@ -274,7 +274,7 @@ const bioe = asyncHandler(async (req, res) => {
         return res.redirect('/');
     }
 
-    // Call the update function
+    // // Call the update function
     await updateFunc(updateUser, req.user.id);
 
     res.redirect('/');
