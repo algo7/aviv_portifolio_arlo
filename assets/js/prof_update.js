@@ -8,11 +8,11 @@ function passSwitch() {
     if (selectResult === 'No') {
         a.style.display = 'none';
         b.style.display = 'none';
-        c.style.display = 'none';
+
     } else {
         a.style.display = '';
         b.style.display = '';
-        c.style.display = '';
+
     }
 }
 document.addEventListener('DOMContentLoaded', function () {
