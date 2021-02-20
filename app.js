@@ -150,7 +150,7 @@ app.use(
             ...helmet.contentSecurityPolicy.getDefaultDirectives(),
             'script-src': ["'strict-dynamic'", (req, res) => `'nonce-${res.locals.cspNonce}'`, "'unsafe-eval'"],
             'connect-src': ['ipinfo.io', 'www.avivlo.com', 'pagead2.googlesyndication.com', 'www.google-analytics.com', 'stats.g.doubleclick.net', 'partner.googleadservices.com', 'avivlo.com'],
-            'img-src': ["'self'", 'data:', 'www.google.com', 'www.google.com.tw'],
+            'img-src': ["'self'", 'data:', 'www.google.com', 'www.google.com.tw', 'www.google-analytics.com'],
         },
     })
 );
