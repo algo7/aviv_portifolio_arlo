@@ -21,14 +21,14 @@
                             <ul>
 
                                 <label class="selection" for="resetpass">Reset Password: </label>
-                                <select id="resetpass" name="resetPass" onchange="passSwitch();">
+                                <select id="resetpass" name="resetPass">
                                     <option value="yes">Yes</option>
                                     <option selected="selected" value="no">No</option>
                                 </select>
 
                                 <label class="selection" for="changePic" style="padding-left:2em;">Change
                                     Picture:</label>
-                                <select id="changePic" name="changePic" onchange="uploadSwitch();">
+                                <select id="changePic" name="changePic">
                                     <option value="yes">Yes</option>
                                     <option selected="selected" value="no">No</option>
                                 </select>
@@ -130,31 +130,4 @@
 </style>
 
 
-<script>
-    function passSwitch() {
-        const selection = document.getElementById('resetpass')
-        const selectResult = selection.options[selection.selectedIndex].text;
-        const a = document.getElementById('passField');
-        const b = document.getElementById('passFieldConfirm');
-        const c = document.getElementById('fileUpload');
-        if (selectResult === 'No') {
-            a.style.display = 'none';
-            b.style.display = 'none';
-        } else {
-            a.style.display = '';
-            b.style.display = '';
-        }
-    }
-
-    function uploadSwitch() {
-        const selection = document.getElementById('changePic')
-        const selectResult = selection.options[selection.selectedIndex].text;
-        const a = document.getElementById('fileUpload');
-        if (selectResult === 'No') {
-            a.style.display = 'none';
-        } else {
-            a.style.display = '';
-        }
-    }
-
-</script>
+<script nonce='{{cspNonce}}' src="/js/prof_update.js"></script>
