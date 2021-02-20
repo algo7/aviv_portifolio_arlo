@@ -65,6 +65,9 @@ app.use(BodyParser.text({
     extended: true,
 }));
 
+// Prevent HTTP params pollution
+app.use(hpp());
+
 // Express Session Middleware
 app.use(
     session({
@@ -122,9 +125,6 @@ app.use(helmet());
 
 // Prevent XSS
 app.use(xssC());
-
-// Prevent HTTP params pollution
-app.use(hpp());
 
 // Load passport config
 passportLogic(passport);
