@@ -13,8 +13,9 @@ const passport = require('passport');
 const methodOverride = require('method-override');
 const path = require('path');
 const mongoSanitizer = require('express-mongo-sanitize');
-const helmet = require('hemet');
+const helmet = require('helmet');
 const xssC = require('xss-clean');
+const hpp = require('hpp');
 const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
 const { routeLogger, } = require('./config/middlewares/routeLogger');
@@ -63,7 +64,6 @@ app.use(BodyParser.text({
     limit: '5mb',
     extended: true,
 }));
-
 
 // Express Session Middleware
 app.use(
@@ -122,6 +122,9 @@ app.use(helmet());
 
 // Prevent XSS
 app.use(xssC());
+
+// Prevent HTTP params pollution
+app.use(hpp());
 
 // Load passport config
 passportLogic(passport);
