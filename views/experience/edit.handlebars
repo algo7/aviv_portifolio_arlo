@@ -28,7 +28,7 @@
                         <li>
 
                             {{!-- Delete confirmation --}}
-                            <script>
+                            <script nonce='{{../cspNonce}}'>
                                 function delFunc() {
                                     const result = confirm("You sure?");
                                     if (result == true) {
@@ -76,7 +76,7 @@
                         {{#each experienceRight}}
                         <li>
                             {{!-- Delete confirmation --}}
-                            <script nonce='{{cspNonce}}'>
+                            <script nonce='{{../cspNonce}}'>
                                 function delFunc() {
                                     const result = confirm("You sure?");
                                     if (result == true) {
