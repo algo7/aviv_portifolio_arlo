@@ -149,8 +149,7 @@ app.use(
         directives: {
             'default-src': helmet.contentSecurityPolicy.dangerouslyDisableDefaultSrc,
             'script-src': ["'self'", "'strict-dynamic'", 'www.googletagmanager.com', 'adservice.google.com', 'partner.googleadservices.com', 'adservice.google.com.tw', 'www.googletagservices.com', 'pagead2.googlesyndication.com', 'tpc.googlesyndication.com', (req, res) => `'nonce-${res.locals.cspNonce}'`, "'unsafe-eval'"],
-            'connect-src': ['ipinfo.io', 'www.avivlo.com', '127.0.0.1:3008', 'pagead2.googlesyndication.com', 'www.google-analytics.com', 'stats.g.doubleclick.net', 'partner.googleadservices.com'
-            ],
+            'connect-src': ['ipinfo.io', 'www.avivlo.com', '127.0.0.1:3008', 'pagead2.googlesyndication.com', 'www.google-analytics.com', 'stats.g.doubleclick.net', 'partner.googleadservices.com', 'avivlo.com'],
         },
     })
 );
