@@ -13,7 +13,7 @@ const passport = require('passport');
 const methodOverride = require('method-override');
 const path = require('path');
 const mongoSanitizer = require('express-mongo-sanitize');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 // const xssC = require('xss-clean');
 const hpp = require('hpp');
 const { passportLogic, } = require('./config/auth/passport-local');
@@ -121,7 +121,7 @@ app.all('*', (req, res, next) => {
 });
 
 // Set security headers
-app.use(helmet());
+// app.use(helmet());
 
 // Prevent XSS
 // app.use(xssC());
