@@ -148,8 +148,9 @@ app.use(
     helmet.contentSecurityPolicy({
         directives: {
             ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-            'script-src': ["'strict-dynamic'", (req, res) => `'nonce-${res.locals.cspNonce}'`, "'unsafe-eval'", 'https://*.cloudflare.com'],
+            'script-src': ["'strict-dynamic'", (req, res) => `'nonce-${res.locals.cspNonce}'`, "'unsafe-eval'"],
             'connect-src': ['ipinfo.io', 'www.avivlo.com', 'pagead2.googlesyndication.com', 'www.google-analytics.com', 'stats.g.doubleclick.net', 'partner.googleadservices.com', 'avivlo.com'],
+            'script-src-elem': ['https://*.cloudflare.com'],
             'img-src': ["'self'", 'data:', 'www.google.com', 'www.google.com.tw', 'www.google-analytics.com'],
         },
     })
