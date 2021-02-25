@@ -1,116 +1,129 @@
 <!-- TIMELINE -->
-<div class="arlo_tm_section" id="experience" style="padding-top: 8em;">
-    <div class="arlo_tm_timeline">
-        <div class="container">
-            <div class="arlo_title_holder">
+<div class='arlo_tm_section' id='experience' style='padding-top: 8em;'>
+    <div class='arlo_tm_timeline'>
+        <div class='container'>
+            <div class='arlo_title_holder'>
                 <span>Working Process</span>
                 <h3>Experience</h3>
+
                 {{!-- Experience type filter --}}
                 <label>Filter:</label>
-                <form action="/edit" method="get" class="sec_select" id="sec_select">
-                    <select id="experience_section" name="section"
-                        onclick="document.getElementById('sec_select').submit();">
-                        <option selected="selected">{{filterSelected}}</option>
-                        <option value="all">All</option>
-                        <option value="Developer">Developer</option>
-                        <option value="Hotelier">Hotelier</option>
-                        <option value="Martial Artist">Martial Artist</option>
+                <form action='/edit' method='get' class='sec_select' id='sec_select'>
+                    <select id='experience_section' name='section'>
+                        <option selected='selected'>{{filterSelected}}</option>
+                        <option value='all'>All</option>
+                        <option value='Developer'>Developer</option>
+                        <option value='Hotelier'>Hotelier</option>
+                        <option value='Martial Artist'>Martial Artist</option>
                     </select>
                 </form>
 
+                {{!-- Selection Script --}}
+                <script nonce='{{cspNonce}}'>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        document.getElementById('experience_section')
+                            .addEventListener('change', function () {
+                                document.getElementById('sec_select').submit();
+                            });
+                    });
+                </script>
             </div>
 
-            <div class="timeline_inner">
+            {{!-- Exp Panel --}}
+            <div class='timeline_inner'>
 
-                <div class="left">
+                {{!-- Left --}}
+                <div class='left'>
                     <ul>
                         {{#each experienceLeft}}
                         <li>
 
-                            {{!-- Delete confirmation --}}
-                            <script nonce='{{../cspNonce}}'>
-                                function delFunc() {
-                                    const result = confirm("You sure?");
-                                    if (result == true) {
-                                        document.getElementById('{{this._id}}').submit();
-                                        return;
-                                    }
-                                }
-                            </script>
-
-                            <div class="inner">
-                                <img class="svg" src="{{typeImageUrl}}" alt="" />
-                                <p class="year">
+                            <div class='inner'>
+                                <img class='svg' src='{{typeImageUrl}}' />
+                                <p class='year'>
                                     {{this.year}} @
-                                    <a class="{{this.hrefCkass}}" href="{{this.link}}"
-                                        style="color:white; padding-right:0.5em">
+                                    <a class='{{this.hrefClass}}' href='{{this.link}}'
+                                        style='color:white; padding-right:0.5em'>
                                         {{this.location}}
                                     </a>
 
                                     {{!-- Edit button --}}
-                                    <a href="/edit/{{this._id}}">Edit</a>
+                                    <a href='/edit/{{this._id}}'>Edit</a>
 
                                     {{!-- Delete button --}}
-                                    <a href="#" onclick="delFunc();">Delete
-                                    </a>
+                                    <a id='{{this._id}}' href='#'>Delete</a>
 
 
                                     {{!-- Delete form --}}
-                                <form id="{{this._id}}" style="display: none" method="POST"
-                                    action="/edit/{{this._id}}?_=delete">
+                                <form id='{{this._id}}' style='display: none' method='POST'
+                                    action='/edit/{{this._id}}?_=delete'>
                                 </form>
 
+                                {{!-- Delete confirmation --}}
+                                <script nonce='{{../cspNonce}}'>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        document.getElementById('{{this._id}}')
+                                            .addEventListener('click', function () {
+                                                const result = confirm('You sure?');
+                                                if (result == true) {
+                                                    document.getElementById('{{this._id}}_form').submit();
+                                                }
+                                            });
+                                    });
+                                </script>
+
                                 </p>
-                                <h3 class="title">{{this.position}}</h3>
-                                <p class="text">
-                                    {{this.description}}
-                                </p>
+                                <h3 class='title'>{{this.position}}</h3>
+                                <p class='text'>{{this.description}}</p>
                             </div>
                         </li>
                         {{/each}}
                     </ul>
                 </div>
 
-                <div class="right">
+                {{!-- Right --}}
+                <div class='right'>
                     <ul>
                         {{#each experienceRight}}
                         <li>
-                            {{!-- Delete confirmation --}}
-                            <script nonce='{{../cspNonce}}'>
-                                function delFunc() {
-                                    const result = confirm("You sure?");
-                                    if (result == true) {
-                                        document.getElementById('{{this._id}}').submit();
-                                        return;
-                                    }
-                                }
-                            </script>
-                            <div class="inner">
-                                <img class="svg" src="{{typeImageUrl}}" alt="" />
-                                <p class=" year">{{this.year}} @
-                                    <a class="{{this.hrefClass}}" href="{{this.link}}"
-                                        style="color:white;padding-right:1em">
+                            <div class='inner'>
+
+                                <img class='svg' src='{{typeImageUrl}}' />
+
+                                <p class=' year'>{{this.year}} @
+                                    <a class='{{this.hrefClass}}' href='{{this.link}}'
+                                        style='color:white;padding-right:1em'>
                                         {{this.location}}
                                     </a>
 
                                     {{!-- Edit button --}}
-                                    <a href="/edit/{{this._id}}">Edit</a>
+                                    <a href='/edit/{{this._id}}'>Edit</a>
 
                                     {{!-- Delete button --}}
-                                    <a href="#" onclick="delFunc();">Delete
-                                    </a>
-
+                                    <a id='{{this._id}}' href='#'>Delete</a>
 
                                     {{!-- Delete form --}}
-                                <form id="{{this._id}}" style="display: none" method="POST"
-                                    action="/delete/{{this._id}}?_=delete">
+                                <form id='{{this._id}}_form' style='display: none' method='POST'
+                                    action='/delete/{{this._id}}?_=delete'>
                                 </form>
 
+                                {{!-- Delete confirmation --}}
+                                <script nonce='{{../cspNonce}}'>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        document.getElementById('{{this._id}}')
+                                            .addEventListener('click', function () {
+                                                const result = confirm('You sure?');
+                                                if (result == true) {
+                                                    document.getElementById('{{this._id}}_form').submit();
+                                                }
+                                            });
+                                    });
+                                </script>
+
                                 </p>
-                                <h3 class=" title">{{this.position}}</h3>
-                                <p class="text">
-                                    {{this.description}}
-                                </p>
+
+                                <h3 class=' title'>{{this.position}}</h3>
+                                <p class='text'>{{this.description}}</p>
                             </div>
                         </li>
                         {{/each}}
@@ -120,4 +133,3 @@
         </div>
     </div>
 </div>
-<!-- /TIMELINE -->
