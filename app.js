@@ -66,8 +66,13 @@ app.use(BodyParser.text({
     extended: true,
 }));
 
+
 // Prevent HTTP params pollution
 app.use(hpp());
+
+// Prevent NOSQL Injection
+app.use(mongoSanitizer());
+
 
 // Express Session Middleware
 app.use(
@@ -131,9 +136,6 @@ app.use(routeLogger);
 // Load Routes
 const main = require('./routes/main');
 const reg = require('./routes/register');
-
-// Prevent NOSQL Injection
-app.use(mongoSanitizer());
 
 // Set security headers
 app.use(helmet());
