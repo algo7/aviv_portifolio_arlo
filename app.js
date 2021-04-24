@@ -1,3 +1,10 @@
+// Load Environmental Variables
+const { NODE_ENV, } = process.env;
+if (NODE_ENV !== 'production') {
+    // eslint-disable-next-line global-require
+    require('./creds/env');
+}
+
 // Dependencies
 const express = require('express');
 const compression = require('compression');
@@ -10,16 +17,10 @@ const helmet = require('helmet');
 const xssC = require('xss-clean');
 const hpp = require('hpp');
 const crypto = require('crypto');
-const { NODE_ENV, } = process.env;
 const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
 const { routeLogger, } = require('./config/middlewares/routeLogger');
 
-// Load Environmental Variables
-if (NODE_ENV !== 'production') {
-    // eslint-disable-next-line global-require
-    require('./creds/env');
-}
 // Load Mongo Error Dataset into Redis
 require('./config/utils/mongoErrorLoader');
 
@@ -176,3 +177,10 @@ app.use(routeCheck(app));
 app.listen(PORT, () => {
     appLog.info(`Server is running in ${NODE_ENV} mode on port ${PORT}`);
 });
+
+
+// Handle SIGINT from terminal
+process.on('SIGINT', () => process.exit(0));
+
+// Handle SIGUP from nodemon
+process.on('SIGUP', () => process.exit(0));
