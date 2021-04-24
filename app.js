@@ -1,12 +1,12 @@
 // Load Environmental Variables
-require('./creds/env');
-
-// Load Mongo Error Dataset into Redis
-require('./config/utils/mongoErrorLoader');
+const { NODE_ENV, PORT: SERVER_PORT, } = process.env;
+if (NODE_ENV !== 'production') {
+    // eslint-disable-next-line global-require
+    require('./creds/env');
+}
 
 // Dependencies
 const express = require('express');
-const BodyParser = require('body-parser');
 const compression = require('compression');
 const exphbs = require('express-handlebars');
 const passport = require('passport');
@@ -21,6 +21,9 @@ const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
 const { routeLogger, } = require('./config/middlewares/routeLogger');
 
+// Load Mongo Error Dataset into Redis
+require('./config/utils/mongoErrorLoader');
+
 // Redis
 const { redisClient: client, RedisStore, session, } =
     require('./config/dataBase/redisConnection');
@@ -32,7 +35,7 @@ const appLog = require('./config/system/log').get('appLog');
 const errorHandler = require('./config/middlewares/customErrorHandler');
 
 // Global Constant
-const PORT = process.env.PORT || 3008;
+const PORT = SERVER_PORT || 3008;
 
 // Initialize the App
 const app = express();
@@ -50,18 +53,18 @@ app.set('x-powered-by', false);
 // Enable Caching
 // app.enable('view cache');
 
-// BodyParser Middleware
-app.use(BodyParser.urlencoded({
+// Express parser Middleware
+app.use(express.urlencoded({
     extended: true,
     limit: '5mb',
 }));
 
-app.use(BodyParser.json({
+app.use(express.json({
     limit: '5mb',
     extended: true,
 }));
 
-app.use(BodyParser.text({
+app.use(express.text({
     limit: '5mb',
     extended: true,
 }));
@@ -97,7 +100,7 @@ app.set('trust proxy', 1);
 // Set Static Folder (Absolute)
 app.use('/', express.static(path.join(__dirname, '/assets')));
 
-// Handlebars Middleware
+// Handlebars Middleware  
 app.engine('handlebars', exphbs({
     defaultLayout: 'main',
 }));
@@ -167,10 +170,17 @@ app.use('/', reg);
 // Use the custom error handler
 app.use(errorHandler);
 
-// Route Check/
+// Route Check
 app.use(routeCheck(app));
 
 // Start the appg
 app.listen(PORT, () => {
-    appLog.info(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+    appLog.info(`Server is running in ${NODE_ENV} mode on port ${PORT}`);
 });
+
+
+// Handle SIGINT from terminal
+process.on('SIGINT', () => process.exit(0));
+
+// Handle SIGUP from nodemon
+process.on('SIGUP', () => process.exit(0));

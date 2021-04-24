@@ -1,0 +1,39 @@
+version: '3.8'
+# List of services
+services:
+  redis_storage:
+    container_name: redis-local
+    restart: always
+    # The image name of the build not the image name to pull
+    image: ${IMAGE_NAME_REDIS}
+    # Build context
+    build:
+        context: .
+        dockerfile: ./Docker/Redis_Dockerfile
+    # Map the ports | bind to localhost
+    ports:
+     - '127.0.0.1:6374:6374'
+
+    # Set up a dedicated network
+    networks:
+     - portfolio
+
+  main_app: 
+    container_name: portfolio-main
+    env_file: ./Docker/env_files/docker.env
+    restart: always
+    build:
+        context: .
+        dockerfile: ./Docker/Main_Dockerfile
+    image: ${IMAGE_NAME_MAIN}
+    ports:
+      - '127.0.0.1:3008:3008'
+    depends_on:
+      - redis_storage
+    networks:
+      - portfolio
+
+# Define the network type
+networks:
+  portfolio:
+    driver: bridge

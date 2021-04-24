@@ -1,56 +1,106 @@
-name: Deployment
-
+name: Portfolio CI/CD
 on:
   push:
     branches:
       - main
+
+# Global variables
+env:
+  USER_NAME: ${{ github.actor }}
+  GITHUB_SHA: ${{ github.sha }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+  SERVER_IP: ${{ secrets.SERVER_IP }}
+  SERVER_USER_NAME: ${{ secrets.SERVER_USER_NAME }}
+  REPOSITORY: ${{ github.REPOSITORY_OWNER }}
+  DOCKER_ENV: ${{ secrets.DOCKER_ENV }}
+  REDIS_CONF: ${{ secrets.REDIS_CONF }}
+
+# Jobs
 jobs:
-  # Arbitrary Job Section Name (Won't be Displayed)
-  deploy:
-    # Operating System to Run the Script On
+
+# Continuous integration
+  CI:
     runs-on: ubuntu-latest
-    # Job Name (Will be Displayed)
-    name: Deploy to Production
+    permissions:
+      packages: write
+      contents: read
+
     steps:
-      # Step Name
-      - name: Set up SSH
-        # Run Miltiline Bash Script
+    # Clone the repo
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
+
+    # Build the image 
+      - name: Build Image
+        run: |
+          echo "${DOCKER_ENV}" | base64 -d > ./Docker/env_files/docker.env
+          VERSION=$(echo "${GITHUB_SHA:0:6}")
+          REPO_LOWER=$(echo $REPOSITORY | tr '[A-Z]' '[a-z]')
+          echo "IMAGE_NAME_MAIN=ghcr.io/$REPO_LOWER/portfolio:$VERSION" > .env
+          echo "IMAGE_NAME_REDIS=ghcr.io/$REPO_LOWER/redis:$VERSION" >> .env
+          echo "${REDIS_CONF}" | base64 -d > ./Docker/redis.conf
+          docker-compose build && docker images
+
+    # Login to GitHub's container registry
+      - name: Registry Login
+        run: echo $GITHUB_TOKEN | docker login -u $USER_NAME --password-stdin ghcr.io
+
+    # Push the image to the registry
+      - name: Push Image
+        run: docker-compose push
+    
+    # Archive artifacts
+      # - name: Archive Docker env file
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: docker.env
+      #     path: ./Docker/env_files/docker.env
+
+# Continuous deployment 
+  CD:
+    needs: CI
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+    # Clone the repo
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
+
+    # # Download artifacts from the last job 
+    #   - name: Download artifacts from the CI stage
+    #     uses: actions/download-artifact@v2
+    #     with:
+    #       name: docker.env
+
+    # Setup SSH
+      - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_PROFILE" > ~/.ssh/config
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/portfolio.key
-          echo "$GITKEY" > ~/.ssh/GitKey
-          sudo chmod 600 ~/.ssh/GitKey
-          sudo chmod 600 ~/.ssh/portfolio.key
+          echo "$SERVER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa 
           eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/GitKey
-          echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
-        # Shell Type
-        shell: bash
-        # Environmental Variables (Use on GitHub Runners)
-        env:
-          SSH_PRIVATE_KEY: ${{secrets.PORTFOLIO_SERVER_SSH_PRIVATE_KEY}}
-          GITKEY: ${{secrets.GIT_KEY}}
-          SSH_PROFILE: ${{secrets.SSH_PROFILE}}
-          KNOWN_HOSTS: ${{secrets.KNOWN_HOSTS}}
+          ssh-add ~/.ssh/id_rsa
+          ssh-keyscan -H $SERVER_IP > ~/.ssh/known_hosts
 
-      # Step Name
-      - name: Install PM2
-        # Single-Line Bash Script
-        run: sudo npm i -g pm2 &>/dev/null
-        # Shell Type
-        shell: bash
-
-      # Step Name
-      - name: Running Deployment Script
-        # Run Miltiline Bash Script
+    # Deployment prep.
+      - name: Deployment Preparation
         run: |
-          git clone git@github.com:algo7/aviv_portifolio_arlo.git
-          cd aviv_portifolio_arlo
-          echo "$ECOF" > ./ecosystem.json
-          npm run deploy
-        # Shell Type
-        shell: bash
-        # Environmental Variables (Use on GitHub Runners)
-        env:
-          ECOF: ${{secrets.ECOSYSTEM_FILE}}
+          sed -e "s/.\/Docker\/env_files\/docker.env/docker.env/" -i ./docker-compose.yml
+          sed -e '/build:/,+2d' -i docker-compose.yml
+          echo "${DOCKER_ENV}" | base64 -d > ./docker.env
+          VERSION=$(echo "${GITHUB_SHA:0:6}")
+          REPO_LOWER=$(echo $REPOSITORY | tr '[A-Z]' '[a-z]')
+          echo "IMAGE_NAME_MAIN=ghcr.io/$REPO_LOWER/portfolio:$VERSION" > .env
+          echo "IMAGE_NAME_REDIS=ghcr.io/$REPO_LOWER/redis:$VERSION" >> .env
+          echo "echo $GITHUB_TOKEN | docker login -u $USER_NAME --password-stdin ghcr.io" | ssh $SERVER_USER_NAME@$SERVER_IP
+          scp docker-compose.yml .env docker.env $SERVER_USER_NAME@$SERVER_IP:~
+
+    # Deployment
+      - name: Deployment
+        run: |
+          echo "docker-compose down && yes | docker system prune && yes | docker volume prune && yes | docker image prune -a && docker-compose up -d" | ssh $SERVER_USER_NAME@$SERVER_IP
+          echo "" > docker.env | ssh $SERVER_USER_NAME@$SERVER_IP
