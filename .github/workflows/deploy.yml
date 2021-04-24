@@ -59,47 +59,47 @@ jobs:
       #     path: ./Docker/env_files/docker.env
 
 # Continuous deployment 
-  # CD:
-  #   needs: CI
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     packages: write
-  #     contents: read
+  CD:
+    needs: CI
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
 
-  #   steps:
-  #   # Clone the repo
-  #     - name: Check Out Repo 
-  #       uses: actions/checkout@v2
+    steps:
+    # Clone the repo
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
 
-  #   # # Download artifacts from the last job
-  #   #   - name: Download artifacts from the CI stage
-  #   #     uses: actions/download-artifact@v2
-  #   #     with:
-  #   #       name: docker.env
+    # # Download artifacts from the last job
+    #   - name: Download artifacts from the CI stage
+    #     uses: actions/download-artifact@v2
+    #     with:
+    #       name: docker.env
 
-  #   # Setup SSH
-  #     - name: Setup SSH
-  #       run: |
-  #         mkdir -p ~/.ssh
-  #         echo "$SERVER_SSH_KEY" > ~/.ssh/id_rsa
-  #         chmod 600 ~/.ssh/id_rsa 
-  #         eval "$(ssh-agent -s)"
-  #         ssh-add ~/.ssh/id_rsa
-  #         ssh-keyscan -H $SERVER_IP > ~/.ssh/known_hosts
+    # Setup SSH
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SERVER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa 
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
+          ssh-keyscan -H $SERVER_IP > ~/.ssh/known_hosts
 
-  #   # Deployment prep.
-  #     - name: Deployment Preparation
-  #       run: |
-  #         sed -e "s/.\/Docker\/env_files\/docker.env/docker.env/" -i ./docker-compose.yml
-  #         echo "${DOCKER_ENV}" | base64 -d > ./docker.env
-  #         VERSION=$(echo "${GITHUB_SHA:0:6}")
-  #         REPO_LOWER=$(echo $REPOSITORY | tr '[A-Z]' '[a-z]')
-  #         echo "IMAGE_NAME_MAIN=ghcr.io/$REPO_LOWER/portfolio:$VERSION" > .env
-  #         echo "IMAGE_NAME_REDIS=ghcr.io/$REPO_LOWER/redis:$VERSION" >> .env
-  #         echo "echo $GITHUB_TOKEN | docker login -u $USER_NAME --password-stdin ghcr.io" | ssh $SERVER_USER_NAME@$SERVER_IP
-  #         scp docker-compose.yml .env docker.env $SERVER_USER_NAME@$SERVER_IP:~
+    # Deployment prep.
+      - name: Deployment Preparation
+        run: |
+          sed -e "s/.\/Docker\/env_files\/docker.env/docker.env/" -i ./docker-compose.yml
+          echo "${DOCKER_ENV}" | base64 -d > ./docker.env
+          VERSION=$(echo "${GITHUB_SHA:0:6}")
+          REPO_LOWER=$(echo $REPOSITORY | tr '[A-Z]' '[a-z]')
+          echo "IMAGE_NAME_MAIN=ghcr.io/$REPO_LOWER/portfolio:$VERSION" > .env
+          echo "IMAGE_NAME_REDIS=ghcr.io/$REPO_LOWER/redis:$VERSION" >> .env
+          echo "echo $GITHUB_TOKEN | docker login -u $USER_NAME --password-stdin ghcr.io" | ssh $SERVER_USER_NAME@$SERVER_IP
+          scp docker-compose.yml .env docker.env $SERVER_USER_NAME@$SERVER_IP:~
 
-  #   # Deployment
-  #     - name: Deployment
-  #       run: |
-  #         echo "docker-compose down && yes | docker system prune && yes | docker volume prune && yes | docker image prune -a && docker-compose up -d" && echo "" > docker.env | ssh $SERVER_USER_NAME@$SERVER_IP
+    # Deployment
+      - name: Deployment
+        run: |
+          echo "docker-compose down && yes | docker system prune && yes | docker volume prune && yes | docker image prune -a && docker-compose up -d" && echo "" > docker.env | ssh $SERVER_USER_NAME@$SERVER_IP
