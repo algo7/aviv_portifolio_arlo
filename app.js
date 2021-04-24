@@ -1,5 +1,5 @@
 // Load Environmental Variables
-const { NODE_ENV, } = process.env;
+const { NODE_ENV, PORT: SERVER_PORT, } = process.env;
 if (NODE_ENV !== 'production') {
     // eslint-disable-next-line global-require
     require('./creds/env');
@@ -35,7 +35,7 @@ const appLog = require('./config/system/log').get('appLog');
 const errorHandler = require('./config/middlewares/customErrorHandler');
 
 // Global Constant
-const PORT = process.env.PORT || 3008;
+const PORT = SERVER_PORT || 3008;
 
 // Initialize the App
 const app = express();

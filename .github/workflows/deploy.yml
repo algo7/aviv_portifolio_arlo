@@ -40,7 +40,7 @@ jobs:
           REPO_LOWER=$(echo $REPOSITORY | tr '[A-Z]' '[a-z]')
           echo "IMAGE_NAME_MAIN=ghcr.io/$REPO_LOWER/portfolio:$VERSION" > .env
           echo "IMAGE_NAME_REDIS=ghcr.io/$REPO_LOWER/redis:$VERSION" >> .env
-          echo "${REDIS_CONF}" > ./Docker/redis.conf
+          echo "${REDIS_CONF}" | base64 -d > ./Docker/redis.conf
           docker-compose build && docker images
 
     # Login to GitHub's container registry
@@ -51,12 +51,12 @@ jobs:
       - name: Push Image
         run: docker-compose push
     
-    # # Archive artifacts
-    #   - name: Archive Docker env file
-    #     uses: actions/upload-artifact@v2
-    #     with:
-    #       name: docker.env
-    #       path: docker.env
+    # Archive artifacts
+      - name: Archive Docker env file
+        uses: actions/upload-artifact@v2
+        with:
+          name: docker.env
+          path: ./Docker/env_files/docker.env
 
 # Continuous deployment 
   # CD:

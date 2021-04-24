@@ -27,7 +27,7 @@ services:
         dockerfile: ./Docker/Main_Dockerfile
     image: ${IMAGE_NAME_MAIN}
     ports:
-      - '127.0.0.1:3003:3003'
+      - '127.0.0.1:3008:3008'
     depends_on:
       - redis_storage
     networks:
