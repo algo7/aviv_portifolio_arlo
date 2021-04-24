@@ -91,6 +91,7 @@ jobs:
       - name: Deployment Preparation
         run: |
           sed -e "s/.\/Docker\/env_files\/docker.env/docker.env/" -i ./docker-compose.yml
+          sed -e '/build:/,+2d' -i docker-compose.yml
           echo "${DOCKER_ENV}" | base64 -d > ./docker.env
           VERSION=$(echo "${GITHUB_SHA:0:6}")
           REPO_LOWER=$(echo $REPOSITORY | tr '[A-Z]' '[a-z]')
