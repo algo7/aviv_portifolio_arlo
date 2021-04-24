@@ -1,12 +1,5 @@
-// Load Environmental Variables
-require('./creds/env');
-
-// Load Mongo Error Dataset into Redis
-require('./config/utils/mongoErrorLoader');
-
 // Dependencies
 const express = require('express');
-const BodyParser = require('body-parser');
 const compression = require('compression');
 const exphbs = require('express-handlebars');
 const passport = require('passport');
@@ -17,9 +10,18 @@ const helmet = require('helmet');
 const xssC = require('xss-clean');
 const hpp = require('hpp');
 const crypto = require('crypto');
+const { NODE_ENV, } = process.env;
 const { passportLogic, } = require('./config/auth/passport-local');
 const { routeCheck, } = require('express-suite');
 const { routeLogger, } = require('./config/middlewares/routeLogger');
+
+// Load Environmental Variables
+if (NODE_ENV !== 'production') {
+    // eslint-disable-next-line global-require
+    require('./creds/env');
+}
+// Load Mongo Error Dataset into Redis
+require('./config/utils/mongoErrorLoader');
 
 // Redis
 const { redisClient: client, RedisStore, session, } =
@@ -50,18 +52,18 @@ app.set('x-powered-by', false);
 // Enable Caching
 // app.enable('view cache');
 
-// BodyParser Middleware
-app.use(BodyParser.urlencoded({
+// Express parser Middleware
+app.use(express.urlencoded({
     extended: true,
     limit: '5mb',
 }));
 
-app.use(BodyParser.json({
+app.use(express.json({
     limit: '5mb',
     extended: true,
 }));
 
-app.use(BodyParser.text({
+app.use(express.text({
     limit: '5mb',
     extended: true,
 }));
@@ -167,10 +169,10 @@ app.use('/', reg);
 // Use the custom error handler
 app.use(errorHandler);
 
-// Route Check/
+// Route Check
 app.use(routeCheck(app));
 
 // Start the appg
 app.listen(PORT, () => {
-    appLog.info(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+    appLog.info(`Server is running in ${NODE_ENV} mode on port ${PORT}`);
 });

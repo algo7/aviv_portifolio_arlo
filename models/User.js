@@ -1,7 +1,7 @@
-//Dependencies
+// Dependencies
 const mongoose = require('mongoose');
 
-//Global Constant
+// Global Constant
 const Schema = mongoose.Schema;
 
 // Create Schema
