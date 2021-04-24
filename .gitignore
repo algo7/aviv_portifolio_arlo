@@ -1,6 +1,5 @@
 /.DS_Store
 /node_modules
-ecosystem.json
 config/logs
 *.env
-ecosystem.json
+redis.conf

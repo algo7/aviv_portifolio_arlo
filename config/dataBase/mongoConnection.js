@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const mongoLog = require('../system/log').get('mongoLog');
 
 // Connect to DB (Main)
-const DB_Connection = mongoose.createConnection(process.env.Mongo_URI, {
+const DB_Connection = mongoose.createConnection(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

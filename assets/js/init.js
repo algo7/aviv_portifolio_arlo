@@ -31,7 +31,7 @@ jQuery(document).ready(function () {
 	arlo_tm_isotope();
 	arlo_tm_contact_form();
 	arlo_tm_location();
-	arlo_tm_ripple();
+	// arlo_tm_ripple();
 	arlo_tm_videoplayer();
 	arlo_tm_totop();
 	arlo_tm_about_animation();
@@ -676,16 +676,16 @@ function arlo_tm_location() {
 // -------------  RIPPLE  --------------------------
 // -------------------------------------------------
 
-function arlo_tm_ripple() {
+// function arlo_tm_ripple() {
 
 
 
-	jQuery('#ripple').ripples({
-		resolution: 500,
-		dropRadius: 20,
-		perturbance: 0.04,
-	});
-}
+// 	jQuery('#ripple').ripples({
+// 		resolution: 500,
+// 		dropRadius: 20,
+// 		perturbance: 0.04,
+// 	});
+// }
 
 // -------------------------------------------------
 // -------------  GLITCH  --------------------------
