@@ -103,4 +103,5 @@ jobs:
     # Deployment
       - name: Deployment
         run: |
-          echo "docker-compose down && yes | docker system prune && yes | docker volume prune && yes | docker image prune -a && docker-compose up -d" && echo "" > docker.env | ssh $SERVER_USER_NAME@$SERVER_IP
+          echo "docker-compose down && yes | docker system prune && yes | docker volume prune && yes | docker image prune -a && docker-compose up -d" | ssh $SERVER_USER_NAME@$SERVER_IP
+          echo "" > docker.env | ssh $SERVER_USER_NAME@$SERVER_IP
