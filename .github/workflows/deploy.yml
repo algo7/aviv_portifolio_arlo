@@ -49,7 +49,7 @@ jobs:
 
     # Push the image to the registry
       - name: Push Image
-        run: docker-compose --env-file=docker.env push
+        run: docker-compose push
     
     # # Archive artifacts
     #   - name: Archive Docker env file
@@ -90,11 +90,14 @@ jobs:
   #   # Deployment prep.
   #     - name: Deployment Preparation
   #       run: |
+  #         echo "${DOCKER_ENV}" > ./Docker/env_files/docker.env
   #         VERSION=$(echo "${GITHUB_SHA:0:6}")
   #         REPO_LOWER=$(echo $REPOSITORY | tr '[A-Z]' '[a-z]')
-  #         echo "IMAGE_NAME=ghcr.io/$REPO_LOWER/portfolio:$VERSION" > .env
+  #         echo "IMAGE_NAME_MAIN=ghcr.io/$REPO_LOWER/portfolio:$VERSION" > .env
+  #         echo "IMAGE_NAME_REDIS=ghcr.io/$REPO_LOWER/redis:$VERSION" >> .env
+  #         echo "${REDIS_CONF}" > ./Docker/redis.conf
   #         echo "echo $GITHUB_TOKEN | docker login -u $USER_NAME --password-stdin ghcr.io" | ssh $SERVER_USER_NAME@$SERVER_IP
-  #         scp docker-compose.yml docker.env $SERVER_USER_NAME@$SERVER_IP:~
+  #         scp docker-compose.yml .env $SERVER_USER_NAME@$SERVER_IP:~
 
   #   # Deployment
   #     - name: Deployment
