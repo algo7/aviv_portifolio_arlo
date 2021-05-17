@@ -4,5 +4,8 @@ FROM redis:alpine
 # Copy the redis.conf
 COPY ./Docker/redis.conf /etc/redis.conf
 
+# Drop privilege
+USER redis
+
 #  Command to execute at the end, each parameters in an element in the array
 CMD [ "redis-server", "/etc/redis.conf" ]
